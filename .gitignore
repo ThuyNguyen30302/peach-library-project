@@ -1,10 +1,3 @@
 
-back-end/obj/back-end.csproj.nuget.dgspec.json
-back-end/obj/back-end.csproj.nuget.g.props
-back-end/obj/Debug/net6.0/back-end.assets.cache
-back-end/obj/Debug/net6.0/back-end.csproj.AssemblyReference.cache
-back-end/obj/project.assets.json
-back-end/obj/project.nuget.cache
-back-end/obj/project.packagespec.json
-back-end/obj/rider.project.restore.info
+back-end/obj
 front-end/package-lock.json
