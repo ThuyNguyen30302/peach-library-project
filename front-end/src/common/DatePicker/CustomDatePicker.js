@@ -1,4 +1,4 @@
-import React, {forwardRef, useImperativeHandle} from 'react';
+import React, {forwardRef, useImperativeHandle, useRef} from 'react';
 import {DatePicker, TimePicker} from "antd";
 
 const { RangePicker } = DatePicker;
@@ -11,16 +11,18 @@ const CustomDatePicker = forwardRef((props, ref) => {
         placeholder,
         minDate,
         maxDate,
+        multiple = false,
         allowClear = true,
         autoFocus,
         className,
         disabled = false,
         disabledDate,
         disabledTime,
-        format = "DD/MM/YYYY HH:mm",
+        format = 'DD/MM/YYYY HH:mm',
         showTime = {
             format: 'HH:mm',
         },
+        maxTagCount = 'responsive',
         order,
         inputReadOnly,
         needConfirm,
@@ -31,57 +33,62 @@ const CustomDatePicker = forwardRef((props, ref) => {
         renderExtraFooter,
         onOk,
         onPanelChange,
-        multiple,
         onChange
     } = props;
 
+    const refDate = useRef();
 
-    useImperativeHandle(ref, () => ({}));
+
+    useImperativeHandle(ref, () => ({
+        refDate
+    }));
 
     const renderComponent = () => {
         switch (type) {
             case 'date':
-                <DatePicker showTime={false} {...props} />
+                <DatePicker ref={refDate} ref={refDate} showTime={false} {...props} />
                 break;
             case 'dateTime':
-                <DatePicker {...props} />
+                <DatePicker ref={refDate} {...props} />
                 break;
             case 'month':
-                <DatePicker picker={'month'} {...props} />
+                <DatePicker ref={refDate} picker={'month'} {...props} />
                 break;
             case 'year':
-                <DatePicker picker={'year'} {...props} />
+                <DatePicker ref={refDate} picker={'year'} {...props} />
                 break;
             case 'quarter':
-                <DatePicker picker={'quater'} {...props} />
-                break;
-            case 'time':
-                <TimePicker {...props} />
+                <DatePicker ref={refDate} picker={'quater'} {...props} />
                 break;
             case 'week':
-                <DatePicker picker={'week'} {...props} />
+                <DatePicker ref={refDate} picker={'week'} {...props} />
+                break;
+            case 'time':
+                <TimePicker ref={refDate} {...props} />
                 break;
             case 'dateRange':
-                <RangePicker />
+                <RangePicker ref={refDate} showTime={false} {...props} />
+                break;
+            case 'dateTimeRange':
+                <RangePicker ref={refDate} {...props} />
                 break;
             case 'monthRange':
-                break;
+                return <RangePicker ref={refDate} picker={'month'} {...props} />
             case 'yearRange':
-                break;
-            case 'timeRange':
-                break;
+                return <RangePicker ref={refDate} picker={'year'} {...props} />
+            case 'weekRange':
+                return <RangePicker ref={refDate} picker={'week'} {...props} />
+            case 'quarterRange':
+                return <RangePicker ref={refDate} picker={'quater'} {...props} />
             case 'selectDate':
-                break;
-            case 'selectDateRange':
-                break;
+                return <DatePicker ref={refDate} multiple={true} {...props} />
             default:
                 break;
         }
-        ;
     };
 
     return (<div>
-
+        {renderComponent()}
     </div>);
 });
 

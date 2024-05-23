@@ -1,17 +1,12 @@
-import axios from "axios"
-import { Alert } from "core/idtek-component"
-import _ from "lodash"
-import { useRef } from "react"
-import { UAParser } from "ua-parser-js"
-import {
-    loginSuccessFull,
-    setMenus,
-    setRights,
-    setRoutes
-} from "../action/action"
-import { CHECK_LOGIN, LAYOUT, LOGIN, LOGOUT } from "../constant/ApiConstant"
-import { LOG_OUT_SUCCESSFUL } from "../constant/constant"
-import { AppStore } from "../store"
+import axios from "axios";
+import _ from "lodash";
+import {useRef} from "react";
+import {UAParser} from "ua-parser-js";
+import {loginSuccessFull, setMenus, setRights, setRoutes} from "../action/action";
+import {CHECK_LOGIN, LAYOUT, LOGIN, LOGOUT} from "../constant/ApiConstant";
+import {LOG_OUT_SUCCESSFUL} from "../constant/constant";
+import {AppStore} from "../store";
+import Alert from "../common/Alert/Alert";
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
 
@@ -34,51 +29,48 @@ export const useRequest = () => {
     })
 
     const get = async (url, config) => {
-        const results = await axios
-            .get(url, { ...requestConfig?.current, ...config })
-            .then(res => {
-                return {
-                    ...res.data
-                }
-            })
-            .catch(e => {
-                return {
-                    ...e.response?.data
-                }
-            })
-        return results
+        return await axios
+          .get(url, {...requestConfig?.current, ...config})
+          .then(res => {
+              return {
+                  ...res.data
+              }
+          })
+          .catch(e => {
+              return {
+                  ...e.response?.data
+              }
+          })
     }
 
     const post = async (url, data, config) => {
-        const result = await axios
-            .post(url, data, { ...requestConfig?.current, ...config })
-            .then(res => {
-                return {
-                    ...res.data
-                }
-            })
-            .catch(e => {
-                return {
-                    ...e.response?.data
-                }
-            })
-        return result
+        return await axios
+          .post(url, data, {...requestConfig?.current, ...config})
+          .then(res => {
+              return {
+                  ...res.data
+              }
+          })
+          .catch(e => {
+              return {
+                  ...e.response?.data
+              }
+          })
     }
 
     const deleteApi = async (url, config) => {
-        const result = await axios
-            .delete(url, { ...requestConfig?.current, ...config })
-            .then(res => {
-                return {
-                    ...res.data
-                }
-            })
-            .catch(e => {
-                return {
-                    ...e.response?.data
-                }
-            })
-        return result
+        return await axios
+          .delete(url, {...requestConfig?.current, ...config})
+          .then(res => {
+              return {
+                  ...res.data
+              }
+          })
+          .catch(e => {
+              return {
+                  ...e.response?.data
+              }
+          })
     }
 
     const checkLogin = async () => {
@@ -92,14 +84,13 @@ export const useRequest = () => {
     }
 
     const fetchLayout = async () => {
-        const result = await get(LAYOUT, requestConfig?.current).then(response => {
+        return await get(LAYOUT, requestConfig?.current).then(response => {
             if (response?.success) {
                 AppStore.dispatch(setMenus(response?.result?.menus))
                 AppStore.dispatch(setRoutes(response?.result?.routes))
             }
             return response?.result
         })
-        return result
     }
 
     const login = (form, values, callback) => {

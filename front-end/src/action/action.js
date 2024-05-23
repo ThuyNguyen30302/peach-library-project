@@ -93,7 +93,7 @@ export const setConfigGlobalFilter = (config) => {
     };
 };
 
-export const setValueGlobalFilter = (value: IValueFilterGlobal) => {
+export const setValueGlobalFilter = (value) => {
     return {
         type: Constant.SET_VALUE_GLOBAL_FILTER,
         value,
