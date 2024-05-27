@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Aspose.Cells" Version="24.5.0" />
+        <PackageReference Include="Aspose.Tasks" Version="24.5.0" />
         <PackageReference Include="Entity.Framework.Core.Jwt.Token.Auth" Version="1.0.1" />
         <PackageReference Include="EntityCloner.Microsoft.EntityFrameworkCore" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -16,7 +18,27 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.0" />
+        <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.8" />
+        <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.3.8" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="System.Threading" Version="4.3.0" />
+        <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Controllers\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Controllers\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Controllers\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Controllers\**" />
     </ItemGroup>
 
 </Project>

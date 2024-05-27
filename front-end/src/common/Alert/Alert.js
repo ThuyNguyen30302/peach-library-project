@@ -25,7 +25,7 @@ class Alert {
     });
   }
 
-  static async Swal_confirm(title, message, confirmButtonColor = '#3085d6') {
+  static async Swal_confirm(title, message, confirmButtonColor = '#2f7e17') {
     const result = await MySwal.fire({
       title,
       text: message,
@@ -33,8 +33,8 @@ class Alert {
       showCancelButton: true,
       confirmButtonColor: confirmButtonColor,
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: 'Có',
+      cancelButtonText: 'Không',
     });
 
     return result.isConfirmed;

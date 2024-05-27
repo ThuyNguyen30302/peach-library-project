@@ -40,6 +40,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Aspose.Cells": {
+              "target": "Package",
+              "version": "[24.5.0, )"
+            },
+            "Aspose.Tasks": {
+              "target": "Package",
+              "version": "[24.5.0, )"
+            },
             "Entity.Framework.Core.Jwt.Token.Auth": {
               "target": "Package",
               "version": "[1.0.1, )"
@@ -62,9 +70,25 @@
               "target": "Package",
               "version": "[6.0.0, )"
             },
+            "MiniProfiler.AspNetCore.Mvc": {
+              "target": "Package",
+              "version": "[4.3.8, )"
+            },
+            "MiniProfiler.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[4.3.8, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
+            },
+            "System.Threading": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            },
+            "System.Threading.Tasks": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             }
           },
           "imports": [

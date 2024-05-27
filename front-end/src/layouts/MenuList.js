@@ -9,15 +9,20 @@ const MenuList = () => {
   };
 
   const menuItems = [
-    { label: "Home", key: "home", icon: <HomeOutlined /> },
+    { label: "Home",
+      key: "home",
+      path: "/home",
+      icon: <HomeOutlined /> },
     {
       label: "Active",
       key: "active",
+      path: "/active",
       icon: <HomeOutlined />,
       children: [
         {
           label: "Active 1",
           key: "active1",
+          path: "/active/active1",
           icon: <HomeOutlined />,
         },
       ],

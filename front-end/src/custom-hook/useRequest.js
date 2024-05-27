@@ -98,11 +98,11 @@ export const useRequest = () => {
             .then(response => {
                 if (response.success) {
                     Promise.all([checkLogin(), fetchLayout()]).then(() => {
-                        form && form?.unmask()
+                        form && form?.unMask()
                         callback && callback()
                     })
                 } else {
-                    form && form?.unmask()
+                    form && form?.unMask()
                     Alert.Toast_info(
                         "Thông báo",
                         "Đăng nhập không thành công!",

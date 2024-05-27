@@ -1,5 +1,4 @@
 import * as Constant from '../constant/constant';
-import { IFilterGlobal, IValueFilterGlobal } from '../common/components/FilterGlobalComponent';
 
 export const routeChanged = () => ({ type: Constant.ROUTE_CHANGED });
 
