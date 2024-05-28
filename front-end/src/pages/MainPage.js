@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, {useEffect, useState} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigate, useLocation, Routes, Route, Navigate, Link} from 'react-router-dom';
 import {Layout, Menu, Breadcrumb, Button, theme} from 'antd';
@@ -11,7 +11,8 @@ import components from '../AppComponent';
 import Logo from "../layouts/Logo";
 import Home from "../Home";
 import Active from "../Active";
-import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
+import {HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
+import {renderToString} from "react-dom/server";
 
 const {Header, Content, Sider} = Layout;
 
@@ -46,8 +47,19 @@ const MainPage = () => {
     }
     return null;
   };
+
+  const findRouteByName = (name, routes) => {
+    for (const route of routes) {
+      if (route.name === name) return route;
+      if (route.children) {
+        const foundInChild = findRouteByName(name, route.children); // Corrected this line
+        if (foundInChild) return foundInChild;
+      }
+    }
+    return null;
+  };
   const initRoute = findRouteByKey(location.pathname, components);
-  console.log(initRoute)
+
   const [route, setRoute] = useState(initRoute??components[0]);
 
   const {checkLogin} = useRequest();
@@ -85,62 +97,31 @@ const MainPage = () => {
     //   return null;
     // }
 
-    // const menuItems = _.map(Object.values(components), item => {
-    //   if (item?.children) {
-    //     return {
-    //       key: item?.key,
-    //       icon: item?.icon,
-    //       label: item?.label,
-    //       children: item?.children
-    //     };
-    //   }
-    //   return {
-    //     key: item?.key,
-    //     icon: item?.icon,
-    //     label: item?.label
-    //   };
-    // });
-
-    const renderBreadcrumb = (route) => {
-      const breadcrumbs = [];
-
-      if (route.children) {
-        // Nếu route có children, tạo breadcrumb cho từng child
-        route.children.forEach((child, index) => {
-          breadcrumbs.push(
-            <Breadcrumb.Item key={index}>
-              <Link to={child.key}>{child.label}</Link>
-            </Breadcrumb.Item>
-          );
-
-          // Nếu child cũng có children, gọi đệ quy để tạo breadcrumb cho mỗi mức con của child
-          if (child.children) {
-            breadcrumbs.push(renderBreadcrumb(child));
-          }
-        });
-      }
-
-      return breadcrumbs;
+    const renderBreadcrumb = () => {
+      const splitPath = location.pathname.split('/');
+      const breadcrumbs = []
+      _.forEach(splitPath, (item, i) => {
+        if (i!==0 && !_.isEmpty(item)) {
+          const routeItem = findRouteByName(item, components);
+          routeItem && breadcrumbs.push({
+            key: routeItem.key,
+            label: routeItem.label
+          })
+        }
+      })
+      return <>
+        <Link to={'/'} onClick={() => setRoute(components[0])}><HomeOutlined/></Link>
+        {_.map(breadcrumbs, (breadcrumb, i) => {
+          return <> <span className={'mx-2'}>/</span> {breadcrumb.label}</>;
+        })}
+      </>;
     };
 
-    const breadcrumbItems = location.pathname.split('/').filter(i => i).map((path, index) => {
-      const route = findRouteByKey(path, components);
-      return route ? (
-        <Breadcrumb.Item key={index}>
-          <Link to={route.key}>{route.label}</Link>
-          {/* Nếu route có children, tạo breadcrumb cho từng child */}
-          {route.children && renderBreadcrumb(route)}
-        </Breadcrumb.Item>
-      ) : (
-        <span key={index}>{path}</span>
-      );
-    });
-
     const renderComponent = () => {
-      if (route.name === 'home') { return <Home/>}
-      if (route.name === 'active') { return <Active/>}
-      if (route.name === 'active1') { <Active/>}
-      if (route.name === 'active2') {<Active/>}
+      const Component = route.component;
+      return <Suspense fallback={<Loading/>}>
+        <Component />
+      </Suspense>
     }
 
     return (
@@ -173,9 +154,9 @@ const MainPage = () => {
               onClick={() => setCollapsed(!collapsed)}
             />
           </Header>
-          {/*<Breadcrumb style={{margin: '16px'}}>*/}
-          {/*  {breadcrumbItems}*/}
-          {/*</Breadcrumb>*/}
+          <Breadcrumb style={{margin: '16px'}}>
+            {renderBreadcrumb()}
+          </Breadcrumb>
           <Content style={{margin: '0 16px'}}>
             <div style={{padding: 24, minHeight: 360}}>
               {/*{route && <route.component />}*/}
