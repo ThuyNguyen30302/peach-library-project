@@ -108,19 +108,19 @@ export const useRequest = () => {
                         "Đăng nhập không thành công!",
                         Alert.TYPE_ERROR,
                         {
-                            position: "topRight"
+                            position: "center"
                         }
                     )
                 }
             })
             .catch(() => {
-                form && form?.unmask()
+                form && form?.unMask()
                 Alert.Toast_info(
                     "Thông báo",
                     "Đăng nhập không thành công!",
                     Alert.TYPE_ERROR,
                     {
-                        position: "topRight"
+                        position: "center"
                     }
                 )
             })

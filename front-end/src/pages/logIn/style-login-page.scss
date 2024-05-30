@@ -1,0 +1,51 @@
+.log-in-form-contain {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+
+  .log-in-form {
+    margin: 20px;
+    padding: 32px;
+    background: white;
+    border-radius: 5px;
+
+    .left-part {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .left-part-form {
+
+        .title {
+          font-weight: bold;
+          text-align: center;
+          padding: 18px;
+          padding-bottom: 32px;
+        }
+
+        .logo-login {
+          max-width: 400px;
+        }
+
+        .btn-login {
+          background: var(--main-color-1);
+          border: var(--main-color-1);
+          color: white;
+
+          &:hover {
+            background: rgba(253, 139, 62);
+            border: rgba(253, 139, 62);
+          }
+        }
+      }
+    }
+
+    .right-part {
+      .logo-login {
+
+      }
+    }
+  }
+}

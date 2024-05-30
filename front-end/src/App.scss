@@ -17,4 +17,31 @@
     flex-direction: column;
     //gap: 2;
     font-size: 1rem;
+    .ant-menu-item {
+        .ant-menu-item-selected {
+            color: #ffaa74;
+        }
+    }
+}
+
+.content {
+    background: #ffffff;
+    border-radius: 10px;
+}
+
+.box-shadow-main-page {
+    box-shadow: 0px 0px 20px #e3e3e3;
+}
+
+.ant-form-item-required {
+    flex-direction: row-reverse;
+}
+
+.ant-form-item-required::before {
+    margin-left: 5px;
+}
+
+.ant-form-item-required::after {
+    width : 0;
+    margin: 0 !important;
 }
