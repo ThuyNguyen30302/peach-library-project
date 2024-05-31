@@ -32,7 +32,7 @@ const BaseForm = forwardRef((props, ref) => {
 
     }
 
-    return (<Spin spinning={loading}>
+    return (<Spin spinning={loading} tip="Đang tải dữ liệu...">
         <Form form={form} {...props}
               labelAlign="left"
               layout={'horizontal'}

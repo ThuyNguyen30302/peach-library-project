@@ -21,7 +21,6 @@ const AppSwitch = () => {
             <Route path="*" element={<Navigate to="/login" />} />
             <Route path='/login' element={
                 <LoginPage
-                    loading={<Loading/>}
                     onSubmit={(form, values) => {
                         const returnUrl = new URLSearchParams(window.location.search).get('returnUrl') || '/';
                         login(form, values, () => navigate(returnUrl));

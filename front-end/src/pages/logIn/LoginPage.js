@@ -43,6 +43,7 @@ const LoginPage = (props) => {
     // }
     const onSubmit = async () => {
         try {
+            formRef.current.onMask();
             const values = await formRef.current.validateFields();
             formRef.current && props.onSubmit(formRef.current, values)
         } catch (error) {
@@ -98,7 +99,7 @@ const LoginPage = (props) => {
     }
 
     return (
-        <div className="log-in-form-contain xl:h-screen w-screen"
+        <div className="log-in-form-contain xl:h-screen h-screen"
              style={{
                  backgroundColor: "#fff", backgroundImage: 'url(/uploads/login/login-background.jpeg)',
              }}>
