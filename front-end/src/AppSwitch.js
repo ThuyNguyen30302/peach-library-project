@@ -32,29 +32,15 @@ const AppSwitch = () => {
 
     return (
         <Routes>
-            {_.isEmpty(authData) ? (
-                renderLoginPage()
-            ) : (
+            {/*{_.isEmpty(authData) ? (*/}
+            {/*    renderLoginPage()*/}
+            {/*) : (*/}
                 <>
                     <Route path="/*" element={<MainPage />} />
                     <Route path="/login" element={<Navigate to="/" />} /> {/* Redirect logged in users away from login page */}
                 </>
-            )}
+            {/*)}*/}
         </Routes>
-          // <Routes>
-          //     {_.isEmpty(authData) && (
-          //       <Route path='/login' element={
-          //           <LoginPage
-          //             loading={<Loading />}
-          //             onSubmit={(form, model) => {
-          //                 const returnUrl = new URLSearchParams(window.location.search).get('returnUrl') || '/home';
-          //                 login(form, model, () => navigate(returnUrl));
-          //             }}
-          //           />
-          //       } />
-          //     )}
-          //     <MainPage/>
-          // </Routes>
     );
 };
 
