@@ -1,3 +1,12 @@
-
-back-end/obj
+BackEnd/obj
 front-end/package-lock.json
+**/node_modules/*
+**/bin/*
+**/logs/*
+**/.idea/*
+**/.vscode/*
+**/.vs/*
+.git/*
+**/obj/*
+*.pubxml
+**.publishproj

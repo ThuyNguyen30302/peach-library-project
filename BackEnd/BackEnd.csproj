@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Abp" Version="6.0.0" />
+        <PackageReference Include="Abp.AspNetCore" Version="6.0.0" />
+        <PackageReference Include="Abp.EntityFramework.Common" Version="6.0.0" />
+        <PackageReference Include="Abp.EntityFrameworkCore" Version="6.0.0" />
+        <PackageReference Include="Abp.FluentValidation" Version="6.0.0" />
+        <PackageReference Include="Abp.MailKit" Version="6.0.0" />
+        <PackageReference Include="Abp.Quartz" Version="6.0.0" />
+        <PackageReference Include="Abp.Web" Version="6.0.0" />
+        <PackageReference Include="Abp.Web.Api" Version="6.0.0" />
+        <PackageReference Include="Abp.Web.Common" Version="6.0.0" />
+        <PackageReference Include="Aspose.Cells" Version="24.6.0" />
+        <PackageReference Include="Aspose.Tasks" Version="24.5.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.8" />
+        <PackageReference Include="MySqlConnector" Version="2.3.7" />
+        <PackageReference Include="MySqlConnector.DependencyInjection" Version="2.3.6" />
+        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="System.Threading" Version="4.3.0" />
+        <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers\" />
+      <Folder Include="Entities\bin\Debug\net6.0\" />
+    </ItemGroup>
+
+</Project>
