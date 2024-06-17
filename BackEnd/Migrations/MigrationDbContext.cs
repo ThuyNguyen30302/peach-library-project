@@ -80,8 +80,6 @@ public class MigrationDbContext : DbContext
             entity.Property(e => e.DeletionTime)
                 .HasColumnType("datetime");
             
-            entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
-
             entity.Property(e => e.Title).HasMaxLength(128);
 
             entity.Property(e => e.Type).HasMaxLength(255);
@@ -111,6 +109,8 @@ public class MigrationDbContext : DbContext
             entity.Property(e => e.Id).HasDefaultValueSql("'UUID()'");
 
             entity.Property(e => e.YearPublisher).HasColumnType("datetime");
+
+            entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
 
             entity.HasOne(d => d.Book)
                 .WithMany(p => p.BookCopies)

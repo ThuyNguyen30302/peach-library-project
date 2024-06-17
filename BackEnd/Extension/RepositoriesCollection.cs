@@ -1,4 +1,6 @@
+using Abp.EntityFrameworkCore;
 using BackEnd.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Extension;
 
@@ -6,17 +8,18 @@ public static class RepositoriesCollection
 {
     public static void AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IAuthorRepository, AuthorRepository>();
-        services.AddScoped<IBookCopyRepository, BookCopyRepository>();
-        services.AddScoped<IPublisherRepository, PublisherRepository>();
-        services.AddScoped<IBookRepository, BookRepository>();
-        services.AddScoped<IMemberRepository, MemberRepository>();
-        services.AddScoped<IMetaCataloRepository, MetaCataloRepository>();
-        services.AddScoped<ICataloRepository, CataloRepository>();
-        services.AddScoped<ICheckOutRepository, CheckOutRepository>();
-        services.AddScoped<IHoldRepository, HoldRepository>();
-        services.AddScoped<INotificationRepository, NotificationRepository>();
-        services.AddScoped<IWaitingListRepository, WaitingListRepository>();
+        // services.AddTransient<IAuthorRepository, AuthorRepository>();
+        // services.AddTransient<IBookCopyRepository, BookCopyRepository>();
+        // services.AddTransient<IPublisherRepository, PublisherRepository>();
+        services.AddTransient<IBookRepository, BookRepository>();
+
+        // services.AddTransient<IMemberRepository, MemberRepository>();
+        // services.AddTransient<IMetaCataloRepository, MetaCataloRepository>();
+        // services.AddTransient<ICataloRepository, CataloRepository>();
+        // services.AddTransient<ICheckOutRepository, CheckOutRepository>();
+        // services.AddTransient<IHoldRepository, HoldRepository>();
+        // services.AddTransient<INotificationRepository, NotificationRepository>();
+        // services.AddTransient<IWaitingListRepository, WaitingListRepository>();
 
     }
 }

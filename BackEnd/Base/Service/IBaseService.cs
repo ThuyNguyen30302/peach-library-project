@@ -1,12 +1,12 @@
 ﻿using System.Linq.Expressions;
+using Abp.Application.Services;
 using Abp.Domain.Entities;
-using Abp.Specifications;
 using BackEnd.Base.Dto;
 
 namespace BackEnd.Base.Service;
 
 public interface IBaseService<TEntity, TKey, TGetOutputDto, TGetListOutputDto, TCreateInput,
-    TUpdateInput>
+    TUpdateInput> 
     where TEntity : class, IEntity<TKey>
     where TCreateInput : class, ICreateDto<TEntity, TKey>
     where TUpdateInput : class, IUpdateDto<TEntity, TKey>

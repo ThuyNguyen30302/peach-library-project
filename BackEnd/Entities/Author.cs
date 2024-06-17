@@ -1,8 +1,8 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using BackEnd.Base.Audit;
 
 namespace BackEnd.Entities;
 
-public class Author : FullAuditedEntity<Guid>
+public class Author : FullAudited<Guid>
 {
     public string Name { get; set; }
     public string NickName { get; set; }

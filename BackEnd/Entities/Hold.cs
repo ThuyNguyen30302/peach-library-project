@@ -1,8 +1,8 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using BackEnd.Base.Audit;
 
 namespace BackEnd.Entities;
 
-public class Hold : FullAuditedEntity<Guid>
+public class Hold : FullAudited<Guid>
 {
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }

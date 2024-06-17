@@ -1,8 +1,9 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using Abp.Domain.Repositories;
+using BackEnd.Base.Audit;
 
 namespace BackEnd.Entities;
 
-public class Publisher : FullAuditedEntity<Guid>
+public class Publisher : FullAudited<Guid>
 {
     public string Name { get; set; }
     public string Code { get; set; }

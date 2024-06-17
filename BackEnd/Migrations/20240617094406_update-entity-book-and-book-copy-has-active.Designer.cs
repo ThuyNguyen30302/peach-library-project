@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Migrations
 {
     [DbContext(typeof(MigrationDbContext))]
-    partial class MigrationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240617094406_update-entity-book-and-book-copy-has-active")]
+    partial class updateentitybookandbookcopyhasactive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,16 +27,16 @@ namespace BackEnd.Migrations
                         .HasColumnType("char(36)")
                         .HasDefaultValueSql("'UUID()'");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime");
@@ -45,8 +47,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -73,16 +75,16 @@ namespace BackEnd.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime");
@@ -93,8 +95,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -146,14 +148,14 @@ namespace BackEnd.Migrations
                     b.Property<Guid>("BookId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime(6)");
@@ -164,8 +166,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -232,16 +234,16 @@ namespace BackEnd.Migrations
                     b.Property<Guid>("BookCopyId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime");
@@ -258,8 +260,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("MemberId")
                         .HasColumnType("char(36)");
@@ -286,16 +288,16 @@ namespace BackEnd.Migrations
                     b.Property<Guid>("BookCopyId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime");
@@ -309,8 +311,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("MemberId")
                         .HasColumnType("char(36)");
@@ -347,16 +349,16 @@ namespace BackEnd.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime");
@@ -372,8 +374,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -412,16 +414,16 @@ namespace BackEnd.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime");
@@ -437,8 +439,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -457,16 +459,16 @@ namespace BackEnd.Migrations
                         .HasColumnType("char(36)")
                         .HasDefaultValueSql("'UUID()'");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime");
@@ -477,8 +479,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("MemberId")
                         .HasColumnType("char(36)");
@@ -510,16 +512,16 @@ namespace BackEnd.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime");
@@ -530,8 +532,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -553,16 +555,16 @@ namespace BackEnd.Migrations
                     b.Property<Guid>("BookId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("CreationTime")
+                    b.Property<DateTime>("CreationTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid?>("CreatorUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("DeleterUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime");
@@ -573,8 +575,8 @@ namespace BackEnd.Migrations
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("LastModifierUserId")
-                        .HasColumnType("char(36)");
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("MemberId")
                         .HasColumnType("char(36)");

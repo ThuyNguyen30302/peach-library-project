@@ -1,8 +1,8 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using BackEnd.Base.Audit;
 
 namespace BackEnd.Entities;
 
-public class Notification: FullAuditedEntity<Guid>
+public class Notification: FullAudited<Guid>
 {
     public string Type { get; set; }
     public DateTime SendAt { get; set; }

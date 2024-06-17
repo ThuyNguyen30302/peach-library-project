@@ -1,4 +1,5 @@
 using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 
 namespace BackEnd.Base.Dto;
 

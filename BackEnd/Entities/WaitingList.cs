@@ -1,7 +1,7 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using BackEnd.Base.Audit;
 
 namespace BackEnd.Entities;
-public class WaitingList : FullAuditedEntity<Guid>
+public class WaitingList : FullAudited<Guid>
 {
     public Guid MemberId { get; set; }
     public Guid BookId { get; set; }

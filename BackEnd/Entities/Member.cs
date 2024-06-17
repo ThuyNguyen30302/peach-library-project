@@ -1,8 +1,8 @@
-﻿using Abp.Domain.Entities.Auditing;
+﻿using BackEnd.Base.Audit;
 
 namespace BackEnd.Entities;
 
-public class Member : FullAuditedEntity<Guid>
+public class Member : FullAudited<Guid>
 {
     public string CardNumber { get; set; }
     public string Name { get; set; }
