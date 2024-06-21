@@ -1,0 +1,75 @@
+.common-grid {
+  .btn-create {
+    background: var(--blue-color);
+    color: white;
+
+    &:hover {
+      border-color: var(--blue-color) !important;
+      background: var(--blue-color) !important;
+      color: white !important;
+      opacity: 0.8;
+    }
+  }
+
+  .btn-detail {
+    background: var(--purple-color);
+    color: white;
+
+    &:hover {
+      border-color: var(--purple-color) !important;
+      background: var(--purple-color) !important;
+      color: white !important;
+      opacity: 0.8;
+    }
+  }
+
+  .btn-update {
+    background: var(--green-color);
+    color: white;
+
+    &:hover {
+      border-color: var(--green-color) !important;
+      background: var(--green-color) !important;
+      color: white !important;
+      opacity: 0.8;
+    }
+  }
+
+  .btn-delete {
+    background: var(--red-color);
+    color: white;
+
+    &:hover {
+      border-color: var(--red-color) !important;
+      background: var(--red-color) !important;
+      color: white !important;
+      opacity: 0.8;
+    }
+  }
+}
+
+.base-form {
+  .btn-save {
+    background: var(--green-color);
+    color: white;
+
+    &:hover {
+      border-color: var(--green-color) !important;
+      background: var(--green-color) !important;
+      color: white !important;
+      opacity: 0.8;
+    }
+  }
+
+  .btn-close {
+    background: var(--red-color);
+    color: white;
+
+    &:hover {
+      border-color: var(--red-color) !important;
+      background: var(--red-color) !important;
+      color: white !important;
+      opacity: 0.8;
+    }
+  }
+}

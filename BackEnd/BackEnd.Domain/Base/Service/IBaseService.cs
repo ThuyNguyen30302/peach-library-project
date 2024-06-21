@@ -18,7 +18,7 @@ public interface IBaseService<TEntity, TKey, TGetOutputDto, TGetListOutputDto, T
     //     CancellationToken cancellationToken = default);
     Task<List<TGetListOutputDto>> GetListAsync(CancellationToken cancellationToken);
 
-    Task<List<TGetListOutputDto>> GetListAsync(ISpecification<TEntity?> specification,
+    Task<List<TGetListOutputDto>> GetListAsync(ISpecification<TEntity> specification,
         CancellationToken cancellationToken);
 
     // Task<PaginatedList<TGetListOutputDto>> GetListAsync(

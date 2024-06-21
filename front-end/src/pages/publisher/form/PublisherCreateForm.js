@@ -2,17 +2,25 @@ import React, {useRef} from 'react';
 import {Form, Input} from "antd";
 // import ToastUtil from "../../../util/ToastUtil";
 import {useRequest} from "../../../custom-hook/useRequest";
-import {AUTHOR_CREATE_API} from "../api/AuthorApi";
+import {AUTHOR_CREATE_API} from "../api/PublisherApi";
 import BaseForm from "../../../common/core/Form/BaseForm";
 
-const AuthorCreateForm = (props) => {
+const itemsLayout = {
+  labelCol: {flex: '130px'},
+};
+
+const PublisherCreateForm = (props) => {
   const formRef = useRef(null);
+
+  const handleInput = (e) => {
+    e.target.value = e.target.value.toUpperCase();
+  };
 
   const renderBody = () => {
     return <>
       <Form.Item
         name="name"
-        label="Tên thật tác giả"
+        label="Tên nhà phát hành"
         rules={[{
           required: true,
         }]}
@@ -20,13 +28,13 @@ const AuthorCreateForm = (props) => {
         <Input />
       </Form.Item>
       <Form.Item
-        name="nickName"
-        label="Bút danh"
+        name="code"
+        label="Mã"
         rules={[{
           required: true,
         }]}
       >
-        <Input />
+        <Input onInput={handleInput} />
       </Form.Item>
     </>
   };
@@ -38,6 +46,7 @@ const AuthorCreateForm = (props) => {
         apiSave={props?.apiSave}
         reloadData={props.reloadData}
         onClose={() => props.onClose()}
+        {...itemsLayout}
       >
         {renderBody()}
       </BaseForm>
@@ -45,4 +54,4 @@ const AuthorCreateForm = (props) => {
   );
 };
 
-export default AuthorCreateForm;
+export default PublisherCreateForm;

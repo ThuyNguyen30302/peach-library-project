@@ -14,7 +14,7 @@ public class PublisherController: BaseController<Publisher, Guid, PublisherDetai
     PublisherCreateDto,
     PublisherUpdateDto>
 {
-    public PublisherController(PublisherService entityService) : base(
+    public PublisherController(IPublisherService entityService) : base(
         entityService)
     {
     }

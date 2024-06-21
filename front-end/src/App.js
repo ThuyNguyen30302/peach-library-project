@@ -8,6 +8,9 @@ import AppSwitch from "./AppSwitch";
 import {Provider} from "react-redux";
 import {AppStore} from "./store";
 import {BrowserRouter as Router} from 'react-router-dom';
+import './style/grid-style.scss';
+import './style/button-style.scss';
+import './style/variable.scss';
 
 const {Header, Sider, Content} = Layout;
 

@@ -72,21 +72,14 @@ const CommonGrid = forwardRef((props, ref) => {
       renderTitleForm('Chỉnh sửa'),
       props.formCRUD?.popUpWidth || '850px'
     );
-    // Modal.confirm({
-    //   title: 'Chỉnh sửa',
-    //   content: <Suspense fallback={<Spin />}>
-    //     <FormEdit onClose={handleCloseModal} rowData={data} />
-    //   </Suspense>,
-    //   width: props.formCRUD?.popUpWidth || 850,
-    // });
   };
 
   const handleDelete = async (data) => {
     try {
       const response = await deleteApi(`${props.buttonCRUD?.apiDelete}?id=${data.id}`);
       if (response?.success) {
-        message.success('Deleted successfully');
         props.reloadData && await props.reloadData();
+        message.success('Deleted successfully');
       }
     } catch (error) {
       message.error('Failed to delete');
@@ -108,13 +101,6 @@ const CommonGrid = forwardRef((props, ref) => {
       renderTitleForm('Chi tiết'),
       props.formCRUD?.popUpWidth || '850px'
     );
-    // Modal.confirm({
-    //   title: 'Chi tiết',
-    //   content: <Suspense fallback={<Spin />}>
-    //     <FormDetail rowData={data} />
-    //   </Suspense>,
-    //   width: props.formCRUD?.popUpWidth || 850,
-    // });
   };
 
   const actionColumnDefs = {
@@ -126,9 +112,9 @@ const CommonGrid = forwardRef((props, ref) => {
         {/*{props.buttonCRUD?.hasDetail && <Tooltip title="Detail"><Button onClick={() => handleDetail(params.data)} icon={<InfoCircleOutlined />} /></Tooltip>}*/}
         {/*{props.buttonCRUD?.hasUpdate && <Tooltip title="Edit"><Button onClick={() => handleEdit(params.data)} icon={<EditOutlined />} /></Tooltip>}*/}
         {/*{props.buttonCRUD?.hasDelete && <Tooltip title="Delete"><Button onClick={() => handleDelete(params.data)} icon={<DeleteOutlined />} /></Tooltip>}*/}
-        {props.buttonCRUD?.hasDetail && <Tooltip title="Detail"><Button onClick={() => handleDetail(params.data)} icon={<InfoCircleOutlined />} /></Tooltip>}
-        {props.buttonCRUD?.hasUpdate && checkPermission(props.rightConfig?.updateRight) && <Tooltip title="Edit"><Button onClick={() => handleEdit(params.data)} icon={<EditOutlined />} /></Tooltip>}
-        {props.buttonCRUD?.hasDelete && checkPermission(props.rightConfig?.deleteRight) && <Tooltip title="Delete"><Button onClick={() => handleDelete(params.data)} icon={<DeleteOutlined />} /></Tooltip>}
+        {props.buttonCRUD?.hasDetail && <Tooltip title="Detail"><Button onClick={() => handleDetail(params.data)} icon={<InfoCircleOutlined />} className={'btn-detail'} /></Tooltip>}
+        {props.buttonCRUD?.hasUpdate && checkPermission(props.rightConfig?.updateRight) && <Tooltip title="Edit"><Button onClick={() => handleEdit(params.data)} icon={<EditOutlined />} className={'btn-update'} /></Tooltip>}
+        {props.buttonCRUD?.hasDelete && checkPermission(props.rightConfig?.deleteRight) && <Tooltip title="Delete"><Button onClick={() => handleDelete(params.data)} icon={<DeleteOutlined />} className={'btn-delete'} /></Tooltip>}
       </div>
     ),
   };
@@ -140,7 +126,7 @@ const CommonGrid = forwardRef((props, ref) => {
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
-          marginBottom: 10,
+          marginBottom: 20,
           marginRight: 7,
         }}>
                 <FormOutlined />
@@ -158,7 +144,7 @@ const CommonGrid = forwardRef((props, ref) => {
 
   const renderRightActionToolBar = () => {
     return <div>
-      {props.buttonCRUD?.hasCreate && <Tooltip title="Create"><Button onClick={() => {handleCreate()}} icon={<PlusOutlined />} /></Tooltip>}
+      {props.buttonCRUD?.hasCreate && <Tooltip title="Create"><Button onClick={() => {handleCreate()}} icon={<PlusOutlined />} className={'btn-create'} /></Tooltip>}
     </div>;
   }
 
@@ -169,7 +155,7 @@ const CommonGrid = forwardRef((props, ref) => {
   }
 
   return (
-    <div className="ag-theme-alpine" style={{ height: '100%', width: '100%' }}>
+    <div className="common-grid" style={{ height: '100%', width: '100%' }}>
       <div className="flex justify-between mb-3">
         <div>
           {renderLeftActionToolBar()}
@@ -191,12 +177,17 @@ const CommonGrid = forwardRef((props, ref) => {
               type: 'fitGridWidth',
               defaultMinWidth: 100,
             },
+            flex: 1,
             ...props.defaultColDef,
           }}
           pagination={true}
           paginationPageSizeSelector={[10,20,50,100]}
           paginationPageSize ={10}
-          onGridReady={(event) => event.api.sizeColumnsToFit()}
+          // noRowsOverlayComponent={Overlay}
+          onGridReady={(event) => {
+            event.api.sizeColumnsToFit();
+            event.api.hideOverlay()
+          }}
         />
       </div>
       <BaseModal ref={modalRef} />

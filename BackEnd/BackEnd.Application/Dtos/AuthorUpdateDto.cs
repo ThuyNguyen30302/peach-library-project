@@ -14,7 +14,7 @@ public class AuthorUpdateDto : IUpdateDto<Author, Guid>, IModificationAudited
         entity.Id = Id;
         entity.Name = !string.IsNullOrEmpty(Name) ? Name : entity.Name;
         entity.NickName = !string.IsNullOrEmpty(NickName) ? NickName : entity.NickName;
-        entity.LastModificationTime = LastModificationTime;
+        entity.LastModificationTime = DateTime.Now;
         entity.LastModifierUserId = LastModifierUserId;
         return entity;
     }

@@ -12,9 +12,9 @@ public class PublisherUpdateDto: IUpdateDto<Publisher, Guid>, IModificationAudit
     public Publisher GetEntity(Publisher entity)
     {
         entity.Id = Id;
-        entity.Name = string.IsNullOrEmpty(Name) ? Name : entity.Name;
-        entity.Code = string.IsNullOrEmpty(Code) ? Code : entity.Code;
-        entity.LastModificationTime = LastModificationTime;
+        entity.Name = !string.IsNullOrEmpty(Name) ? Name : entity.Name;
+        entity.Code = !string.IsNullOrEmpty(Code) ? Code : entity.Code;
+        entity.LastModificationTime = DateTime.Now;
         entity.LastModifierUserId = LastModifierUserId;
         return entity;
     }

@@ -3,19 +3,19 @@ import { Spin } from 'antd';
 import { API_LOCAL } from "../../../constant/ApiConstant";
 import { useRequest } from "../../../custom-hook/useRequest";
 import BaseListView from "../../../common/core/grid/BaseListView";
-import AuthorCreateForm from "../form/AuthorCreateForm";
-import {
-  AUTHOR_CREATE_API,
-  AUTHOR_DELETE_API,
-  AUTHOR_INDEX_API,
-  AUTHOR_SHOW_API,
-  AUTHOR_UPDATE_API
-} from "../api/AuthorApi";
+import PublisherCreateForm from "../form/PublisherCreateForm";
 import CommonGrid from "../../../common/core/grid/CommonGrid";
-import AuthorUpdateForm from "../form/AuthorUpdateForm";
+import PublisherUpdateForm from "../form/PublisherUpdateForm";
+import {
+  PUBLISHER_CREATE_API,
+  PUBLISHER_DELETE_API,
+  PUBLISHER_INDEX_API,
+  PUBLISHER_SHOW_API,
+  PUBLISHER_UPDATE_API
+} from "../api/PublisherApi";
 // import ToastUtil from "../../../util/ToastUtil"; // Đảm bảo đường dẫn chính xác
 
-const AuthorListView = () => {
+const PublisherListView = () => {
   const [rowData, setRowData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { get } = useRequest();
@@ -24,7 +24,7 @@ const AuthorListView = () => {
   const columnDefs = [
     { headerName: 'STT', valueGetter: 'node.rowIndex + 1', maxWidth: 80, cellStyle: { textAlign: 'center' } },
     { headerName: 'Tên', field: 'name', sortable: true, filter: true, minWidth: 300 },
-    { headerName: 'Bút danh', field: 'nickName', sortable: true, filter: true, minWidth: 300 },
+    { headerName: 'Mã', field: 'code', sortable: true, filter: true, minWidth: 300 },
   ];
 
   const defaultColDef = {};
@@ -35,7 +35,7 @@ const AuthorListView = () => {
 
   const fetchData = async () => {
     try {
-      const response = await get(AUTHOR_INDEX_API);
+      const response = await get(PUBLISHER_INDEX_API);
       if (response?.success) {
         setRowData(response?.data);
       } else {
@@ -51,7 +51,7 @@ const AuthorListView = () => {
 
   const reloadData = async () => {
     try {
-      const response = await get(AUTHOR_INDEX_API);
+      const response = await get(PUBLISHER_INDEX_API);
       if (response?.success) {
         refGrid.current.setRowData(response.data);
       } else {
@@ -88,8 +88,8 @@ const AuthorListView = () => {
         isGridDefault={true}
         reloadData={() => reloadData()}
         formCRUD={{
-          createForm: AuthorCreateForm,
-          updateForm: AuthorUpdateForm,
+          createForm: PublisherCreateForm,
+          updateForm: PublisherUpdateForm,
         }}
         buttonCRUD={{
           hasCreate: true,
@@ -99,14 +99,14 @@ const AuthorListView = () => {
           // onCreate: onCreate,
           // onDetailRow: onDetailRow,
           // onEditRow: onEditRow,
-          apiCreate: AUTHOR_CREATE_API,
-          apiDetail: AUTHOR_SHOW_API,
-          apiUpdate: AUTHOR_UPDATE_API,
-          apiDelete: AUTHOR_DELETE_API
+          apiCreate: PUBLISHER_CREATE_API,
+          apiDetail: PUBLISHER_SHOW_API,
+          apiUpdate: PUBLISHER_UPDATE_API,
+          apiDelete: PUBLISHER_DELETE_API
         }}
       />
     </div>
   );
 };
 
-export default AuthorListView;
+export default PublisherListView;

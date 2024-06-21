@@ -14,7 +14,7 @@ public class MetaCataloController: BaseController<MetaCatalo, Guid, MetaCataloDe
     MetaCataloCreateDto,
     MetaCataloUpdateDto>
 {
-    public MetaCataloController(MetaCataloService entityService) : base(
+    public MetaCataloController(IMetaCataloService entityService) : base(
         entityService)
     {
     }

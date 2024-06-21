@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React, {Suspense, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
-import {useNavigate, useLocation, Routes, Route, Navigate, Link} from 'react-router-dom';
+import {useNavigate, useLocation, Link} from 'react-router-dom';
 import {Layout, Menu, Breadcrumb, Button, theme} from 'antd';
 import Loading from '../component/Loading';
 import {LOADING_TITLE} from '../constant/constant';
@@ -9,10 +9,7 @@ import {useRequest} from '../custom-hook/useRequest';
 import useMergeState from '../custom-hook/useMergeState';
 import components from '../AppComponent';
 import Logo from "../layouts/Logo";
-import Home from "../Home";
-import Active from "../Active";
 import {HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
-import {renderToString} from "react-dom/server";
 
 const {Header, Content, Sider} = Layout;
 

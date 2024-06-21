@@ -1,3 +1,11 @@
-.ag-header-cell-label {
-  justify-content: center;
+.common-grid {
+  .ag-header-cell-label {
+    justify-content: center;
+  }
+  .ag-root-wrapper {
+    .ag-root-wrapper-body {
+      height: 100%;
+      min-height: 250px;
+    }
+  }
 }

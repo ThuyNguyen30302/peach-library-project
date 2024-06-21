@@ -43,7 +43,7 @@ public abstract class BaseService<TEntity, TKey, TGetOutputDto, TGetListOutputDt
         }).ToList();
     }
     
-    public virtual async Task<List<TGetListOutputDto>> GetListAsync(ISpecification<TEntity?> specification,
+    public virtual async Task<List<TGetListOutputDto>> GetListAsync(ISpecification<TEntity> specification,
         CancellationToken cancellationToken)
     {
         var entities = await _entityRepository.GetListAsync(specification, cancellationToken);

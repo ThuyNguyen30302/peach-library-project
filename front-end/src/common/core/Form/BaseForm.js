@@ -1,7 +1,10 @@
 import React, {useState, forwardRef, useImperativeHandle, useEffect} from 'react';
-import {Button, Form, Spin} from "antd";
+import {Button, Form, message, Spin} from "antd";
 import {AUTHOR_CREATE_API} from "../../../pages/author/api/AuthorApi";
 import {useRequest} from "../../../custom-hook/useRequest";
+import _ from "lodash";
+import '../../../style/button-style.scss';
+
 
 const validateMessages = {
   required: '${label} là bắt buộc!',
@@ -20,11 +23,11 @@ const BaseForm = forwardRef((props, ref) => {
   const buttons = [{
     title: "Đóng", tooltip: "Đóng", onClick: async () => {
       props.onClose() ?? onClose();
-    }, className: "my-btn-close",
+    }, className: "btn-close",
   }, {
     title: "Lưu", tooltip: "Lưu", onClick: async () => {
       props.onSave ? props.onSave() : onSave();
-    }, className: "my-btn-save",
+    }, className: "btn-save",
   }];
 
   useImperativeHandle(ref, () => ({
@@ -83,14 +86,17 @@ const BaseForm = forwardRef((props, ref) => {
             console.log(props)
             props.reloadData && props.reloadData();
             props.onClose && props.onClose();
-          } else if (res.success) {
+            message.success('Successfully');
           } else {
+            message.error('Failed');
           }
         })
         .catch((error) => {
+          message.error('Failed');
           console.log(error);
         });
     } catch (error) {
+      message.error('Failed');
       console.log(error);
     }
     unMask();
@@ -105,21 +111,25 @@ const BaseForm = forwardRef((props, ref) => {
   }
 
   return (<Spin spinning={loading} tip="Đang tải dữ liệu...">
-    <Form form={form} {...props}
-          labelAlign="left"
-          layout={'horizontal'}
-          colon={false}
-          validateMessages={validateMessages}
-          {...itemsLayout}
-          validateTrigger={'onBlur'}>
-      {props.children ?? renderBody()}
-    </Form>
-    {props?.buttons ?? <div className={'my-btn-form'}>
-      {buttons.map((button, index) => <Button key={index}
-                                              tooltip={button.tooltip}
-                                              className={button.className}
-                                              onClick={() => button.onClick()}>{button.title}</Button>)}
-    </div>}
+    <div className="base-form">
+      <Form form={form}
+            labelAlign="left"
+            layout={'horizontal'}
+            colon={false}
+            validateMessages={validateMessages}
+            {...itemsLayout}
+            {...props}
+            validateTrigger={'onBlur'}
+      >
+        {props.children ?? renderBody()}
+      </Form>
+      {props?.buttons ?? <div className={'my-btn-form flex justify-center gap-3'}>
+        {buttons.map((button, index) => <Button key={index}
+                                                tooltip={button.tooltip}
+                                                className={button.className}
+                                                onClick={() => button.onClick()}>{button.title}</Button>)}
+      </div>}
+    </div>
   </Spin>);
 });
 
