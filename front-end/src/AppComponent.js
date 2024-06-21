@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import {HomeOutlined} from "@ant-design/icons";
+import AuthorListView from "./pages/author/view/AuthorListView";
 
 // Lazy imports
 const Home = lazy(() => import('./Home'));
@@ -14,6 +15,14 @@ const components = [
     label: 'Home',
     icon: <HomeOutlined />,
     displayIndex: '0'
+  },
+  {
+    component: AuthorListView,
+    key: '/author',
+    name: 'author',
+    label: 'Tác giả',
+    icon: <HomeOutlined />,
+    displayIndex: '1'
   },
   {
     // component: Active,

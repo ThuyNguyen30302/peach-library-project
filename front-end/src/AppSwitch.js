@@ -35,11 +35,16 @@ const AppSwitch = () => {
             {/*{_.isEmpty(authData) ? (*/}
             {/*    renderLoginPage()*/}
             {/*) : (*/}
-                <>
-                    <Route path="/*" element={<MainPage />} />
-                    <Route path="/login" element={<Navigate to="/" />} /> {/* Redirect logged in users away from login page */}
-                </>
+            {/*    <>*/}
+            {/*        <Route path="/*" element={<MainPage />} />*/}
+            {/*        <Route path="/login" element={<Navigate to="/" />} /> /!* Redirect logged in users away from login page *!/*/}
+            {/*    </>*/}
             {/*)}*/}
+
+            <>
+                <Route path="/*" element={<MainPage />} />
+                <Route path="/login" element={<Navigate to="/" />} /> {/* Redirect logged in users away from login page */}
+            </>
         </Routes>
     );
 };

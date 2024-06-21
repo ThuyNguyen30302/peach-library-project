@@ -3,7 +3,7 @@ import _ from "lodash";
 import {useRef} from "react";
 import {UAParser} from "ua-parser-js";
 import {loginSuccessFull, setMenus, setRights, setRoutes} from "../action/action";
-import {CHECK_LOGIN, LAYOUT, LOGIN, LOGOUT} from "../constant/ApiConstant";
+import {API_LOCAL, CHECK_LOGIN, LAYOUT, LOGIN, LOGOUT} from "../constant/ApiConstant";
 import {LOG_OUT_SUCCESSFUL} from "../constant/constant";
 import {AppStore} from "../store";
 import Alert from "../common/Alert/Alert";

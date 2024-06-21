@@ -2,10 +2,10 @@ import React, {useRef, useState} from 'react'
 import {Link, useNavigate} from 'react-router-dom';
 import {Button, Divider, Form, Input} from 'antd';
 import {useRequest} from "../../custom-hook/useRequest";
-import BaseForm from "../../common/core/BaseForm";
 import "./style-login-page.scss";
 import _ from "lodash";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import BaseForm from "../../common/core/Form/BaseForm";
 
 const itemsLayout = {
     // labelCol: {span: 6},
