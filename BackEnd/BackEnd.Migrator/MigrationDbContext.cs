@@ -1,9 +1,18 @@
-﻿using BackEnd.Infrastructure.EntityConfigurations;
+﻿using BackEnd.Domain.Ums.Entities;
+using BackEnd.Infrastructure.EntityConfigurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Migrator;
 
-public class MigrationDbContext : DbContext
+public class MigrationDbContext : IdentityDbContext<User
+    , Role
+    , Guid
+    , UserClaim
+    , UserRole
+    , UserLogin
+    , RoleClaim
+    , UserToken>
 {
     protected readonly IConfiguration Configuration;
 

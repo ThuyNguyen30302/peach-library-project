@@ -97,10 +97,9 @@ export const useRequest = () => {
         post(LOGIN, values, requestConfig?.current)
             .then(response => {
                 if (response.success) {
-                    Promise.all([checkLogin(), fetchLayout()]).then(() => {
-                        form && form?.unMask()
-                        callback && callback()
-                    })
+                    AppStore.dispatch(loginSuccessFull(response?.data));
+                    form && form?.unMask();
+                    callback && callback();
                 } else {
                     form && form?.unMask()
                     Alert.Toast_info(
