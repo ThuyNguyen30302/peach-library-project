@@ -54,6 +54,7 @@ const CommonGrid = forwardRef((props, ref) => {
           onClose={() => {
             modalRef.current?.onClose();
           }}
+          {...props.formCRUD?.propsForm}
         />
       </Suspense>,
       renderTitleForm('Tạo mới'),
@@ -77,6 +78,7 @@ const CommonGrid = forwardRef((props, ref) => {
           onClose={() => {
             modalRef.current?.onClose();
           }}
+          {...props.formCRUD?.propsForm}
         />
       </Suspense>,
       renderTitleForm('Chỉnh sửa'),
@@ -110,6 +112,7 @@ const CommonGrid = forwardRef((props, ref) => {
           onClose={() => {
             modalRef.current?.onClose();
           }}
+          {...props.formCRUD?.propsForm}
         />
       </Suspense>,
       renderTitleForm('Chi tiết'),

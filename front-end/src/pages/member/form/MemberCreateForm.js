@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {Form, Input} from "antd";
+import React, {useEffect, useRef, useState} from 'react';
+import {Form, Input, Select} from "antd";
 import BaseForm from "../../../common/core/Form/BaseForm";
 
 const itemsLayout = {
@@ -83,7 +83,7 @@ const MemberCreateForm = (props) => {
         }]}
         className={'col-span-1'}
       >
-        <Input/>
+        <Select defaultValue="ACTIVE" options={props.comboMemberStatus} />
       </Form.Item>
       <Form.Item
         name="email"

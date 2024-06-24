@@ -5,6 +5,7 @@ import MemberCreateForm from "../form/MemberCreateForm";
 import CommonGrid from "../../../common/core/grid/CommonGrid";
 import MemberUpdateForm from "../form/MemberUpdateForm";
 import {
+  MEMBER_COMBO_OPTION_CODE_API,
   MEMBER_CREATE_API,
   MEMBER_DELETE_API,
   MEMBER_INDEX_API,
@@ -12,23 +13,47 @@ import {
   MEMBER_UPDATE_API
 } from "../api/MemberApi";
 import {memberColDef} from "../config/memberColDef";
+import useMergeState from "../../../custom-hook/useMergeState";
 
 const MemberListView = () => {
-  const [rowData, setRowData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { get } = useRequest();
   const refGrid = useRef(null);
   const defaultColDef = {};
 
+  const [state, setState] = useMergeState({
+    comboStatusMember : [],
+    rowData: [],
+    loading: true,
+  });
+
   useEffect(() => {
+    loadCombo();
     fetchData();
   }, []);
+
+  const loadCombo = async () => {
+    Promise.all([
+      get(MEMBER_COMBO_OPTION_CODE_API),
+    ]).then(([resCombo]) => {
+      if (resCombo?.success) {
+        const responseCombo = resCombo?.data;
+        console.log(responseCombo)
+        if (responseCombo) {
+          setState({
+            comboStatusMember: responseCombo,
+          });
+        }
+      }
+    });
+  };
 
   const fetchData = async () => {
     try {
       const response = await get(MEMBER_INDEX_API);
       if (response?.success) {
-        setRowData(response?.data);
+        setState({
+          rowData: response?.data
+        });
       } else {
         // ToastUtil.ToastApiError(response?.message);
       }
@@ -36,7 +61,9 @@ const MemberListView = () => {
       console.error('Error fetching data:', error);
       // ToastUtil.ToastServerError(error.message);
     } finally {
-      setLoading(false);
+      setState({
+        loading: false
+      });
     }
   };
 
@@ -52,11 +79,13 @@ const MemberListView = () => {
       console.error('Error fetching data:', error);
       // ToastUtil.ToastServerError(error.message);
     } finally {
-      setLoading(false);
+      setState({
+        loading: false
+      });
     }
   }
 
-  if (loading) {
+  if (state.loading) {
     return (
       <div className="ag-theme-alpine" style={{ height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Spin size="large" />
@@ -64,17 +93,21 @@ const MemberListView = () => {
     );
   }
 
+  console.log(state)
   return (
     <div className="ag-theme-alpine">
       <CommonGrid
         ref={refGrid}
         columnDefs={memberColDef}
         defaultColDef={defaultColDef}
-        rowData={rowData}
+        rowData={state.rowData}
         isGridDefault={true}
         reloadData={() => reloadData()}
         popUpWidth={1100}
         formCRUD={{
+          propsForm: {
+            comboMemberStatus: state.comboMemberStatus
+          },
           createForm: MemberCreateForm,
           updateForm: MemberUpdateForm,
         }}

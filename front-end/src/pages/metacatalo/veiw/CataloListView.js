@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Spin } from 'antd';
+import React, {Suspense, useEffect, useRef, useState} from 'react';
+import {message, Spin} from 'antd';
 import { useRequest } from "../../../custom-hook/useRequest";
 import CataloCreateForm from "../form/CataloCreateForm";
 import {
@@ -12,12 +12,20 @@ import {
 import CommonGrid from "../../../common/core/grid/CommonGrid";
 import CataloUpdateForm from "../form/CataloUpdateForm";
 import {cataloColDef} from "../config/cataloColDef";
+import Loading from "../../../component/Loading";
+import BaseModal from "../../../common/core/Modal/BaseModal";
+import {FormOutlined} from "@ant-design/icons";
+import {useLocation} from "react-router-dom";
+import _ from "lodash";
 
 const CataloListView = () => {
   const [rowData, setRowData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { get } = useRequest();
   const refGrid = useRef(null);
+  const modalRef = useRef(null);
+  const location = useLocation();
+  const pathName = location.pathname.split('/');
 
   const defaultColDef = {};
 
@@ -31,11 +39,11 @@ const CataloListView = () => {
       if (response?.success) {
         setRowData(response?.data);
       } else {
-        // ToastUtil.ToastApiError(response?.message);
+        message.error(response?.message);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // ToastUtil.ToastServerError(error.message);
+      message.error(error);
     } finally {
       setLoading(false);
     }
@@ -47,11 +55,11 @@ const CataloListView = () => {
       if (response?.success) {
         refGrid.current.setRowData(response.data);
       } else {
-        // ToastUtil.ToastApiError(response?.message);
+        message.error(response?.message);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // ToastUtil.ToastServerError(error.message);
+      message.error(error);
     } finally {
       setLoading(false);
     }
@@ -75,6 +83,9 @@ const CataloListView = () => {
         isGridDefault={true}
         reloadData={() => reloadData()}
         formCRUD={{
+          propsForm: {
+            metaCataloId: _.last(pathName),
+          },
           createForm: CataloCreateForm,
           updateForm: CataloUpdateForm,
         }}
@@ -92,6 +103,7 @@ const CataloListView = () => {
           apiDelete: CATALO_DELETE_API
         }}
       />
+      <BaseModal ref={modalRef} />
     </div>
   );
 };

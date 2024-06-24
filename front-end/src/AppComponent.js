@@ -81,8 +81,9 @@ export const routeComponents = [
 export const noRouteComponents = [
   {
     component: CataloListView,
-    key: '/metacatalo/catalo',
+    key: '/config/metacatalo/catalo/:id',
     name: 'catalo',
+    label: 'Tiểu mục',
     displayIndex: '0'
   },
 ]

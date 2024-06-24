@@ -12,12 +12,14 @@ import {
 import CommonGrid from "../../../common/core/grid/CommonGrid";
 import MetaCataloUpdateForm from "../form/MetaCataloUpdateForm";
 import {metacataloColDef} from "../config/metacataloColDef";
+import {useNavigate} from "react-router-dom";
 
 const MetaCataloListView = () => {
   const [rowData, setRowData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { get } = useRequest();
   const refGrid = useRef(null);
+  const navigate = useNavigate();
 
   const defaultColDef = {};
 
@@ -65,6 +67,10 @@ const MetaCataloListView = () => {
     );
   }
 
+  const onDetailRow = (data) => {
+    navigate(`/config/metacatalo/catalo/${data?.id}`);
+  };
+
   return (
     <div className="ag-theme-alpine">
       <CommonGrid
@@ -82,9 +88,9 @@ const MetaCataloListView = () => {
           hasCreate: true,
           hasDelete: true,
           hasUpdate: true,
-          // hasDetail: true,
+          hasDetail: true,
           // onCreate: onCreate,
-          // onDetailRow: onDetailRow,
+          onDetailRow: onDetailRow,
           // onEditRow: onEditRow,
           apiCreate: METACATALO_CREATE_API,
           apiDetail: METACATALO_SHOW_API,

@@ -35,8 +35,15 @@ const MainPage = () => {
     const [collapsed, setCollapsed] = useState(false);
 
     const findRouteByKey = (key, routes) => {
+        const normalizePath = (path) => path.split('/').filter(Boolean).join('/');
+        const staticKey = normalizePath(key);
+
         for (const route of routes) {
-            if (route.key === key) return route;
+            const staticRouteKey = normalizePath(route.key);
+
+            const routeRegex = new RegExp(`^${staticRouteKey.replace(/:[^/]+/g, '[^/]+')}$`);
+            if (routeRegex.test(staticKey)) return route;
+
             if (route.children) {
                 const foundInChild = findRouteByKey(key, route.children);
                 if (foundInChild) return foundInChild;
@@ -46,15 +53,23 @@ const MainPage = () => {
     };
 
     const findRouteByName = (name, routes) => {
+        const normalizePath = (path) => path.split('/').filter(Boolean).join('/');
+        const staticName = normalizePath(name);
+
         for (const route of routes) {
-            if (route.name === name) return route;
+            const staticRouteName = normalizePath(route.name);
+
+            const routeRegex = new RegExp(`^${staticRouteName.replace(/:[^/]+/g, '[^/]+')}$`);
+            if (routeRegex.test(staticName)) return route;
+
             if (route.children) {
-                const foundInChild = findRouteByName(name, route.children); // Corrected this line
+                const foundInChild = findRouteByName(name, route.children);
                 if (foundInChild) return foundInChild;
             }
         }
         return null;
     };
+
     const initRoute = findRouteByKey(location.pathname, routeComponents);
 
     const [route, setRoute] = useState(initRoute ?? routeComponents[0]);
@@ -99,7 +114,7 @@ const MainPage = () => {
             const breadcrumbs = []
             _.forEach(splitPath, (item, i) => {
                 if (i !== 0 && !_.isEmpty(item)) {
-                    const routeItem = findRouteByName(item, routeComponents);
+                    const routeItem = findRouteByName(item, routeComponents) || findRouteByName(item, noRouteComponents);
                     routeItem && breadcrumbs.push({
                         key: routeItem.key,
                         label: routeItem.label
@@ -121,6 +136,14 @@ const MainPage = () => {
                 <Component/>
             </Suspense>
         }
+
+        const getRouteComponent = () => {
+            const route = findRouteByKey(location.pathname, routeComponents) || findRouteByKey(location.pathname, noRouteComponents);
+            if (route) {
+                return renderComponent(route);
+            }
+            return <div>Not Found</div>; // Handle not found routes
+        };
 
         return (
             <Layout style={{minHeight: '100vh'}}>
@@ -162,9 +185,7 @@ const MainPage = () => {
                     </Breadcrumb>
                     <Content style={{margin: '0 16px'}}>
                         <div style={{padding: 24, height: '100%'}} className={'content box-shadow-main-page'}>
-                            {/*{route && <route.component />}*/}
-                            {renderComponent(route)}
-                            {/*{renderComponent(noRouteComponents)}*/}
+                            {getRouteComponent()}
                         </div>
                     </Content>
                 </Layout>

@@ -1,9 +1,15 @@
 import React, {useRef} from 'react';
 import {Form, Input} from "antd";
 import BaseForm from "../../../common/core/Form/BaseForm";
+import _ from "lodash";
 
 const CataloCreateForm = (props) => {
   const formRef = useRef(null);
+
+  const beforeSave = (data) => {
+    _.set(data, 'metaCataloId', props.metaCataloId);
+    return data;
+  };
 
   const handleInput = (e) => {
     e.target.value = e.target.value.toUpperCase();
@@ -45,6 +51,7 @@ const CataloCreateForm = (props) => {
     <div>
       <BaseForm
         ref={formRef}
+        beforeSave={beforeSave}
         apiSave={props?.apiSave}
         reloadData={props.reloadData}
         onClose={() => props.onClose()}

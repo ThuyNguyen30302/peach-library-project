@@ -12,14 +12,16 @@ public class CataloCreateDto: ICreateDto<Catalo, Guid>
         {
             Name = Name,
             Code = Code,
-            DisplayIndex = DisplayIndex,
-            MetaCataloCode = MetaCataloCode,
+            DisplayIndex = 1,
+            MetaCataloCode = string.IsNullOrEmpty(MetaCataloCode)?"":MetaCataloCode,
+            Description =  string.IsNullOrEmpty(Description)?"":Description,
             MetaCataloId = MetaCataloId,
         };
     }
     public string Name { get; set; }
     public string Code { get; set; }
+    public string? Description { get; set; }
     public int DisplayIndex { get; set; }
-    public string MetaCataloCode { get; set; }
+    public string? MetaCataloCode { get; set; }
     public Guid MetaCataloId { get; set; }
 }

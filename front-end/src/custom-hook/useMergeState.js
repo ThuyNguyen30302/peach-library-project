@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react';
 
 const useMergeState = (initialState = {}) => {
   const [value, setValue] = React.useState(initialState);
 
-  const mergeState = newState => {
-    if (typeof newState === 'function') newState = newState(value);
-    setValue({ ...value, ...newState });
+  const mergeState = (newState) => {
+    setValue((prevState) => ({
+      ...prevState,
+      ...newState instanceof Function ? newState(prevState) : newState,
+    }));
   };
 
   return [value, mergeState];

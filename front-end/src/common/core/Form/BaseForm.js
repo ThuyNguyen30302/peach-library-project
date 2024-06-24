@@ -75,11 +75,15 @@ const BaseForm = forwardRef((props, ref) => {
     unMask();
   }
 
+  const beforeSave = (data) => {
+    return data;
+  };
+
   const onSave = async () => {
     onMask();
     try {
-      const values = await form.validateFields();
-
+      let values = await form.validateFields();
+      values = props.beforeSave ? props.beforeSave(values) : beforeSave(values);
       const apiSave = !props.id?props.apiSave:props.apiSave + '/' + props.id;
       post(apiSave, values)
         .then((res) => {
