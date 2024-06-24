@@ -15,15 +15,17 @@ public class MemberCreateDto: ICreateDto<Member, Guid>, ICreationAudited
             Email = Email,
             Address = Address,
             Age = Age,
+            PhoneNumber = PhoneNumber,
             UserName = UserName,
-            Password = Password,
             Status = Status,
-            CreationTime = CreationTime,
+            CreationTime = DateTime.Now,
             CreatorUserId = CreatorUserId,
+            UserId = UserId,
         };
     }
     public string CardNumber { get; set; }
     public string Name { get; set; }
+    public string PhoneNumber { get; set; }
     public string Email { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
@@ -32,4 +34,5 @@ public class MemberCreateDto: ICreateDto<Member, Guid>, ICreationAudited
     public string Address { get; set; }
     public DateTime? CreationTime { get; set; }
     public Guid? CreatorUserId { get; set; }
+    public Guid UserId { get; set; }
 }

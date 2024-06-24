@@ -1,5 +1,4 @@
-﻿using BackEnd.Domain.Entities;
-using BackEnd.Infrastructure.EntityConfigurations;
+﻿using BackEnd.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Migrator;
@@ -44,5 +43,8 @@ public class MigrationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ConfigureBaseEntities();
+        modelBuilder.ConfigureCatalioEntities();
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ConfigureIdentifyEntities();
     }
 }

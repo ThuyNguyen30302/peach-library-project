@@ -12,14 +12,14 @@ public class MetaCataloCreateDto: ICreateDto<MetaCatalo, Guid>, ICreationAudited
         {
             Name = Name,
             Code = Code,
-            Description = Description,
+            Description = !string.IsNullOrEmpty(Description)?Description:"",
             CreationTime = CreationTime,
             CreatorUserId = CreatorUserId,
         };
     }
     public string Name { get; set; }
     public string Code { get; set; }
-    public string Description { get; set; }
+    public string? Description { get; set; }
     public DateTime? CreationTime { get; set; }
     public Guid? CreatorUserId { get; set; }
 }

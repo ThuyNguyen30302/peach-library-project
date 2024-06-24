@@ -6,6 +6,9 @@
     .ag-root-wrapper-body {
       height: 100%;
       min-height: 250px;
+      .ag-root {
+        height: auto;
+      }
     }
   }
 }

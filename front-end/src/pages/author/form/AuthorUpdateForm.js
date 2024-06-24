@@ -1,12 +1,9 @@
 import React, {useRef} from 'react';
 import {Form, Input} from "antd";
-// import ToastUtil from "../../../util/ToastUtil";
-import {useRequest} from "../../../custom-hook/useRequest";
 import BaseForm from "../../../common/core/Form/BaseForm";
 
 const AuthorUpdateForm = (props) => {
   const formRef = useRef(null);
-  const {post} = useRequest()
 
   const renderBody = () => {
     return <>
@@ -15,7 +12,6 @@ const AuthorUpdateForm = (props) => {
         label="Tên thật tác giả"
         rules={[{
           required: true,
-          // message: "Tài khoản là bắt buộc!"
         }]}
       >
         <Input />
@@ -25,7 +21,6 @@ const AuthorUpdateForm = (props) => {
         label="Bút danh"
         rules={[{
           required: true,
-          // message: "Tài khoản là bắt buộc!"
         }]}
       >
         <Input />
@@ -33,7 +28,6 @@ const AuthorUpdateForm = (props) => {
     </>
   };
 
-  console.log(props)
   return (
     <div>
       <BaseForm

@@ -1,7 +1,5 @@
 import React, {useRef} from 'react';
 import {Form, Input} from "antd";
-// import ToastUtil from "../../../util/ToastUtil";
-import {useRequest} from "../../../custom-hook/useRequest";
 import BaseForm from "../../../common/core/Form/BaseForm";
 
 const itemsLayout = {
@@ -38,7 +36,6 @@ const PublisherUpdateForm = (props) => {
     </>
   };
 
-  console.log(props)
   return (
     <div>
       <BaseForm

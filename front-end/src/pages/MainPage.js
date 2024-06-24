@@ -7,7 +7,7 @@ import Loading from '../component/Loading';
 import {LOADING_TITLE} from '../constant/constant';
 import {useRequest} from '../custom-hook/useRequest';
 import useMergeState from '../custom-hook/useMergeState';
-import components from '../AppComponent';
+import {noRouteComponents, routeComponents} from '../AppComponent';
 import Logo from "../layouts/Logo";
 import {HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 
@@ -55,9 +55,9 @@ const MainPage = () => {
         }
         return null;
     };
-    const initRoute = findRouteByKey(location.pathname, components);
+    const initRoute = findRouteByKey(location.pathname, routeComponents);
 
-    const [route, setRoute] = useState(initRoute ?? components[0]);
+    const [route, setRoute] = useState(initRoute ?? routeComponents[0]);
 
     const {checkLogin} = useRequest();
 
@@ -76,7 +76,7 @@ const MainPage = () => {
     }, [route]);
 
     const onSelectRoute = ({key}) => {
-        const selectedRoute = findRouteByKey(key, components);
+        const selectedRoute = findRouteByKey(key, routeComponents);
         if (selectedRoute) {
             setRoute(selectedRoute);
             navigate(selectedRoute?.key);
@@ -99,7 +99,7 @@ const MainPage = () => {
             const breadcrumbs = []
             _.forEach(splitPath, (item, i) => {
                 if (i !== 0 && !_.isEmpty(item)) {
-                    const routeItem = findRouteByName(item, components);
+                    const routeItem = findRouteByName(item, routeComponents);
                     routeItem && breadcrumbs.push({
                         key: routeItem.key,
                         label: routeItem.label
@@ -108,14 +108,14 @@ const MainPage = () => {
             })
             return <>
                 <span className={'ml-1'}><Link to={'/'}
-                                               onClick={() => setRoute(components[0])}><HomeOutlined/></Link></span>
+                                               onClick={() => setRoute(routeComponents[0])}><HomeOutlined/></Link></span>
                 {_.map(breadcrumbs, (breadcrumb, i) => {
                     return <> <span className={'mx-2'}>/</span> {breadcrumb.label}</>;
                 })}
             </>;
         };
 
-        const renderComponent = () => {
+        const renderComponent = (route) => {
             const Component = route.component;
             return <Suspense fallback={<Loading/>}>
                 <Component/>
@@ -127,7 +127,7 @@ const MainPage = () => {
                 <Sider trigger={null} theme="light" className="sidebar" collapsible collapsed={collapsed}>
                     <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}
                          onClick={() => {
-                             setRoute(components[0]);
+                             setRoute(routeComponents[0]);
                              navigate('/');
                          }}>
                         <Logo/>
@@ -135,7 +135,7 @@ const MainPage = () => {
                     <Menu
                         theme="light"
                         mode="inline"
-                        items={components}
+                        items={routeComponents}
                         className={"menu-bar box-shadow-main-page"}
                         onClick={onSelectRoute}
                         selectedKeys={[route.key]}
@@ -163,7 +163,8 @@ const MainPage = () => {
                     <Content style={{margin: '0 16px'}}>
                         <div style={{padding: 24, height: '100%'}} className={'content box-shadow-main-page'}>
                             {/*{route && <route.component />}*/}
-                            {renderComponent()}
+                            {renderComponent(route)}
+                            {/*{renderComponent(noRouteComponents)}*/}
                         </div>
                     </Content>
                 </Layout>

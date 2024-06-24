@@ -1,6 +1,6 @@
 using BackEnd.Domain.Base.Entities;
 using BackEnd.Domain.Base.Repositories;
-using BackEnd.Domain.Base.Spectification;
+using BackEnd.Domain.Base.Specification;
 using BackEnd.Infrastructure.Base.Spectification;
 using Microsoft.EntityFrameworkCore;
 

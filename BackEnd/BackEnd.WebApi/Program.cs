@@ -1,7 +1,10 @@
 ﻿using BackEnd.Application;
+using BackEnd.Domain.Ums.Entities;
 using BackEnd.Infrastructure;
+using BackEnd.Infrastructure.Data;
 using BackEnd.Migrator;
 using BackEnd.WebApi;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using Newtonsoft.Json;
@@ -20,7 +23,9 @@ var webApiModule = new WebApiModule(infrastructureModule, applicationModule, bui
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
+builder.Services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<MigrationDbContext>()
+    .AddDefaultTokenProviders();
 builder.Services.AddDbContext<MigrationDbContext>((optionsBuilder) =>
 {
     var mysqlConnectionString = builder.Configuration.GetConnectionString("MigrationDbContext");

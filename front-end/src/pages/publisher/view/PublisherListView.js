@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Spin } from 'antd';
-import { API_LOCAL } from "../../../constant/ApiConstant";
 import { useRequest } from "../../../custom-hook/useRequest";
-import BaseListView from "../../../common/core/grid/BaseListView";
 import PublisherCreateForm from "../form/PublisherCreateForm";
 import CommonGrid from "../../../common/core/grid/CommonGrid";
 import PublisherUpdateForm from "../form/PublisherUpdateForm";
@@ -13,19 +11,13 @@ import {
   PUBLISHER_SHOW_API,
   PUBLISHER_UPDATE_API
 } from "../api/PublisherApi";
-// import ToastUtil from "../../../util/ToastUtil"; // Đảm bảo đường dẫn chính xác
+import {publisherColDef} from "../config/publisherColDef";
 
 const PublisherListView = () => {
   const [rowData, setRowData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { get } = useRequest();
-  const refGrid = useRef(null); // Sửa lại chỗ này để đúng cách sử dụng useRef
-
-  const columnDefs = [
-    { headerName: 'STT', valueGetter: 'node.rowIndex + 1', maxWidth: 80, cellStyle: { textAlign: 'center' } },
-    { headerName: 'Tên', field: 'name', sortable: true, filter: true, minWidth: 300 },
-    { headerName: 'Mã', field: 'code', sortable: true, filter: true, minWidth: 300 },
-  ];
+  const refGrid = useRef(null);
 
   const defaultColDef = {};
 
@@ -43,7 +35,7 @@ const PublisherListView = () => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // ToastUtil.ToastServerError(error.message); // Thêm thông báo lỗi khi có lỗi xảy ra
+      // ToastUtil.ToastServerError(error.message);
     } finally {
       setLoading(false);
     }
@@ -59,7 +51,7 @@ const PublisherListView = () => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // ToastUtil.ToastServerError(error.message); // Thêm thông báo lỗi khi có lỗi xảy ra
+      // ToastUtil.ToastServerError(error.message);
     } finally {
       setLoading(false);
     }
@@ -74,15 +66,10 @@ const PublisherListView = () => {
   }
 
   return (
-    <div className="ag-theme-alpine"
-         style={{
-           // height: '100%',
-           // width: '100%'
-    }}
-    >
+    <div className="ag-theme-alpine">
       <CommonGrid
         ref={refGrid}
-        columnDefs={columnDefs}
+        columnDefs={publisherColDef}
         defaultColDef={defaultColDef}
         rowData={rowData}
         isGridDefault={true}

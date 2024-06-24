@@ -13,10 +13,10 @@ public class MetaCataloUpdateDto: IUpdateDto<MetaCatalo, Guid>, IModificationAud
     public MetaCatalo GetEntity(MetaCatalo entity)
     {
         entity.Id = Id;
-        entity.Name = string.IsNullOrEmpty(Name) ? Name : entity.Name;
-        entity.Code = string.IsNullOrEmpty(Code) ? Code : entity.Code;
-        entity.Description = string.IsNullOrEmpty(Description) ? Description : entity.Description;
-        entity.LastModificationTime = LastModificationTime;
+        entity.Name = !string.IsNullOrEmpty(Name) ? Name : entity.Name;
+        entity.Code = !string.IsNullOrEmpty(Code) ? Code : entity.Code;
+        entity.Description = !string.IsNullOrEmpty(Description) ? Description : entity.Description;
+        entity.LastModificationTime = DateTime.Now;
         entity.LastModifierUserId = LastModifierUserId;
         return entity;
     }

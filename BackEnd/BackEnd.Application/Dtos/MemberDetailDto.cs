@@ -15,11 +15,16 @@ public class MemberDetailDto: IDetailDto<Member, Guid>, IFullAudited
         Email = entity.Email;
         Age = entity.Age;
         Address = entity.Address;
+        PhoneNumber = entity.PhoneNumber;
         UserName = entity.UserName;
-        Password = entity.Password;
+        if (entity.User != null)
+        {
+            Password = entity.User.PasswordHash;
+        }
         Status = entity.Status;
         CreationTime = entity.CreationTime?.AddHours(TimeZoneConstant.TimeZoneSea);
         CreatorUserId = entity.CreatorUserId;
+        UserId = entity.UserId;
         IsDeleted = entity.IsDeleted;
     }
 
@@ -27,11 +32,13 @@ public class MemberDetailDto: IDetailDto<Member, Guid>, IFullAudited
     public string CardNumber { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
+    public string PhoneNumber { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
     public string Status { get; set; }
     public int Age { get; set; }
     public string Address { get; set; }
+    public Guid UserId { get; set; }
     public DateTime? CreationTime { get; set; }
     public Guid? CreatorUserId { get; set; }
     public DateTime? LastModificationTime { get; set; }

@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Spin } from 'antd';
-import { API_LOCAL } from "../../../constant/ApiConstant";
 import { useRequest } from "../../../custom-hook/useRequest";
-import BaseListView from "../../../common/core/grid/BaseListView";
 import AuthorCreateForm from "../form/AuthorCreateForm";
 import {
   AUTHOR_CREATE_API,
@@ -13,19 +11,13 @@ import {
 } from "../api/AuthorApi";
 import CommonGrid from "../../../common/core/grid/CommonGrid";
 import AuthorUpdateForm from "../form/AuthorUpdateForm";
-// import ToastUtil from "../../../util/ToastUtil"; // Đảm bảo đường dẫn chính xác
+import {authorColDel} from "../config/authorColDel";
 
 const AuthorListView = () => {
   const [rowData, setRowData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { get } = useRequest();
-  const refGrid = useRef(null); // Sửa lại chỗ này để đúng cách sử dụng useRef
-
-  const columnDefs = [
-    { headerName: 'STT', valueGetter: 'node.rowIndex + 1', maxWidth: 80, cellStyle: { textAlign: 'center' } },
-    { headerName: 'Tên', field: 'name', sortable: true, filter: true, minWidth: 300 },
-    { headerName: 'Bút danh', field: 'nickName', sortable: true, filter: true, minWidth: 300 },
-  ];
+  const refGrid = useRef(null);
 
   const defaultColDef = {};
 
@@ -43,7 +35,7 @@ const AuthorListView = () => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // ToastUtil.ToastServerError(error.message); // Thêm thông báo lỗi khi có lỗi xảy ra
+      // ToastUtil.ToastServerError(error.message);
     } finally {
       setLoading(false);
     }
@@ -59,7 +51,7 @@ const AuthorListView = () => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // ToastUtil.ToastServerError(error.message); // Thêm thông báo lỗi khi có lỗi xảy ra
+      // ToastUtil.ToastServerError(error.message);
     } finally {
       setLoading(false);
     }
@@ -74,15 +66,10 @@ const AuthorListView = () => {
   }
 
   return (
-    <div className="ag-theme-alpine"
-         style={{
-           // height: '100%',
-           // width: '100%'
-    }}
-    >
+    <div className="ag-theme-alpine">
       <CommonGrid
         ref={refGrid}
-        columnDefs={columnDefs}
+        columnDefs={authorColDel}
         defaultColDef={defaultColDef}
         rowData={rowData}
         isGridDefault={true}

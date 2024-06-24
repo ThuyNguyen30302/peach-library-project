@@ -79,6 +79,7 @@ const BaseForm = forwardRef((props, ref) => {
     onMask();
     try {
       const values = await form.validateFields();
+
       const apiSave = !props.id?props.apiSave:props.apiSave + '/' + props.id;
       post(apiSave, values)
         .then((res) => {
@@ -86,17 +87,17 @@ const BaseForm = forwardRef((props, ref) => {
             console.log(props)
             props.reloadData && props.reloadData();
             props.onClose && props.onClose();
-            message.success('Successfully');
+            message.success('Thành công');
           } else {
-            message.error('Failed');
+            message.error('Thất bại! ' + res?.message);
           }
         })
         .catch((error) => {
-          message.error('Failed');
+          message.error('Thất bại');
           console.log(error);
         });
     } catch (error) {
-      message.error('Failed');
+      message.error('Thất bại');
       console.log(error);
     }
     unMask();

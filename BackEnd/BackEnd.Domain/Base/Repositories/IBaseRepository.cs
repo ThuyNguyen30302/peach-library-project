@@ -1,5 +1,5 @@
 using BackEnd.Domain.Base.Entities;
-using BackEnd.Domain.Base.Spectification;
+using BackEnd.Domain.Base.Specification;
 
 namespace BackEnd.Domain.Base.Repositories;
 

@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using BackEnd.Domain.Base.Spectification;
+using BackEnd.Domain.Base.Specification;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Infrastructure.Base.Spectification;

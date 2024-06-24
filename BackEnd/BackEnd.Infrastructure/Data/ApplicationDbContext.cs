@@ -1,5 +1,7 @@
 ﻿using BackEnd.Domain.Entities;
 using BackEnd.Infrastructure.EntityConfigurations;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -45,5 +47,8 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ConfigureBaseEntities();
+        modelBuilder.ConfigureCatalioEntities();
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ConfigureIdentifyEntities();
     }
 }

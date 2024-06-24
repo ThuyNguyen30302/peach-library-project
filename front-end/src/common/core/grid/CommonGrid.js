@@ -1,8 +1,8 @@
-import React, { forwardRef, useImperativeHandle, useRef, Suspense } from 'react';
+import React, {forwardRef, useImperativeHandle, useRef, Suspense, useMemo} from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { Button, Tooltip, Spin, message } from 'antd';
+import { Button, Tooltip, message } from 'antd';
 import {
   PlusOutlined,
   DeleteOutlined,
@@ -15,6 +15,7 @@ import _ from 'lodash';
 import {useRequest} from "../../../custom-hook/useRequest";
 import Loading from "../../../component/Loading";
 import BaseModal from "../Modal/BaseModal";
+import Overlay from "../../../component/Overlay";
 
 const CommonGrid = forwardRef((props, ref) => {
   const { rights } = useSelector((stateRedux) => ({
@@ -24,6 +25,8 @@ const CommonGrid = forwardRef((props, ref) => {
   const {deleteApi} = useRequest();
   const gridRef = useRef(null);
   const modalRef = useRef(null);
+  const actionRow = props.actionRow??true;
+  const numberRow = props.numberRow??true;
 
   useImperativeHandle(ref, () => ({
     setRowData: (data) => {
@@ -38,6 +41,10 @@ const CommonGrid = forwardRef((props, ref) => {
   };
 
   const handleCreate = () => {
+    if (props.buttonCRUD.onCreate) {
+      props.buttonCRUD.onCreate();
+      return;
+    }
     const FormCreate = props.formCRUD?.createForm;
     modalRef.current?.onOpen(
       <Suspense fallback={<Loading style={{ height: 300 }} open={true} />}>
@@ -55,8 +62,11 @@ const CommonGrid = forwardRef((props, ref) => {
   };
 
   const handleEdit = (data) => {
+    if (props.buttonCRUD.onEditRow) {
+      props.buttonCRUD.onEditRow();
+      return;
+    }
     const FormUpdate = props.formCRUD?.updateForm;
-    console.log(props.buttonCRUD?.apiUpdate)
     modalRef.current?.onOpen(
       <Suspense fallback={<Loading style={{ height: 300 }} open={true} />}>
         <FormUpdate
@@ -79,14 +89,18 @@ const CommonGrid = forwardRef((props, ref) => {
       const response = await deleteApi(`${props.buttonCRUD?.apiDelete}?id=${data.id}`);
       if (response?.success) {
         props.reloadData && await props.reloadData();
-        message.success('Deleted successfully');
+        message.success('Xoá thành công');
       }
     } catch (error) {
-      message.error('Failed to delete');
+      message.error('Xoá thất bại');
     }
   };
 
   const handleDetail = (data) => {
+    if (props.buttonCRUD.onDetailRow) {
+      props.buttonCRUD.onDetailRow(data);
+      return;
+    }
     const FormDetail = props.formCRUD?.detailForm;
     modalRef.current?.onOpen(
       <Suspense fallback={<Loading style={{ height: 300 }} open={true} />}>
@@ -103,15 +117,23 @@ const CommonGrid = forwardRef((props, ref) => {
     );
   };
 
+  const numberColumnDefs = {
+    headerName: 'STT',
+    width: 70,
+    maxWidth: 70,
+    minWidth: 70,
+    valueGetter: 'node.rowIndex + 1',
+    cellStyle: { textAlign: 'center' }
+  }
+
   const actionColumnDefs = {
-    headerName: 'Actions',
-    width: 120,
-    maxWidth: 120,
+    headerName: 'Hành động',
+    width: 150,
+    maxWidth: 150,
+    minWidth: 150,
+    pinned: 'right',
     cellRenderer: (params) => (
-      <div className={"flex justify-around items-center h-full"}>
-        {/*{props.buttonCRUD?.hasDetail && <Tooltip title="Detail"><Button onClick={() => handleDetail(params.data)} icon={<InfoCircleOutlined />} /></Tooltip>}*/}
-        {/*{props.buttonCRUD?.hasUpdate && <Tooltip title="Edit"><Button onClick={() => handleEdit(params.data)} icon={<EditOutlined />} /></Tooltip>}*/}
-        {/*{props.buttonCRUD?.hasDelete && <Tooltip title="Delete"><Button onClick={() => handleDelete(params.data)} icon={<DeleteOutlined />} /></Tooltip>}*/}
+      <div className={"flex justify-center items-center gap-2 h-full"}>
         {props.buttonCRUD?.hasDetail && <Tooltip title="Detail"><Button onClick={() => handleDetail(params.data)} icon={<InfoCircleOutlined />} className={'btn-detail'} /></Tooltip>}
         {props.buttonCRUD?.hasUpdate && checkPermission(props.rightConfig?.updateRight) && <Tooltip title="Edit"><Button onClick={() => handleEdit(params.data)} icon={<EditOutlined />} className={'btn-update'} /></Tooltip>}
         {props.buttonCRUD?.hasDelete && checkPermission(props.rightConfig?.deleteRight) && <Tooltip title="Delete"><Button onClick={() => handleDelete(params.data)} icon={<DeleteOutlined />} className={'btn-delete'} /></Tooltip>}
@@ -154,6 +176,19 @@ const CommonGrid = forwardRef((props, ref) => {
     </div>;
   }
 
+  const colDefs = useMemo(() => {
+    const colDefs = [];
+    if (numberRow) {
+      colDefs.push(numberColumnDefs);
+    }
+    colDefs.push(...props.columnDefs);
+    if (actionRow) {
+      colDefs.push(actionColumnDefs);
+    }
+    return colDefs;
+  }, [numberRow, props.columnDefs, actionRow]);
+
+
   return (
     <div className="common-grid" style={{ height: '100%', width: '100%' }}>
       <div className="flex justify-between mb-3">
@@ -168,7 +203,7 @@ const CommonGrid = forwardRef((props, ref) => {
         <AgGridReact
           ref={gridRef}
           {...props}
-          columnDefs={[...props.columnDefs, actionColumnDefs]}
+          columnDefs={colDefs}
           defaultColDef={{
             resizable: true,
             sortable: false,
@@ -183,10 +218,10 @@ const CommonGrid = forwardRef((props, ref) => {
           pagination={true}
           paginationPageSizeSelector={[10,20,50,100]}
           paginationPageSize ={10}
-          // noRowsOverlayComponent={Overlay}
+          noRowsOverlayComponent={Overlay}
+          tooltipShowDelay={500}
           onGridReady={(event) => {
             event.api.sizeColumnsToFit();
-            event.api.hideOverlay()
           }}
         />
       </div>

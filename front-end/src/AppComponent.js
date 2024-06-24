@@ -1,13 +1,16 @@
 import { lazy } from 'react';
-import {HomeOutlined} from "@ant-design/icons"
+import {HomeOutlined, SettingOutlined} from "@ant-design/icons"
 
 // Lazy imports
 const Home = lazy(() => import('./Home'));
 const AuthorListView = lazy(() => import('./pages/author/view/AuthorListView'));
 const PublisherListView = lazy(() => import('./pages/publisher/view/PublisherListView'));
+const MemberListView = lazy(() => import('./pages/member/view/MemberListView'));
+const MetaCataloListView = lazy(() => import('./pages/metacatalo/veiw/MetaCataloListView'));
+const CataloListView = lazy(() => import('./pages/metacatalo/veiw/CataloListView'));
 
 // Exporting components and lazy imports
-const components = [
+export const routeComponents = [
   {
     component: Home,
     key: '/',
@@ -30,42 +33,56 @@ const components = [
     name: 'publisher',
     label: 'Nhà phát hành',
     icon: <span><i className="fa-solid fa-swatchbook"></i></span>,
-    displayIndex: '1'
+    displayIndex: '2'
   },
   {
-    component: AuthorListView,
-    key: '/book',
-    name: 'book',
-    label: 'Sách',
-    icon: <span><i className="fa-solid fa-book"></i></span>,
-    displayIndex: '1'
+    component: MemberListView,
+    key: '/member',
+    name: 'member',
+    label: 'Thành viên',
+    icon: <span><i className="fa-solid fa-user"></i></span>,
+    displayIndex: '3'
   },
   // {
-    // component: Active,
-    // key: '/active',
-    // name: 'active',
-    // label: 'Active',
-    // icon: <HomeOutlined />,
-    // displayIndex: '1',
-    // children: [
-    //   {
-    //     component: Active,
-    //     key: '/active/active1',
-    //     name: 'active1',
-    //     label: 'Active1',
-    //     icon: <HomeOutlined/>,
-    //     displayIndex: '0'
-    //   },
-    //   {
-    //     component: Active,
-    //     key: '/active/active2',
-    //     name: 'active2',
-    //     label: 'Active2',
-    //     icon: <HomeOutlined/>,
-    //     displayIndex: '1'
-    //   }
-    // ]
-  // }
+  //   component: AuthorListView,
+  //   key: '/book',
+  //   name: 'book',
+  //   label: 'Sách',
+  //   icon: <span><i className="fa-solid fa-book"></i></span>,
+  //   displayIndex: '4'
+  // },
+  {
+    key: '/config',
+    name: 'config',
+    label: 'Cấu hình',
+    icon: <SettingOutlined />,
+    displayIndex: '4',
+    children: [
+      {
+        component: MetaCataloListView,
+        key: '/config/metacatalo',
+        name: 'metacatalo',
+        label: 'Danh mục',
+        icon: <HomeOutlined/>,
+        displayIndex: '0'
+      },
+      // {
+      //   component: Active,
+      //   key: '/active/active2',
+      //   name: 'active2',
+      //   label: 'Active2',
+      //   icon: <HomeOutlined/>,
+      //   displayIndex: '1'
+      // }
+    ]
+  }
 ];
 
-export default components;
+export const noRouteComponents = [
+  {
+    component: CataloListView,
+    key: '/metacatalo/catalo',
+    name: 'catalo',
+    displayIndex: '0'
+  },
+]

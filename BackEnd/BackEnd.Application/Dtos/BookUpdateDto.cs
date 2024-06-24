@@ -16,7 +16,7 @@ public class BookUpdateDto : IUpdateDto<Book, Guid>, IModificationAudited
         oldEntity.Id = Id;
         oldEntity.Title = string.IsNullOrEmpty(Title) ? Title : oldEntity.Title;
         oldEntity.Type = string.IsNullOrEmpty(Type) ? Type : oldEntity.Type;
-        oldEntity.LastModificationTime = LastModificationTime;
+        oldEntity.LastModificationTime = DateTime.Now;
         oldEntity.LastModifierUserId = LastModifierUserId;
         return oldEntity;
     }
