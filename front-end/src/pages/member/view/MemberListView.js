@@ -21,7 +21,7 @@ const MemberListView = () => {
   const defaultColDef = {};
 
   const [state, setState] = useMergeState({
-    comboStatusMember : [],
+    comboMemberStatus : [],
     rowData: [],
     loading: true,
   });
@@ -37,10 +37,9 @@ const MemberListView = () => {
     ]).then(([resCombo]) => {
       if (resCombo?.success) {
         const responseCombo = resCombo?.data;
-        console.log(responseCombo)
         if (responseCombo) {
           setState({
-            comboStatusMember: responseCombo,
+            comboMemberStatus: responseCombo,
           });
         }
       }
@@ -55,11 +54,9 @@ const MemberListView = () => {
           rowData: response?.data
         });
       } else {
-        // ToastUtil.ToastApiError(response?.message);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
-      // ToastUtil.ToastServerError(error.message);
     } finally {
       setState({
         loading: false
@@ -93,7 +90,6 @@ const MemberListView = () => {
     );
   }
 
-  console.log(state)
   return (
     <div className="ag-theme-alpine">
       <CommonGrid

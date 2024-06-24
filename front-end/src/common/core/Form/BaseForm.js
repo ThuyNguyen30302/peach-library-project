@@ -88,7 +88,6 @@ const BaseForm = forwardRef((props, ref) => {
       post(apiSave, values)
         .then((res) => {
           if (res?.success) {
-            console.log(props)
             props.reloadData && props.reloadData();
             props.onClose && props.onClose();
             message.success('Thành công');

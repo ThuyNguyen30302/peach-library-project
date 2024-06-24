@@ -32,7 +32,6 @@ const MemberDetailForm = (props) => {
     </>
   };
 
-  console.log(props)
   return (
     <div>
       <BaseForm
