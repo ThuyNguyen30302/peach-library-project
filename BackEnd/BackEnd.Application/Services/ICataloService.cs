@@ -12,4 +12,6 @@ public interface ICataloService : IBaseService<Catalo, Guid, CataloDetailDto,
 {
     Task<List<ComboOption<string, string>>> GetComboOptionCodeCatalo(string metaCataloCode,
         CancellationToken cancellationToken);
+
+    Task<List<CataloDetailDto>> GetListCataloByMetaCataloIdeAsync(Guid metaCataloId, CancellationToken cancellationToken);
 }

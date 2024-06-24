@@ -25,6 +25,25 @@ public class CataloController : BaseController<Catalo, Guid, CataloDetailDto,
         _cataloService = cataloService;
     }
 
+    [HttpGet("get-catalo-by-meta-catalo-id/{metaCataloId}")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public virtual async Task<ApiResponse<List<CataloDetailDto>>> HandleGetCataloByMetaCataloIdAction(
+        Guid metaCataloId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _cataloService.GetListCataloByMetaCataloIdeAsync(metaCataloId, cancellationToken);
+
+            return ApiResponse<List<CataloDetailDto>>.Ok(result);
+        }
+        catch (Exception e)
+        {
+            return ApiResponse<List<CataloDetailDto>>.Error(e.Message);
+        }
+    }
+    
     [HttpGet("get-combo-option-code/{metaCataloCode}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]

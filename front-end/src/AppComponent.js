@@ -55,7 +55,7 @@ export const routeComponents = [
     key: '/config',
     name: 'config',
     label: 'Cấu hình',
-    icon: <SettingOutlined />,
+    icon: <span><i className="fa-solid fa-gear"></i></span>,
     displayIndex: '4',
     children: [
       {
@@ -63,7 +63,7 @@ export const routeComponents = [
         key: '/config/metacatalo',
         name: 'metacatalo',
         label: 'Danh mục',
-        icon: <HomeOutlined/>,
+        icon: <span><i className="fa-solid fa-bars"></i></span>,
         displayIndex: '0'
       },
       // {

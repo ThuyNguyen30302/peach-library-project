@@ -45,7 +45,7 @@ public class CataloService : BaseService<Catalo, Guid, CataloDetailDto,
     {
         var spec = new Specification<Catalo>(x => x.MetaCataloCode == metaCataloCode);
 
-        var cataloList = await _cataloRepository.GetListAsync(cancellationToken);
+        var cataloList = await _cataloRepository.GetListAsync(spec, cancellationToken);
 
         var comboOption = cataloList.Select(x => new ComboOption<string, string>()
         {
@@ -54,5 +54,21 @@ public class CataloService : BaseService<Catalo, Guid, CataloDetailDto,
         }).ToList();
 
         return comboOption;
+    }
+
+    public async Task<List<CataloDetailDto>> GetListCataloByMetaCataloIdeAsync(Guid metaCataloId, CancellationToken cancellationToken)
+    {
+        var spec = new Specification<Catalo>(x => x.MetaCataloId == metaCataloId);
+
+        var cataloList = await _cataloRepository.GetListAsync(spec, cancellationToken);
+
+        return cataloList.Select(x =>
+        {
+            var res = new CataloDetailDto();
+
+            res.FromEntity(x);
+
+            return res;
+        }).ToList();
     }
 }

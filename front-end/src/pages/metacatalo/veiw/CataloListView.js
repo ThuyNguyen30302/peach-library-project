@@ -35,7 +35,7 @@ const CataloListView = () => {
 
   const fetchData = async () => {
     try {
-      const response = await get(CATALO_INDEX_API);
+      const response = await get(CATALO_INDEX_API + _.last(pathName));
       if (response?.success) {
         setRowData(response?.data);
       } else {
@@ -51,7 +51,7 @@ const CataloListView = () => {
 
   const reloadData = async () => {
     try {
-      const response = await get(CATALO_INDEX_API);
+      const response = await get(CATALO_INDEX_API + _.last(pathName));
       if (response?.success) {
         refGrid.current.setRowData(response.data);
       } else {
