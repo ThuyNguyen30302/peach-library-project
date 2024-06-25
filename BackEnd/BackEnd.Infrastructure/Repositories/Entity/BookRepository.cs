@@ -7,7 +7,8 @@ namespace BackEnd.Infrastructure.Repositories.Entity;
 
 public class BookRepository : BaseRepository<ApplicationDbContext, Book, Guid>, IBookRepository
 {
-    public BookRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public BookRepository(ApplicationDbContext dbContext, IServiceProvider serviceProvider) : base(dbContext,
+        serviceProvider)
     {
     }
 }

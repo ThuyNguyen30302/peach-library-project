@@ -7,7 +7,8 @@ namespace BackEnd.Infrastructure.Repositories.Entity;
 
 public class CheckOutRepository : BaseRepository<ApplicationDbContext, CheckOut, Guid>, ICheckOutRepository
 {
-    public CheckOutRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public CheckOutRepository(ApplicationDbContext dbContext, IServiceProvider serviceProvider) : base(dbContext,
+        serviceProvider)
     {
     }
 }

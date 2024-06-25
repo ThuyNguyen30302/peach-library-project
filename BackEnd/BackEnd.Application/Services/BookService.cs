@@ -62,35 +62,41 @@ public class BookService : BaseService<Book, Guid, BookDetailDto,
         }).ToList();
     }
 
+    // public override async Task<BookDetailDto> CreateAsync(BookCreateDto createInput, CancellationToken cancellationToken)
+    // {
+    //     var newEntity = createInput.GetEntity();
+    //     var dbContext = _entityRepository.GetDbContext();
+    //     // Ensure new entity state
+    //     dbContext.Entry(newEntity).State = EntityState.Added;
+    //
+    //     // Add new book author mappings if any
+    //     if (newEntity.BookAuthorMappings != null && newEntity.BookAuthorMappings.Any())
+    //     {
+    //         foreach (var mapping in newEntity.BookAuthorMappings)
+    //         {
+    //             dbContext.Entry(mapping).State = EntityState.Added;
+    //         }
+    //     }
+    //
+    //     await _entityRepository.AddAsync(newEntity, cancellationToken);
+    //     await dbContext.SaveChangesAsync(cancellationToken);
+    //
+    //     var res = new BookDetailDto();
+    //     res.FromEntity(newEntity);
+    //
+    //     return res;
+    // }
+    
     public override async Task<BookDetailDto> CreateAsync(BookCreateDto createInput,
         CancellationToken cancellationToken)
     {
         var newEntity = createInput.GetEntity();
-
         await _entityRepository.AddAsync(newEntity, cancellationToken);
-
-        // var x = new List<BookAuthorMapping>();
-        // foreach (var mappingDto in createInput.BookAuthorMappings)
-        // {
-        //     var newMapping = new BookAuthorMapping
-        //     {
-        //         BookId = newEntity.Id, // Gán BookId mới tạo cho mapping
-        //         AuthorId = mappingDto.AuthorId
-        //     };
-        //     x.Add(newMapping);
-        //     // Thêm mapping mới vào DbContext, nhưng không theo dõi
-        // }
-        // await dbContext.Set<BookAuthorMapping>().AddRangeAsync(x, cancellationToken);
-        //
-
-        // Lưu các thay đổi vào DbContext
-        
-        // await _entityRepository.SaveChangesAsync(cancellationToken);
-
+    
         var res = new BookDetailDto();
-
+    
         res.FromEntity(newEntity);
-
+    
         return res;
     }
 }

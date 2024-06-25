@@ -7,7 +7,8 @@ namespace BackEnd.Infrastructure.Repositories.Entity;
 
 public class MemberRepository : BaseRepository<ApplicationDbContext, Member, Guid>, IMemberRepository
 {
-    public MemberRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public MemberRepository(ApplicationDbContext dbContext, IServiceProvider serviceProvider) : base(dbContext,
+        serviceProvider)
     {
     }
 }

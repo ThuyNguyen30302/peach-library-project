@@ -7,7 +7,8 @@ namespace BackEnd.Infrastructure.Repositories.Entity;
 
 public class HoldRepository : BaseRepository<ApplicationDbContext, Hold, Guid>, IHoldRepository
 {
-    public HoldRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public HoldRepository(ApplicationDbContext dbContext, IServiceProvider serviceProvider) : base(dbContext,
+        serviceProvider)
     {
     }
 }

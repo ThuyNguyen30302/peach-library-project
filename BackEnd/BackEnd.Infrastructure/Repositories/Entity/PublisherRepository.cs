@@ -7,7 +7,8 @@ namespace BackEnd.Infrastructure.Repositories.Entity;
 
 public class PublisherRepository : BaseRepository<ApplicationDbContext, Publisher, Guid>, IPublisherRepository
 {
-    public PublisherRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public PublisherRepository(ApplicationDbContext dbContext, IServiceProvider serviceProvider) : base(dbContext,
+        serviceProvider)
     {
     }
 }

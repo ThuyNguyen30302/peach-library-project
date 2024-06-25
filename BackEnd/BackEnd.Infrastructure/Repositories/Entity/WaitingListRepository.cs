@@ -7,7 +7,8 @@ namespace BackEnd.Infrastructure.Repositories.Entity;
 
 public class WaitingListRepository : BaseRepository<ApplicationDbContext, WaitingList, Guid>, IWaitingListRepository
 {
-    public WaitingListRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public WaitingListRepository(ApplicationDbContext dbContext, IServiceProvider serviceProvider) : base(dbContext,
+        serviceProvider)
     {
     }
 }

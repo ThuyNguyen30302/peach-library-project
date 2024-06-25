@@ -7,7 +7,8 @@ namespace BackEnd.Infrastructure.Repositories.Entity;
 
 public class MetaCataloRepository : BaseRepository<ApplicationDbContext, MetaCatalo, Guid>, IMetaCataloRepository
 {
-    public MetaCataloRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public MetaCataloRepository(ApplicationDbContext dbContext, IServiceProvider serviceProvider) : base(dbContext,
+        serviceProvider)
     {
     }
 }

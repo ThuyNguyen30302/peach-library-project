@@ -16,6 +16,7 @@ public class BookCreateDto : ICreateDto<Book, Guid>, ICreationAudited
     {
         return new Book()
         {
+            Id = Guid.NewGuid(),
             Title = Title,
             Type = Type,
             CreationTime = CreationTime,

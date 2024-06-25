@@ -7,7 +7,8 @@ namespace BackEnd.Infrastructure.Repositories.Entity;
 
 public class NotificationRepository : BaseRepository<ApplicationDbContext, Notification, Guid>, INotificationRepository
 {
-    public NotificationRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public NotificationRepository(ApplicationDbContext dbContext, IServiceProvider serviceProvider) : base(dbContext,
+        serviceProvider)
     {
     }
 }
