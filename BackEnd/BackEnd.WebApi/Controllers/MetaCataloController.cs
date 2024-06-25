@@ -1,6 +1,6 @@
 using BackEnd.Application.Dtos;
 using BackEnd.Application.Services;
-using BackEnd.Domain.Entities;
+using BackEnd.Domain.Entity.Entities;
 using BackEnd.Infrastructure.Base.ApiController;
 using Microsoft.AspNetCore.Mvc;
 

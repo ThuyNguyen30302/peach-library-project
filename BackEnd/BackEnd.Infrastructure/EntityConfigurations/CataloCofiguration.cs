@@ -1,4 +1,4 @@
-using BackEnd.Domain.Entities;
+using BackEnd.Domain.Entity.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Infrastructure.EntityConfigurations;

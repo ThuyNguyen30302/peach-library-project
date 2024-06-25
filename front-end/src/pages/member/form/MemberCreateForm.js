@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Form, Input, Select} from "antd";
 import BaseForm from "../../../common/core/Form/BaseForm";
+import _ from "lodash";
 
 const itemsLayout = {
   labelCol: {flex: '120px'},
@@ -83,7 +84,7 @@ const MemberCreateForm = (props) => {
         }]}
         className={'col-span-1'}
       >
-        <Select defaultValue="ACTIVE" options={props.comboMemberStatus} />
+        <Select name="status" options={props.comboMemberStatus} />
       </Form.Item>
       <Form.Item
         name="email"
@@ -131,6 +132,9 @@ const MemberCreateForm = (props) => {
     <div>
       <BaseForm
         ref={formRef}
+        initialValues={{
+          status: 'ACTIVE'
+        }}
         apiSave={props?.apiSave}
         reloadData={props.reloadData}
         onClose={() => props.onClose()}

@@ -18,5 +18,6 @@ public static class RepositoriesCollection
         services.AddTransient<IHoldRepository, HoldRepository>();
         services.AddTransient<INotificationRepository, NotificationRepository>();
         services.AddTransient<IWaitingListRepository, WaitingListRepository>();
+        services.AddTransient<IBookAuthorMappingRepository, BookAuthorMappingRepository>();
     }
 }

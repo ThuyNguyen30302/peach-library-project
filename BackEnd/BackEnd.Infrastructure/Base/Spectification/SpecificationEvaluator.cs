@@ -14,6 +14,16 @@ public static class SpecificationEvaluator<T> where T : class
         {
             query = query.Where(specification.Criteria);
         }
+        
+        foreach (var includeExpression in specification.Includes)
+        {
+            query = query.Include(includeExpression);
+        }
+
+        foreach (var includeString in specification.IncludeStrings)
+        {
+            query = query.Include(includeString);
+        }
 
         if (specification.OrderBy != null)
         {
@@ -28,8 +38,6 @@ public static class SpecificationEvaluator<T> where T : class
         {
             query = query.Skip(specification.Skip).Take(specification.Take);
         }
-
-        query = IncludeProperties(query, specification.Includes);
 
         return query;
     }

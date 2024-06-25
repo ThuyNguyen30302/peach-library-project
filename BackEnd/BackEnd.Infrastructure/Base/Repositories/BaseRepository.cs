@@ -19,6 +19,16 @@ public class BaseRepository<TDbContext, TEntity, TPrimaryKey> : IBaseRepository<
         _dbSet = _dbContext.Set<TEntity>();
     }
 
+    public DbContext GetDbContext()
+    {
+        return _dbContext;
+    }
+    
+    public IQueryable<TEntity> GetQueryable()
+    {
+        return _dbSet.AsQueryable();
+    }
+
     public async Task<TEntity> GetAsync(TPrimaryKey id, CancellationToken cancellationToken)
     {
         return await _dbSet.FindAsync(id, cancellationToken);
@@ -59,13 +69,15 @@ public class BaseRepository<TDbContext, TEntity, TPrimaryKey> : IBaseRepository<
         return await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken)
+    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken, bool save = true)
     {
         await _dbSet.AddAsync(entity, cancellationToken);
+        if (!save) return entity;
         await _dbContext.SaveChangesAsync(cancellationToken);
         return entity;
     }
 
+    
     public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
         _dbContext.Entry(entity).State = EntityState.Modified;
@@ -96,6 +108,7 @@ public class BaseRepository<TDbContext, TEntity, TPrimaryKey> : IBaseRepository<
 
     public async Task<int> CountAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken)
     {
+        
         return await ApplySpecification(specification).CountAsync(cancellationToken);
     }
 
@@ -105,6 +118,11 @@ public class BaseRepository<TDbContext, TEntity, TPrimaryKey> : IBaseRepository<
         await _dbSet.AddRangeAsync(entities, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
         return entities;
+    }
+
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        return await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public IQueryable<TEntity> GetQueryableAsync(bool asNoTracking = false)

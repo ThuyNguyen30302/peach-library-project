@@ -1,4 +1,4 @@
-using BackEnd.Domain.Entities;
+using BackEnd.Domain.Entity.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackEnd.Infrastructure.EntityConfigurations;
@@ -52,6 +52,10 @@ public static class EntitiesConfiguration
             entity.Property(e => e.Title).HasMaxLength(128);
 
             entity.Property(e => e.Type).HasMaxLength(255);
+            
+            entity.HasMany(e => e.BookAuthorMappings)
+                .WithOne(e => e.Book)
+                .HasForeignKey(e => e.BookId);
         });
 
         modelBuilder.Entity<BookAuthorMapping>(entity =>

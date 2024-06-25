@@ -23,6 +23,13 @@ public class CommonController : ControllerBase
      [HttpPost("identity/login")]
      public async Task<ApiResponse<User>> HandleIndexAction([FromBody] LoginRequestDto request)
      {
+          // var user = await _userManager.FindByNameAsync(request.Account);
+          // if (user != null)
+          // {
+          //      await _signInManager.SignInAsync(user, true);
+          //      //var userProfile = await GetUserProfile(user);
+          //      return ApiResponse<User>.Ok(user);
+          // }
           var result = await _signInManager.PasswordSignInAsync(request.Account, request.Password, false, false);
           if (result.Succeeded)
           {

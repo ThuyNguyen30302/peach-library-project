@@ -1,7 +1,7 @@
 ﻿using BackEnd.Domain.Base.Entities;
 using BackEnd.Domain.Ums.Entities;
 
-namespace BackEnd.Domain.Entities;
+namespace BackEnd.Domain.Entity.Entities;
 
 public class Member : FullAudited<Guid>
 {

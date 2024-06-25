@@ -8,6 +8,7 @@ const PublisherListView = lazy(() => import('./pages/publisher/view/PublisherLis
 const MemberListView = lazy(() => import('./pages/member/view/MemberListView'));
 const MetaCataloListView = lazy(() => import('./pages/metacatalo/veiw/MetaCataloListView'));
 const CataloListView = lazy(() => import('./pages/metacatalo/veiw/CataloListView'));
+const BookListView = lazy(() => import('./pages/book/view/BookListView'));
 
 // Exporting components and lazy imports
 export const routeComponents = [
@@ -43,14 +44,14 @@ export const routeComponents = [
     icon: <span><i className="fa-solid fa-user"></i></span>,
     displayIndex: '3'
   },
-  // {
-  //   component: AuthorListView,
-  //   key: '/book',
-  //   name: 'book',
-  //   label: 'Sách',
-  //   icon: <span><i className="fa-solid fa-book"></i></span>,
-  //   displayIndex: '4'
-  // },
+  {
+    component: BookListView,
+    key: '/book',
+    name: 'book',
+    label: 'Sách',
+    icon: <span><i className="fa-solid fa-book"></i></span>,
+    displayIndex: '4'
+  },
   {
     key: '/config',
     name: 'config',

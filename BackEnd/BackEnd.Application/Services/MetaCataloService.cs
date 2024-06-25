@@ -1,5 +1,5 @@
 using BackEnd.Application.Dtos;
-using BackEnd.Domain.Entities;
+using BackEnd.Domain.Entity.Entities;
 using BackEnd.Domain.Entity.Repositories;
 using BackEnd.Infrastructure.Base.Service;
 

@@ -1,6 +1,6 @@
 using BackEnd.Domain.Base.Dtos;
 using BackEnd.Domain.Base.Entities;
-using BackEnd.Domain.Entities;
+using BackEnd.Domain.Entity.Entities;
 
 namespace BackEnd.Application.Dtos;
 

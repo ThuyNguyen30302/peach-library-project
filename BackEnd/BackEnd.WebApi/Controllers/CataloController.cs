@@ -2,7 +2,7 @@ using System.Net;
 using BackEnd.Application.Dtos;
 using BackEnd.Application.Model;
 using BackEnd.Application.Services;
-using BackEnd.Domain.Entities;
+using BackEnd.Domain.Entity.Entities;
 using BackEnd.Infrastructure.Base.ApiController;
 using BackEnd.Infrastructure.Base.ApiResponse;
 using Microsoft.AspNetCore.Mvc;

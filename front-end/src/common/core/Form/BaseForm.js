@@ -84,6 +84,7 @@ const BaseForm = forwardRef((props, ref) => {
     try {
       let values = await form.validateFields();
       values = props.beforeSave ? props.beforeSave(values) : beforeSave(values);
+      console.log(values)
       const apiSave = !props.id?props.apiSave:props.apiSave + '/' + props.id;
       post(apiSave, values)
         .then((res) => {
@@ -101,7 +102,6 @@ const BaseForm = forwardRef((props, ref) => {
         });
     } catch (error) {
       message.error('Thất bại');
-      console.log(error);
     }
     unMask();
   };

@@ -1,7 +1,7 @@
 using BackEnd.Application.Dtos;
 using BackEnd.Domain.Base.Specification;
 using BackEnd.Domain.Base.Uow;
-using BackEnd.Domain.Entities;
+using BackEnd.Domain.Entity.Entities;
 using BackEnd.Domain.Entity.Repositories;
 using BackEnd.Domain.Ums.Entities;
 using BackEnd.Infrastructure.Base.Service;
