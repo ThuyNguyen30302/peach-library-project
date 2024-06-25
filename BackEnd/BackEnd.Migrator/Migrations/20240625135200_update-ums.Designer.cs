@@ -3,6 +3,7 @@ using System;
 using BackEnd.Migrator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEnd.Migrator.Migrations
 {
     [DbContext(typeof(MigrationDbContext))]
-    partial class MigrationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240625135200_update-ums")]
+    partial class updateums
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -116,13 +118,20 @@ namespace BackEnd.Migrator.Migrations
 
             modelBuilder.Entity("BackEnd.Domain.Entity.Entities.BookAuthorMapping", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasDefaultValueSql("(UUID())");
+
                     b.Property<Guid>("AuthorId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("BookId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("AuthorId", "BookId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("BookId");
 

@@ -21,10 +21,10 @@ public class BookCreateDto : ICreateDto<Book, Guid>, ICreationAudited
             CreationTime = CreationTime,
             CreatorUserId = CreatorUserId,
             Active = true,
-            // BookAuthorMappings = BookAuthorMappings.Select(x => new BookAuthorMapping
-            // {
-            //     AuthorId = x.AuthorId,
-            // }).ToList()
+            BookAuthorMappings = BookAuthorMappings.Select(x => new BookAuthorMapping
+            {
+                AuthorId = x.AuthorId,
+            }).ToList()
         };
     }
 }

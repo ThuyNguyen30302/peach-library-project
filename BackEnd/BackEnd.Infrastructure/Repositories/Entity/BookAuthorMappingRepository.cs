@@ -5,10 +5,11 @@ using BackEnd.Infrastructure.Data;
 
 namespace BackEnd.Infrastructure.Repositories.Entity;
 
-public class BookAuthorMappingRepository : BaseRepository<ApplicationDbContext, BookAuthorMapping, Guid>,
-    IBookAuthorMappingRepository
+public class BookAuthorMappingRepository 
+    // : BaseRepository<ApplicationDbContext, BookAuthorMapping, Guid>,
+:    IBookAuthorMappingRepository
 {
-    public BookAuthorMappingRepository(ApplicationDbContext dbContext) : base(dbContext)
-    {
-    }
+    // public BookAuthorMappingRepository(ApplicationDbContext dbContext) : base(dbContext)
+    // {
+    // }
 }

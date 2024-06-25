@@ -2,7 +2,7 @@
 
 namespace BackEnd.Domain.Entity.Entities;
 
-public class BookAuthorMapping : Entity<Guid>
+public class BookAuthorMapping
 {
     public Guid AuthorId { get; set; }
     public Guid BookId { get; set; }

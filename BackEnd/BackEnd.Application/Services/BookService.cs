@@ -15,15 +15,12 @@ public class BookService : BaseService<Book, Guid, BookDetailDto,
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICataloService _cataloService;
-    private readonly IBookAuthorMappingRepository _bookAuthorMappingRepository;
 
-    public BookService(IBookRepository entityRepository, ICataloService cataloService, IUnitOfWork unitOfWork,
-        IBookAuthorMappingRepository bookAuthorMappingRepository)
+    public BookService(IBookRepository entityRepository, ICataloService cataloService, IUnitOfWork unitOfWork)
         : base(entityRepository)
     {
         _cataloService = cataloService;
         _unitOfWork = unitOfWork;
-        _bookAuthorMappingRepository = bookAuthorMappingRepository;
     }
 
     public override async Task<List<BookDetailDto>> GetListAsync(CancellationToken cancellationToken)
@@ -72,19 +69,19 @@ public class BookService : BaseService<Book, Guid, BookDetailDto,
 
         await _entityRepository.AddAsync(newEntity, cancellationToken);
 
-        var x = new List<BookAuthorMapping>();
-        foreach (var mappingDto in createInput.BookAuthorMappings)
-        {
-            var newMapping = new BookAuthorMapping
-            {
-                BookId = newEntity.Id, // Gán BookId mới tạo cho mapping
-                AuthorId = mappingDto.AuthorId
-            };
-            x.Add(newMapping);
-            // Thêm mapping mới vào DbContext, nhưng không theo dõi
-        }
-        await _bookAuthorMappingRepository.AddRangeAsync(x, cancellationToken);
-
+        // var x = new List<BookAuthorMapping>();
+        // foreach (var mappingDto in createInput.BookAuthorMappings)
+        // {
+        //     var newMapping = new BookAuthorMapping
+        //     {
+        //         BookId = newEntity.Id, // Gán BookId mới tạo cho mapping
+        //         AuthorId = mappingDto.AuthorId
+        //     };
+        //     x.Add(newMapping);
+        //     // Thêm mapping mới vào DbContext, nhưng không theo dõi
+        // }
+        // await dbContext.Set<BookAuthorMapping>().AddRangeAsync(x, cancellationToken);
+        //
 
         // Lưu các thay đổi vào DbContext
         

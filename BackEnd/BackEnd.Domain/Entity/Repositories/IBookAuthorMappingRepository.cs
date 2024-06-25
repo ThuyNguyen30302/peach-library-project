@@ -3,7 +3,8 @@ using BackEnd.Domain.Entity.Entities;
 
 namespace BackEnd.Domain.Entity.Repositories;
 
-public interface IBookAuthorMappingRepository: IBaseRepository<BookAuthorMapping, Guid>
+public interface IBookAuthorMappingRepository
+    // : IBaseRepository<BookAuthorMapping, Guid>
 {
     
 }

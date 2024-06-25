@@ -53,17 +53,17 @@ public static class EntitiesConfiguration
 
             entity.Property(e => e.Type).HasMaxLength(255);
             
-            entity.HasMany(e => e.BookAuthorMappings)
-                .WithOne(e => e.Book)
-                .HasForeignKey(e => e.BookId);
+            // entity.HasMany(e => e.BookAuthorMappings)
+            //     .WithOne(e => e.Book)
+            //     .HasForeignKey(e => e.BookId);
         });
 
         modelBuilder.Entity<BookAuthorMapping>(entity =>
         {
             entity.ToTable("BookAuthorMapping");
 
-            entity.Property(e => e.Id).HasDefaultValueSql("(UUID())");
-
+            entity.HasKey(e => new { e.AuthorId, e.BookId });
+            
             entity.HasOne(d => d.Author)
                 .WithMany(p => p.BookAuthorMappings)
                 .HasForeignKey(d => d.AuthorId)
