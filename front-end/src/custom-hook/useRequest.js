@@ -129,9 +129,8 @@ export const useRequest = () => {
         const confirm = await Alert.Swal_confirm(
             "Thông báo",
             "Bạn có chắc muốn đăng xuất không?",
-            3
         )
-        if (confirm.value === true) {
+        if (confirm === true) {
             get(LOGOUT, requestConfig?.current).then(response => {
                 if (response?.success) {
                     AppStore.dispatch({ type: LOG_OUT_SUCCESSFUL })

@@ -13,6 +13,7 @@ public class BookDetailDto : IDetailDto<Book, Guid>, IFullAudited
     public string Authors { get; set; } 
     public string Types { get; set; } 
     public DateTime? CreationTime { get; set; }
+    public int? Amount { get; set; }
     public Guid? CreatorUserId { get; set; }
     public DateTime? LastModificationTime { get; set; }
     public Guid? LastModifierUserId { get; set; }
@@ -28,5 +29,12 @@ public class BookDetailDto : IDetailDto<Book, Guid>, IFullAudited
         CreationTime = entity.CreationTime?.AddHours(TimeZoneConstant.TimeZoneSea);
         CreatorUserId = entity.CreatorUserId;
         IsDeleted = entity.IsDeleted;
+        Amount = entity.BookCopies?.Count;
+        BookAuthorMappings = entity.BookAuthorMappings.Select(x =>
+        {
+            var res = new BookAuthorMappingDetailDto();
+            res.FromEntity(x);
+            return res;
+        }).ToList();
     }
 }

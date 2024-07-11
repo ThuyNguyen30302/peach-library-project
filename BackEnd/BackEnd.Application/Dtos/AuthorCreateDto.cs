@@ -14,7 +14,7 @@ public class AuthorCreateDto : ICreateDto<Author, Guid>, ICreationAudited
         {
             Name = Name,
             NickName = NickName,
-            CreationTime = CreationTime,
+            CreationTime = DateTime.Now,
             CreatorUserId = CreatorUserId,
         };
     }

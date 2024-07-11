@@ -1,4 +1,5 @@
 using BackEnd.Application.Dtos;
+using BackEnd.Application.Model;
 using BackEnd.Domain.Base.Specification;
 using BackEnd.Domain.Base.Uow;
 using BackEnd.Domain.Entity.Entities;
@@ -27,6 +28,7 @@ public class BookService : BaseService<Book, Guid, BookDetailDto,
     {
         var spec = new Specification<Book>();
         spec.AddInclude("BookAuthorMappings.Author");
+        spec.AddInclude("BookCopies");
 
         var entities = await _entityRepository.GetListAsync(spec, cancellationToken);
 
@@ -61,31 +63,19 @@ public class BookService : BaseService<Book, Guid, BookDetailDto,
             return res;
         }).ToList();
     }
+    
+    public override async Task<BookDetailDto> GetAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var spec = new Specification<Book>(x => x.Id == id);
+        spec.AddInclude("BookAuthorMappings");
 
-    // public override async Task<BookDetailDto> CreateAsync(BookCreateDto createInput, CancellationToken cancellationToken)
-    // {
-    //     var newEntity = createInput.GetEntity();
-    //     var dbContext = _entityRepository.GetDbContext();
-    //     // Ensure new entity state
-    //     dbContext.Entry(newEntity).State = EntityState.Added;
-    //
-    //     // Add new book author mappings if any
-    //     if (newEntity.BookAuthorMappings != null && newEntity.BookAuthorMappings.Any())
-    //     {
-    //         foreach (var mapping in newEntity.BookAuthorMappings)
-    //         {
-    //             dbContext.Entry(mapping).State = EntityState.Added;
-    //         }
-    //     }
-    //
-    //     await _entityRepository.AddAsync(newEntity, cancellationToken);
-    //     await dbContext.SaveChangesAsync(cancellationToken);
-    //
-    //     var res = new BookDetailDto();
-    //     res.FromEntity(newEntity);
-    //
-    //     return res;
-    // }
+        var entity = await _entityRepository.FirstOrDefaultAsync(spec, cancellationToken);
+        var res = new BookDetailDto();
+
+        res.FromEntity(entity);
+
+        return res;
+    }
     
     public override async Task<BookDetailDto> CreateAsync(BookCreateDto createInput,
         CancellationToken cancellationToken)
@@ -98,5 +88,39 @@ public class BookService : BaseService<Book, Guid, BookDetailDto,
         res.FromEntity(newEntity);
     
         return res;
+    }
+    
+    public override async Task<BookDetailDto> UpdateAsync(Guid id, BookUpdateDto updateInput,
+        CancellationToken cancellationToken)
+    {
+        updateInput.Id = id;
+        
+        var spec = new Specification<Book>(x => x.Id == id);
+        spec.AddInclude("BookAuthorMappings");
+        
+        var entity = await _entityRepository.FirstOrDefaultAsync(spec, cancellationToken);
+
+        entity = updateInput.GetEntity(entity);
+
+        await _entityRepository.UpdateAsync(entity, cancellationToken);
+
+        var res = new BookDetailDto();
+
+        res.FromEntity(entity);
+
+        return res;
+    }
+
+    public async Task<List<ComboOption<Guid, string>>> GetComboOptionBook(CancellationToken cancellationToken)
+    {
+        var publishers = await _entityRepository.GetListAsync(cancellationToken);
+
+        var comboOption = publishers.Select(x => new ComboOption<Guid, string>()
+        {
+            Value = x.Id,
+            Label = x.Title
+        }).ToList();
+
+        return comboOption;
     }
 }

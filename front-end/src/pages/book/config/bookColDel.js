@@ -20,4 +20,15 @@ export const bookColDel = [
       return _.isEmpty(params.value) ? "" : params.value;
     }
   },
+  {
+    headerName: 'Số lượng',
+    field: 'amount',
+    sortable: true,
+    filter: true,
+    maxWidth: 120,
+    cellStyle: {textAlign: 'center'},
+    tooltipValueGetter: (params) => {
+      return _.isEmpty(params.value) ? "" : params.value;
+    }
+  },
 ];

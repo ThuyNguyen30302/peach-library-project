@@ -16,6 +16,10 @@ import {useRequest} from "../../../custom-hook/useRequest";
 import Loading from "../../../component/Loading";
 import BaseModal from "../Modal/BaseModal";
 import Overlay from "../../../component/Overlay";
+import Alert from "../../Alert/Alert";
+import {LOGOUT} from "../../../constant/ApiConstant";
+import {AppStore} from "../../../store";
+import {LOG_OUT_SUCCESSFUL} from "../../../constant/constant";
 
 const CommonGrid = forwardRef((props, ref) => {
   const { rights } = useSelector((stateRedux) => ({
@@ -88,11 +92,18 @@ const CommonGrid = forwardRef((props, ref) => {
 
   const handleDelete = async (data) => {
     try {
-      const response = await deleteApi(`${props.buttonCRUD?.apiDelete}?id=${data.id}`);
-      if (response?.success) {
-        props.reloadData && await props.reloadData();
-        message.success('Xoá thành công');
+      const confirm = await Alert.Swal_confirm(
+        "Thông báo",
+        "Bạn có chắc muốn xoá dữ liệu này không?",
+      )
+      if (confirm === true) {
+        const response = await deleteApi(`${props.buttonCRUD?.apiDelete}?id=${data.id}`);
+        if (response?.success) {
+          props.reloadData && await props.reloadData();
+          message.success('Xoá thành công');
+        }
       }
+
     } catch (error) {
       message.error('Xoá thất bại');
     }
@@ -137,9 +148,9 @@ const CommonGrid = forwardRef((props, ref) => {
     pinned: 'right',
     cellRenderer: (params) => (
       <div className={"flex justify-center items-center gap-2 h-full"}>
-        {props.buttonCRUD?.hasDetail && <Tooltip title="Detail"><Button onClick={() => handleDetail(params.data)} icon={<InfoCircleOutlined />} className={'btn-detail'} /></Tooltip>}
-        {props.buttonCRUD?.hasUpdate && checkPermission(props.rightConfig?.updateRight) && <Tooltip title="Edit"><Button onClick={() => handleEdit(params.data)} icon={<EditOutlined />} className={'btn-update'} /></Tooltip>}
-        {props.buttonCRUD?.hasDelete && checkPermission(props.rightConfig?.deleteRight) && <Tooltip title="Delete"><Button onClick={() => handleDelete(params.data)} icon={<DeleteOutlined />} className={'btn-delete'} /></Tooltip>}
+        {props.buttonCRUD?.hasDetail && <Tooltip title="Chi tiết"><Button onClick={() => handleDetail(params.data)} icon={<InfoCircleOutlined />} className={'btn-detail'} /></Tooltip>}
+        {props.buttonCRUD?.hasUpdate && checkPermission(props.rightConfig?.updateRight) && <Tooltip title="Chỉnh sửa"><Button onClick={() => handleEdit(params.data)} icon={<EditOutlined />} className={'btn-update'} /></Tooltip>}
+        {props.buttonCRUD?.hasDelete && checkPermission(props.rightConfig?.deleteRight) && <Tooltip title="Xoá"><Button onClick={() => handleDelete(params.data)} icon={<DeleteOutlined />} className={'btn-delete'} /></Tooltip>}
       </div>
     ),
   };
@@ -169,11 +180,12 @@ const CommonGrid = forwardRef((props, ref) => {
 
   const renderRightActionToolBar = () => {
     return <div>
-      {props.buttonCRUD?.hasCreate && <Tooltip title="Create"><Button onClick={() => {handleCreate()}} icon={<PlusOutlined />} className={'btn-create'} /></Tooltip>}
+      {props.buttonCRUD?.hasCreate && <Tooltip title="Tạo mới"><Button onClick={() => {handleCreate()}} icon={<PlusOutlined />} className={'btn-create'} /></Tooltip>}
     </div>;
   }
 
   const renderLeftActionToolBar = () => {
+    if (props.renderLeftActionToolBar) return props.renderLeftActionToolBar();
     return <div>
       {/*{props.buttonCRUD?.hasCreate && <Tooltip title="Create"><Button onClick={() => {handleCreate()}} icon={<PlusOutlined />} /></Tooltip>}*/}
     </div>;
@@ -206,6 +218,9 @@ const CommonGrid = forwardRef((props, ref) => {
         <AgGridReact
           ref={gridRef}
           {...props}
+          containerStyle={{
+            height: window.innerHeight - 212
+          }}
           columnDefs={colDefs}
           defaultColDef={{
             resizable: true,

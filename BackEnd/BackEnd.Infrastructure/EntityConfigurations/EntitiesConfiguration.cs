@@ -189,6 +189,9 @@ public static class EntitiesConfiguration
             entity.Property(e => e.Status).HasMaxLength(255);
 
             entity.Property(e => e.UserName).HasMaxLength(255);
+            
+            entity.Property(e => e.DoB)
+                .HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Notification>(entity =>

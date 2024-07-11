@@ -14,7 +14,7 @@ public class MemberCreateDto: ICreateDto<Member, Guid>, ICreationAudited
             CardNumber = CardNumber,
             Email = Email,
             Address = Address,
-            Age = Age,
+            DoB = DoB,
             PhoneNumber = PhoneNumber,
             UserName = UserName,
             Status = Status,
@@ -30,7 +30,7 @@ public class MemberCreateDto: ICreateDto<Member, Guid>, ICreationAudited
     public string UserName { get; set; }
     public string Password { get; set; }
     public string Status { get; set; }
-    public int Age { get; set; }
+    public DateTime DoB { get; set; }
     public string Address { get; set; }
     public DateTime? CreationTime { get; set; }
     public Guid? CreatorUserId { get; set; }

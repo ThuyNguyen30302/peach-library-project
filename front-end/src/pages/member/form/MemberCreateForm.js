@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Form, Input, Select} from "antd";
 import BaseForm from "../../../common/core/Form/BaseForm";
 import _ from "lodash";
+import CustomDatePicker from "../../../common/DatePicker/CustomDatePicker";
 
 const itemsLayout = {
   labelCol: {flex: '120px'},
@@ -103,17 +104,15 @@ const MemberCreateForm = (props) => {
       </Form.Item>
       <Form.Item
         name="age"
-        label="Tuổi"
+        label="Ngày sinh"
         rules={[{
           required: true,
         }]}
         className={'col-span-1'}
       >
-        <Input onKeyPress={(event) => {
-          if (!/[0-9]/.test(event.key)) {
-            event.preventDefault();
-          }
-        }}/>
+        <CustomDatePicker type={'date'}
+                          format={'DD-MM-YYYY'}
+                          allowClear={false} showTime={false} />
       </Form.Item>
       <Form.Item
         name="address"

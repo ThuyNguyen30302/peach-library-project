@@ -7,6 +7,7 @@ public static class ServiceCollections
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IBookService, BookService>();
+        services.AddScoped<IBookCopyService, BookCopyService>();
         services.AddScoped<IAuthorService, AuthorService>();
         services.AddScoped<IPublisherService, PublisherService>();
         services.AddScoped<IMemberService, MemberService>();

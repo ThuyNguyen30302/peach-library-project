@@ -70,12 +70,13 @@ const CustomDatePicker = forwardRef((props, ref) => {
             onOk,
             onPanelChange,
             onChange,
+            defaultValue,
             ...rest
         };
 
         switch (type) {
             case 'date':
-                return <DatePicker {...commonProps} />;
+                return <DatePicker {...commonProps} placeholder={'Nhập ngày...'} />;
             case 'dateTime':
                 return <DatePicker showTime {...commonProps} />;
             case 'month':

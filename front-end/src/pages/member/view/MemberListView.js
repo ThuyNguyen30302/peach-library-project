@@ -99,8 +99,8 @@ const MemberListView = () => {
         rowData={state.rowData}
         isGridDefault={true}
         reloadData={() => reloadData()}
-        popUpWidth={1100}
         formCRUD={{
+          popUpWidth: 1100,
           propsForm: {
             comboMemberStatus: state.comboMemberStatus
           },

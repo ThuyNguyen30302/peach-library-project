@@ -126,6 +126,7 @@ public abstract class BaseService<TEntity, TKey, TGetOutputDto, TGetListOutputDt
         CancellationToken cancellationToken)
     {
         updateInput.Id = id;
+        
         var entity = await _entityRepository.FirstOrDefaultAsync(id, cancellationToken);
 
         entity = updateInput.GetEntity(entity);

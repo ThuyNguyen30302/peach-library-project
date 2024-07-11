@@ -14,16 +14,18 @@ public class BookCreateDto : ICreateDto<Book, Guid>, ICreationAudited
     public ICollection<BookAuthorMappingCreateDto> BookAuthorMappings { get; set; }
     public Book GetEntity()
     {
+        var bookId = Guid.NewGuid();
         return new Book()
         {
-            Id = Guid.NewGuid(),
+            Id = bookId,
             Title = Title,
             Type = Type,
-            CreationTime = CreationTime,
+            CreationTime = DateTime.Now,
             CreatorUserId = CreatorUserId,
             Active = true,
             BookAuthorMappings = BookAuthorMappings.Select(x => new BookAuthorMapping
             {
+                BookId = bookId,
                 AuthorId = x.AuthorId,
             }).ToList()
         };

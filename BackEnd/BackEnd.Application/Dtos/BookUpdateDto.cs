@@ -11,6 +11,8 @@ public class BookUpdateDto : IUpdateDto<Book, Guid>, IModificationAudited
     public string Type { get; set; }
     public DateTime? LastModificationTime { get; set; }
     public Guid? LastModifierUserId { get; set; }
+    public ICollection<BookAuthorMappingUpdateDto> BookAuthorMappings { get; set; }
+
     public Book GetEntity(Book oldEntity)
     {        
         oldEntity.Id = Id;
@@ -18,6 +20,11 @@ public class BookUpdateDto : IUpdateDto<Book, Guid>, IModificationAudited
         oldEntity.Type = string.IsNullOrEmpty(Type) ? Type : oldEntity.Type;
         oldEntity.LastModificationTime = DateTime.Now;
         oldEntity.LastModifierUserId = LastModifierUserId;
+        oldEntity.BookAuthorMappings = BookAuthorMappings.Select(x => new BookAuthorMapping
+        {
+            BookId = Id,
+            AuthorId = x.AuthorId,
+        }).ToList();
         return oldEntity;
     }
 }

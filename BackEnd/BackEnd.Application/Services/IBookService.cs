@@ -1,4 +1,5 @@
 using BackEnd.Application.Dtos;
+using BackEnd.Application.Model;
 using BackEnd.Domain.Base.Service;
 using BackEnd.Domain.Entity.Entities;
 
@@ -9,4 +10,5 @@ public interface IBookService : IBaseService<Book, Guid, BookDetailDto,
     BookCreateDto,
     BookUpdateDto>
 { 
+    Task<List<ComboOption<Guid, string>>> GetComboOptionBook(CancellationToken cancellationToken);
 }

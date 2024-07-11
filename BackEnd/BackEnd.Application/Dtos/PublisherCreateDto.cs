@@ -12,7 +12,7 @@ public class PublisherCreateDto: ICreateDto<Publisher, Guid>, ICreationAudited
         {
             Name = Name,
             Code = Code,
-            CreationTime = CreationTime,
+            CreationTime = DateTime.Now,
             CreatorUserId = CreatorUserId,
         };
     }

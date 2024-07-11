@@ -3,7 +3,7 @@ import {Form, Input, Select} from "antd";
 import BaseForm from "../../../common/core/Form/BaseForm";
 import _ from "lodash";
 
-const AuthorCreateForm = (props) => {
+const BookCreateForm = (props) => {
   const formRef = useRef(null);
 
   const beforeSave = (data) => {
@@ -72,4 +72,4 @@ const AuthorCreateForm = (props) => {
   );
 };
 
-export default AuthorCreateForm;
+export default BookCreateForm;

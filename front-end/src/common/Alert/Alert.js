@@ -23,7 +23,7 @@ class Alert {
         });
     }
 
-    static async Swal_confirm(title, message, confirmButtonColor = '#2f7e17') {
+    static async Swal_confirm(title, message, confirmButtonColor = '#3eae1c') {
         const result = await MySwal.fire({
             title,
             text: message,

@@ -9,6 +9,7 @@ const MemberListView = lazy(() => import('./pages/member/view/MemberListView'));
 const MetaCataloListView = lazy(() => import('./pages/metacatalo/veiw/MetaCataloListView'));
 const CataloListView = lazy(() => import('./pages/metacatalo/veiw/CataloListView'));
 const BookListView = lazy(() => import('./pages/book/view/BookListView'));
+const ImportBookListView = lazy(() => import('./pages/import-book/view/ImportBookListView'));
 
 // Exporting components and lazy imports
 export const routeComponents = [
@@ -45,12 +46,37 @@ export const routeComponents = [
     displayIndex: '3'
   },
   {
-    component: BookListView,
-    key: '/book',
-    name: 'book',
-    label: 'Sách',
-    icon: <span><i className="fa-solid fa-book"></i></span>,
-    displayIndex: '4'
+    key: '/manage-book',
+    name: 'manage-book',
+    label: 'Quản lý sách',
+    icon: <span><i className="fa-solid fa-sliders"></i></span>,
+    displayIndex: '4',
+    children: [
+      {
+        component: BookListView,
+        key: '/manage-book/book',
+        name: 'book',
+        label: 'Kho sách',
+        icon: <span><i className="fa-solid fa-book"></i></span>,
+        displayIndex: '0',
+      },
+      {
+        component: ImportBookListView,
+        key: '/manage-book/import-book',
+        name: 'import-book',
+        label: 'Nhập sách',
+        icon: <span><i className="fa-solid fa-book-open"></i></span>,
+        displayIndex: '1',
+      },
+      // {
+      //   component: BookListView,
+      //   key: '/manage-book/warehouse-book',
+      //   name: 'warehouse-book',
+      //   label: 'Kho sách',
+      //   icon: <span><i className="fa-solid fa-book-bookmark"></i></span>,
+      //   displayIndex: '2',
+      // },
+    ]
   },
   {
     key: '/config',

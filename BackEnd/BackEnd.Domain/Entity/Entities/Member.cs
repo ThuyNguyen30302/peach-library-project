@@ -11,7 +11,7 @@ public class Member : FullAudited<Guid>
     public string PhoneNumber { get; set; }
     public string UserName { get; set; }
     public string Status { get; set; }
-    public int Age { get; set; }
+    public DateTime DoB { get; set; }
     public string Address { get; set; }
     public Guid UserId { get; set; }
     public User User { get; set; }

@@ -13,7 +13,7 @@ public class MetaCataloCreateDto: ICreateDto<MetaCatalo, Guid>, ICreationAudited
             Name = Name,
             Code = Code,
             Description = !string.IsNullOrEmpty(Description)?Description:"",
-            CreationTime = CreationTime,
+            CreationTime = DateTime.Now,
             CreatorUserId = CreatorUserId,
         };
     }

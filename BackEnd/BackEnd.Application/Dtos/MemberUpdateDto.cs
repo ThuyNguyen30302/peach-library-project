@@ -14,7 +14,7 @@ public class MemberUpdateDto: IUpdateDto<Member, Guid>, IModificationAudited
     public string UserName { get; set; }
     public string Password { get; set; }
     public string Status { get; set; }
-    public int Age { get; set; }
+    public DateTime DoB { get; set; }
     public string Address { get; set; }
     public Member GetEntity(Member entity)
     {
@@ -23,7 +23,7 @@ public class MemberUpdateDto: IUpdateDto<Member, Guid>, IModificationAudited
         entity.CardNumber = !string.IsNullOrEmpty(CardNumber) ? CardNumber : entity.CardNumber;
         entity.Email = !string.IsNullOrEmpty(Email) ? Email : entity.Email;
         entity.Address = !string.IsNullOrEmpty(Address) ? Address : entity.Address;
-        entity.Age = Age;
+        entity.DoB = DoB;
         entity.PhoneNumber = PhoneNumber;
         entity.UserName = !string.IsNullOrEmpty(UserName) ? UserName : entity.UserName;
         entity.Status = !string.IsNullOrEmpty(Status) ? Status : entity.Status;

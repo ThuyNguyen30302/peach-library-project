@@ -30,7 +30,7 @@ public class AuthorController : BaseController<Author, Guid, AuthorDetailDto,
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-    public virtual async Task<ApiResponse<List<ComboOption<Guid, string>>>> HandleGetComboOptionCodeAction(
+    public virtual async Task<ApiResponse<List<ComboOption<Guid, string>>>> HandleGetComboOptionAction(
         CancellationToken cancellationToken)
     {
         try

@@ -1,4 +1,5 @@
 using BackEnd.Application.Dtos;
+using BackEnd.Application.Model;
 using BackEnd.Domain.Base.Service;
 using BackEnd.Domain.Entity.Entities;
 
@@ -9,4 +10,5 @@ public interface IPublisherService: IBaseService<Publisher, Guid, PublisherDetai
     PublisherCreateDto,
     PublisherUpdateDto>
 { 
+    Task<List<ComboOption<Guid, string>>> GetComboOptionPublisher(CancellationToken cancellationToken);
 }

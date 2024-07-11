@@ -340,9 +340,6 @@ namespace BackEnd.Migrator.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
                     b.Property<string>("CardNumber")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -360,6 +357,9 @@ namespace BackEnd.Migrator.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DoB")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Email")

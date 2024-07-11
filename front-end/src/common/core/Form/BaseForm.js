@@ -53,13 +53,18 @@ const BaseForm = forwardRef((props, ref) => {
     props?.apiDetail && fetchData();
   }, []);
 
+  const beforeSetValue = (data) => {
+    return data;
+  };
+
   const fetchData = async () => {
     onMask();
     try {
       get(props?.apiDetail + '/' + props?.id)
         .then((res) => {
           if (res?.success) {
-              form.setFieldsValue(res.data);
+              const value = props?.beforeSetValue ? props.beforeSetValue(res?.data) : beforeSetValue(res?.data);
+              form.setFieldsValue(value);
             // props.reloadData && props.reloadData();
             // props.onClose && props.onClose();
           } else if (res.success) {
@@ -84,7 +89,6 @@ const BaseForm = forwardRef((props, ref) => {
     try {
       let values = await form.validateFields();
       values = props.beforeSave ? props.beforeSave(values) : beforeSave(values);
-      console.log(values)
       const apiSave = !props.id?props.apiSave:props.apiSave + '/' + props.id;
       post(apiSave, values)
         .then((res) => {
