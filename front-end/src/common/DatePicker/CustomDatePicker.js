@@ -15,7 +15,7 @@ const CustomDatePicker = forwardRef((props, ref) => {
         disabled = false,
         disabledDate,
         disabledTime,
-        format = 'DD/MM/YYYY HH:mm',
+        format = 'DD/MM/YYYY',
         showTime = {
             format: 'HH:mm',
         },

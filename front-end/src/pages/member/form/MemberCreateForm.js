@@ -1,8 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Form, Input, Select} from "antd";
+import {DatePicker, Form, Input, Select} from "antd";
 import BaseForm from "../../../common/core/Form/BaseForm";
 import _ from "lodash";
 import CustomDatePicker from "../../../common/DatePicker/CustomDatePicker";
+import moment from "moment";
+import dayjs from "dayjs";
 
 const itemsLayout = {
   labelCol: {flex: '120px'},
@@ -10,6 +12,11 @@ const itemsLayout = {
 
 const MemberCreateForm = (props) => {
   const formRef = useRef(null);
+
+  const beforeSave = (data) => {
+    _.set(data, 'dob', dayjs(data.dob).format('YYYY-MM-DD'));
+    return data;
+  };
 
   const handlePhoneNumberChange = (event) => {
     const value = event.target.value;
@@ -57,26 +64,26 @@ const MemberCreateForm = (props) => {
                  }
                }}/>
       </Form.Item>
-      <Form.Item
-        name="userName"
-        label="Tên tài khoản"
-        rules={[{
-          required: true,
-        }]}
-        className={'col-span-1'}
-      >
-        <Input/>
-      </Form.Item>
-      <Form.Item
-        name="password"
-        label="Mật khẩu"
-        rules={[{
-          required: true,
-        }]}
-        className={'col-span-1'}
-      >
-        <Input.Password />
-      </Form.Item>
+      {/*<Form.Item*/}
+      {/*  name="userName"*/}
+      {/*  label="Tên tài khoản"*/}
+      {/*  rules={[{*/}
+      {/*    required: true,*/}
+      {/*  }]}*/}
+      {/*  className={'col-span-1'}*/}
+      {/*>*/}
+      {/*  <Input/>*/}
+      {/*</Form.Item>*/}
+      {/*<Form.Item*/}
+      {/*  name="password"*/}
+      {/*  label="Mật khẩu"*/}
+      {/*  rules={[{*/}
+      {/*    required: true,*/}
+      {/*  }]}*/}
+      {/*  className={'col-span-1'}*/}
+      {/*>*/}
+      {/*  <Input.Password />*/}
+      {/*</Form.Item>*/}
       <Form.Item
         name="status"
         label="Trạng thái"
@@ -103,16 +110,20 @@ const MemberCreateForm = (props) => {
         <Input/>
       </Form.Item>
       <Form.Item
-        name="age"
+        name="dob"
         label="Ngày sinh"
         rules={[{
           required: true,
         }]}
         className={'col-span-1'}
       >
-        <CustomDatePicker type={'date'}
-                          format={'DD-MM-YYYY'}
-                          allowClear={false} showTime={false} />
+        <CustomDatePicker type={'date'} showTime={false} style={{width:'100%'}} />
+        {/*<DatePicker showTime={false} />*/}
+        {/*<Input onKeyPress={(event) => {*/}
+        {/*  if (!/[0-9]/.test(event.key)) {*/}
+        {/*    event.preventDefault();*/}
+        {/*  }*/}
+        {/*}}/>*/}
       </Form.Item>
       <Form.Item
         name="address"
@@ -134,6 +145,7 @@ const MemberCreateForm = (props) => {
         initialValues={{
           status: 'ACTIVE'
         }}
+        beforeSave={beforeSave}
         apiSave={props?.apiSave}
         reloadData={props.reloadData}
         onClose={() => props.onClose()}

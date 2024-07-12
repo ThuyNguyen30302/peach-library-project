@@ -44,8 +44,8 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
                     throw new Exception("Số điện thoại đã được đăng ký.");
                 }
 
-                var user = new User() { UserName = createInput.UserName, EmailAddress = createInput.Email, FullName = createInput.Name};
-                var userCreateResult = await _userManager.CreateAsync(user, createInput.Password);
+                var user = new User() { Id = Guid.NewGuid(), UserName = createInput.PhoneNumber, EmailAddress = createInput.Email, FullName = createInput.Name};
+                var userCreateResult = await _userManager.CreateAsync(user, "Peach@" + createInput.PhoneNumber);
 
                 if (!userCreateResult.Succeeded)
                 {
@@ -53,9 +53,9 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
                 }
 
                 createInput.UserId = user.Id;
-                createInput.Password = user.PasswordHash;
 
                 var newEntity = createInput.GetEntity();
+                newEntity.UserName = createInput.PhoneNumber;
 
                 await _entityRepository.AddAsync(newEntity, cancellationToken);
 
@@ -75,4 +75,14 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
             }
         }
     }
+    
+    public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var entity = await _entityRepository.FirstOrDefaultAsync(id, cancellationToken);
+        var user = await _userManager.FindByIdAsync(entity.UserId.ToString());
+        
+        await _entityRepository.DeleteAsync(entity, cancellationToken);
+        await _userManager.DeleteAsync(user);
+    }
+    
 }
