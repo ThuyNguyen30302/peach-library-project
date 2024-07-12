@@ -8,45 +8,34 @@ import Loading from "./component/Loading";
 import _ from "lodash";
 
 const AppSwitch = () => {
-    const navigate = useNavigate();
-    const {authData} = useSelector((stateRedux) => ({
-        authData: stateRedux?.root?.get('authData'),
-    }));
-    const {
-        login,
-    } = useRequest();
+  const navigate = useNavigate();
+  const {authData} = useSelector((stateRedux) => ({
+    authData: stateRedux?.root?.get('authData'),
+  }));
+  const {
+    login,
+  } = useRequest();
 
-    const renderLoginPage = () => {
-        return <>
-            <Route path="*" element={<Navigate to="/login" />} />
-            <Route path='/login' element={
-                <LoginPage
-                    onSubmit={(form, values) => {
-                        const returnUrl = new URLSearchParams(window.location.search).get('returnUrl') || '/';
-                        login(form, values, () => navigate(returnUrl));
-                    }}
-                />
-            }/>
-        </>;
-    }
+  const renderLoginPage = () => {
+    return <>
+      <Route path="*" element={<Navigate to="/login"/>}/>
+      <Route path='/login' element={
+        <LoginPage
+          onSubmit={(form, values) => {
+            const returnUrl = new URLSearchParams(window.location.search).get('returnUrl') || '/';
+            login(form, values, () => navigate(returnUrl));
+          }}
+        />
+      }/>
+    </>;
+  }
 
-    return (
-        <Routes>
-            {/*{_.isEmpty(authData) ? (*/}
-            {/*    renderLoginPage()*/}
-            {/*) : (*/}
-            {/*    <>*/}
-            {/*        <Route path="/*" element={<MainPage />} />*/}
-            {/*        <Route path="/login" element={<Navigate to="/" />} /> /!* Redirect logged in users away from login page *!/*/}
-            {/*    </>*/}
-            {/*)}*/}
-
-            <>
-                <Route path="/*" element={<MainPage />} />
-                <Route path="/login" element={<Navigate to="/" />} /> {/* Redirect logged in users away from login page */}
-            </>
-        </Routes>
-    );
+  return (
+    <Routes>
+      {_.isEmpty(authData) && renderLoginPage()}
+      <Route path="/*" element={<MainPage/>}/>
+    </Routes>
+  );
 };
 
 export default AppSwitch;

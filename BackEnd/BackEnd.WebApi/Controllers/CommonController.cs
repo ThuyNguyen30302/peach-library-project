@@ -20,6 +20,15 @@ public class CommonController : ControllerBase
           _userManager = userManager;
      }
 
+     [HttpGet]
+     [Route("identity/logout")]
+     public async Task<IActionResult> Logout()
+     {
+          await _signInManager.SignOutAsync();
+
+          return Ok(new { success = true });
+     }
+     
      [HttpPost("identity/login")]
      public async Task<ApiResponse<User>> HandleIndexAction([FromBody] LoginRequestDto request)
      {

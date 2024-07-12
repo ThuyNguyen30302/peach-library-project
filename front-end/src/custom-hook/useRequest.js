@@ -98,6 +98,7 @@ export const useRequest = () => {
             .then(response => {
                 if (response.success) {
                     AppStore.dispatch(loginSuccessFull(response?.data));
+                    sessionStorage.setItem('authData', JSON.stringify(response?.data));
                     form && form?.unMask();
                     callback && callback();
                 } else {
@@ -125,7 +126,7 @@ export const useRequest = () => {
             })
     }
 
-    const logout = async callback => {
+    const logout = async () => {
         const confirm = await Alert.Swal_confirm(
             "Thông báo",
             "Bạn có chắc muốn đăng xuất không?",
@@ -133,8 +134,9 @@ export const useRequest = () => {
         if (confirm === true) {
             get(LOGOUT, requestConfig?.current).then(response => {
                 if (response?.success) {
+                    sessionStorage.removeItem('authData');
                     AppStore.dispatch({ type: LOG_OUT_SUCCESSFUL })
-                    callback && callback()
+                    // callback && callback()
                 }
             })
         }
