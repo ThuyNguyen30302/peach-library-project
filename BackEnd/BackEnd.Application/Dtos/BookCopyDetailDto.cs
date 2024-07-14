@@ -27,7 +27,7 @@ public class BookCopyDetailDto: IDetailDto<BookCopy, Guid>, IFullAudited
         BookId = entity.BookId;
         PublisherId = entity.PublisherId;
         Active = entity.Active;
-        CreationTime = entity.CreationTime?.AddHours(TimeZoneConstant.TimeZoneSea);
+        CreationTime = entity.CreationTime;
         CreatorUserId = entity.CreatorUserId;
         IsDeleted = entity.IsDeleted;
     }

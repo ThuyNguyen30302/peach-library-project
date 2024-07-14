@@ -12,7 +12,7 @@ public class PublisherDetailDto: IDetailDto<Publisher, Guid>, IFullAudited
         Id = entity.Id;
         Name = entity.Name;
         Code = entity.Code;
-        CreationTime = entity.CreationTime?.AddHours(TimeZoneConstant.TimeZoneSea);
+        CreationTime = entity.CreationTime;
         CreatorUserId = entity.CreatorUserId;
         IsDeleted = entity.IsDeleted;
     }
