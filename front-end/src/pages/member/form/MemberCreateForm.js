@@ -3,6 +3,7 @@ import {Form, Input, Select} from "antd";
 import BaseForm from "../../../common/core/Form/BaseForm";
 import _ from "lodash";
 import CustomDatePicker from "../../../common/DatePicker/CustomDatePicker";
+import dayjs from "dayjs";
 
 const itemsLayout = {
   labelCol: {flex: '120px'},
@@ -10,6 +11,11 @@ const itemsLayout = {
 
 const MemberCreateForm = (props) => {
   const formRef = useRef(null);
+
+  const beforeSave = (data) => {
+    _.set(data, 'dob', dayjs(data.dob).format('YYYY-MM-DD'));
+    return data;
+  };
 
   const handlePhoneNumberChange = (event) => {
     const value = event.target.value;
@@ -68,16 +74,6 @@ const MemberCreateForm = (props) => {
         <Input/>
       </Form.Item>
       <Form.Item
-        name="password"
-        label="Mật khẩu"
-        rules={[{
-          required: true,
-        }]}
-        className={'col-span-1'}
-      >
-        <Input.Password />
-      </Form.Item>
-      <Form.Item
         name="status"
         label="Trạng thái"
         rules={[{
@@ -103,16 +99,14 @@ const MemberCreateForm = (props) => {
         <Input/>
       </Form.Item>
       <Form.Item
-        name="age"
+        name="dob"
         label="Ngày sinh"
         rules={[{
           required: true,
         }]}
         className={'col-span-1'}
       >
-        <CustomDatePicker type={'date'}
-                          format={'DD-MM-YYYY'}
-                          allowClear={false} showTime={false} />
+        <CustomDatePicker type={'date'} showTime={false} format={'DD-MM-YYYY'} style={{width:'100%'}} />
       </Form.Item>
       <Form.Item
         name="address"
@@ -137,6 +131,7 @@ const MemberCreateForm = (props) => {
         apiSave={props?.apiSave}
         reloadData={props.reloadData}
         onClose={() => props.onClose()}
+        beforeSave={beforeSave}
         {...itemsLayout}
       >
         {renderBody()}
