@@ -26,7 +26,7 @@ public class BookDetailDto : IDetailDto<Book, Guid>, IFullAudited
         Id = entity.Id;
         Title = entity.Title;
         Type = entity.Type;
-        CreationTime = entity.CreationTime?.AddHours(TimeZoneConstant.TimeZoneSea);
+        CreationTime = entity.CreationTime;
         CreatorUserId = entity.CreatorUserId;
         IsDeleted = entity.IsDeleted;
         Amount = entity.BookCopies?.Count;

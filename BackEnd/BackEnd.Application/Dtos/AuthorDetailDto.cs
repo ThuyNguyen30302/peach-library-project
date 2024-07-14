@@ -15,7 +15,7 @@ public class AuthorDetailDto : IDetailDto<Author, Guid>, IFullAudited
         Id = entity.Id;
         Name = entity.Name;
         NickName = entity.NickName;
-        CreationTime = entity.CreationTime?.AddHours(TimeZoneConstant.TimeZoneSea);
+        CreationTime = entity.CreationTime;
         CreatorUserId = entity.CreatorUserId;
         IsDeleted = entity.IsDeleted;
     }

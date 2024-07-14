@@ -22,7 +22,7 @@ public class MemberDetailDto: IDetailDto<Member, Guid>, IFullAudited
             Password = entity.User.PasswordHash;
         }
         Status = entity.Status;
-        CreationTime = entity.CreationTime?.AddHours(TimeZoneConstant.TimeZoneSea);
+        CreationTime = entity.CreationTime;
         CreatorUserId = entity.CreatorUserId;
         UserId = entity.UserId;
         IsDeleted = entity.IsDeleted;

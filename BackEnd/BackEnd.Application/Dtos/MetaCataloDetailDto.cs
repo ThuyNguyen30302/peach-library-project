@@ -13,7 +13,7 @@ public class MetaCataloDetailDto: IDetailDto<MetaCatalo, Guid>, IFullAudited
         Name = entity.Name;
         Code = entity.Code;
         Description = entity.Description;
-        CreationTime = entity.CreationTime?.AddHours(TimeZoneConstant.TimeZoneSea);
+        CreationTime = entity.CreationTime;
         CreatorUserId = entity.CreatorUserId;
         IsDeleted = entity.IsDeleted;
     }
