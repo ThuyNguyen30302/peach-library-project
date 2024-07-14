@@ -30,10 +30,10 @@ public class CommonController : ControllerBase
           //      //var userProfile = await GetUserProfile(user);
           //      return ApiResponse<User>.Ok(user);
           // }
-          var result = await _signInManager.PasswordSignInAsync(request.Account, request.Password, false, false);
+          var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
           if (result.Succeeded)
           {
-               var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == request.Account);
+               var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
                return ApiResponse<User>.Ok(user);
           }
           else
