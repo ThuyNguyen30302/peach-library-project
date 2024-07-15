@@ -1,6 +1,7 @@
 using BackEnd.Application.Dtos;
 using BackEnd.Application.Model;
 using BackEnd.Domain.Base.Repositories;
+using BackEnd.Domain.Base.Specification;
 using BackEnd.Domain.Entity.Entities;
 using BackEnd.Domain.Entity.Repositories;
 using BackEnd.Infrastructure.Base.Service;
@@ -13,8 +14,17 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
     BookCopyCreateDto,
     BookCopyUpdateDto>, IBookCopyService
 {
-    public BookCopyService(IBookCopyRepository entityRepository) : base(entityRepository)
+    private readonly ICheckOutRepository _checkOutRepository;
+    private readonly IBookRepository _bookRepository;
+    private readonly ICataloService _cataloService;
+
+    public BookCopyService(IBookCopyRepository entityRepository, ICheckOutRepository checkOutRepository,
+        ICataloService cataloService, IBookRepository bookRepository) : base(
+        entityRepository)
     {
+        _checkOutRepository = checkOutRepository;
+        _cataloService = cataloService;
+        _bookRepository = bookRepository;
     }
 
     public async Task<List<BookCopyDetailDto>> CreateBookCopyByAmountAsync(
@@ -145,6 +155,119 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
             }
         }
 
+        return result;
+    }
+
+    public async Task<List<ComboOption<Guid, string>>> GetComboOptionBookCanBorrow(CancellationToken cancellationToken)
+    {
+        var bookCopyQb = _entityRepository.GetQueryable();
+        bookCopyQb = bookCopyQb.Where(x => x.Active)
+            .Include(x => x.Book).Include(x => x.Publisher);
+            
+            
+        var bookAvailability = await bookCopyQb
+            .GroupBy(x => new { x.BookId, x.PublisherId })
+            .Select(g => new
+            {
+                g.Key.BookId,
+                g.Key.PublisherId,
+                TotalCopies = g.Count(),
+                BookCopies = g.ToList(),
+                BorrowedCopyIds = _checkOutRepository.GetQueryable().Include(co => co.BookCopy).Select(x => x.Id).ToList(),
+                BorrowedCopiesCount = _checkOutRepository.GetQueryable().Include(co => co.BookCopy)
+                    .Count(co => co.BookCopy.BookId == g.Key.BookId &&
+                                 co.BookCopy.PublisherId == g.Key.PublisherId &&
+                                 !co.IsReturned &&
+                                 co.BookCopy.Active)
+            })
+            .ToListAsync(cancellationToken);
+
+        var availableBooks = bookAvailability
+            .Where(b => b.TotalCopies - b.BorrowedCopiesCount > 0)
+            .Distinct()
+            .ToList();
+
+        return availableBooks.Select(x =>
+            {
+                var bookCopy = x.BookCopies
+                    .FirstOrDefault(p => !x.BorrowedCopyIds.Contains(p.Id));
+                return new ComboOption<Guid, string>
+                {
+                    Value = bookCopy.Id,
+                    Label = bookCopy.Book.Title + "-" + bookCopy.Publisher.Name
+                };
+            })
+            .ToList();
+        // var availableBooks = await _entityRepository.GetQueryable()
+        //     .Where(book => availableBookIds.Contains(book.Id))
+        //     .GroupBy(book => book.Id)
+        //     .Select(g => g.First())
+        //     .Select(x => new ComboOption<Guid, string>
+        //     {
+        //         Value = x.Id,
+        //         Label = x.Title
+        //     })
+        //     .ToListAsync(cancellationToken);
+        //
+        // return availableBooks;
+    }
+
+    public async Task<List<BookListDetailDto>> GetListBookDetail(Guid bookId, CancellationToken cancellationToken)
+    {
+        var bookCopyQb = _entityRepository.GetQueryable();
+        bookCopyQb = bookCopyQb.Where(x => x.BookId == bookId).Include(x => x.Book)
+            .ThenInclude(g => g.BookAuthorMappings).ThenInclude(co => co.Author).Include(x => x.Publisher);
+        var bookCopies = await bookCopyQb.ToListAsync(cancellationToken);
+        var cataloBookType = await _cataloService.GetComboOptionCodeCatalo("BOOK_TYPE", cancellationToken);
+        var groupByBookId = bookCopies.GroupBy(x => (x.BookId, x.PublisherId)).ToList();
+        var result = groupByBookId.Select(x =>
+        {
+            var bookCopy = x.FirstOrDefault();
+            var authors = bookCopy.Book?.BookAuthorMappings.Select(p => p.Author.Name);
+            var typeSplit = bookCopy.Book?.Type.Split(",");
+            return new BookListDetailDto()
+            {
+                Title = bookCopy.Book.Title,
+                Authors = authors.Any() ? string.Join(", ", authors) : "",
+                Types = typeSplit.Any()
+                    ? string.Join(", ", typeSplit.Select(p =>
+                    {
+                        var type = cataloBookType.FirstOrDefault(q => q.Value == p);
+                        return type?.Label;
+                    }).ToList())
+                    : "",
+                PublisherName = bookCopy?.Publisher.Name,
+                Amount = x.Count()
+            };
+        }).ToList();
+        if (result.Count == 0)
+        {
+            var spec = new Specification<Book>(x => x.Id == bookId);
+            spec.AddInclude("BookAuthorMappings.Author");
+            spec.AddInclude("BookCopies");
+            
+            var book = await _bookRepository.FirstOrDefaultAsync(spec ,
+                cancellationToken);
+            var authors = book.BookAuthorMappings.Select(p => p.Author.Name);
+            var typeSplit = book.Type.Split(",");
+            return new List<BookListDetailDto>
+            {
+                new BookListDetailDto()
+                {
+                    Title = book.Title,
+                    Authors = authors.Any() ? string.Join(", ", authors) : "",
+                    Types = typeSplit.Any()
+                        ? string.Join(", ", typeSplit.Select(p =>
+                        {
+                            var type = cataloBookType.FirstOrDefault(q => q.Value == p);
+                            return type?.Label;
+                        }).ToList())
+                        : "",
+                    Amount = 0,
+                    PublisherName = "" 
+                }
+            };
+        }
         return result;
     }
 }
