@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Spin } from 'antd';
 import { useRequest } from "../../../custom-hook/useRequest";
 import CheckOutCreateForm from "../form/CheckOutCreateForm";
@@ -12,24 +12,54 @@ import {
   CHECK_OUT_UPDATE_API
 } from "../api/BorrowApi";
 import {checkOutColDef} from "../config/checkOutColDef";
+import {BOOK_COMBO_OPTION_CAN_BORROW_API} from "../../book/api/BookApi";
+import {MEMBER_COMBO_OPTION_CAN_BORROW_API} from "../../member/api/MemberApi";
+import useMergeState from "../../../custom-hook/useMergeState";
 
 const BorrowListView = () => {
-  const [rowData, setRowData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { get } = useRequest();
   const refGrid = useRef(null);
+
+  const [state, setState] = useMergeState({
+    comboOptionBook: [],
+    comboOptionMember: [],
+    rowData: [],
+    loading: true,
+  });
 
   const defaultColDef = {};
 
   useEffect(() => {
+    loadCombo();
     fetchData();
   }, []);
+
+  const loadCombo = async () => {
+    Promise.all([
+      get(BOOK_COMBO_OPTION_CAN_BORROW_API),
+      get(MEMBER_COMBO_OPTION_CAN_BORROW_API),
+    ]).then(([resComboBook, resComboMember]) => {
+      if (resComboBook?.success && resComboMember?.success) {
+        const responseComboBook = resComboBook?.data;
+        const responseComboMember = resComboMember?.data;
+        if (responseComboBook && responseComboMember) {
+          setState({
+            comboOptionBook: responseComboBook,
+            comboOptionMember: responseComboMember,
+          });
+        }
+      }
+    });
+  };
 
   const fetchData = async () => {
     try {
       const response = await get(CHECK_OUT_INDEX_API);
       if (response?.success) {
-        setRowData(response?.data);
+        const value = response?.data;
+        setState({
+          rowData: value
+        });
       } else {
         // ToastUtil.ToastApiError(response?.message);
       }
@@ -37,7 +67,9 @@ const BorrowListView = () => {
       console.error('Error fetching data:', error);
       // ToastUtil.ToastServerError(error.message);
     } finally {
-      setLoading(false);
+      setState({
+        loading: false
+      });
     }
   };
 
@@ -53,11 +85,13 @@ const BorrowListView = () => {
       console.error('Error fetching data:', error);
       // ToastUtil.ToastServerError(error.message);
     } finally {
-      setLoading(false);
+      setState({
+        loading: false
+      });
     }
   }
 
-  if (loading) {
+  if (state.loading) {
     return (
       <div className="ag-theme-alpine" style={{ height: '100%', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Spin size="large" />
@@ -71,10 +105,14 @@ const BorrowListView = () => {
         ref={refGrid}
         columnDefs={checkOutColDef}
         defaultColDef={defaultColDef}
-        rowData={rowData}
+        rowData={state.rowData}
         isGridDefault={true}
         reloadData={() => reloadData()}
         formCRUD={{
+          propsForm: {
+            comboOptionBook: state.comboOptionBook,
+            comboOptionMember: state.comboOptionMember
+          },
           createForm: CheckOutCreateForm,
           updateForm: CheckOutUpdateForm,
         }}

@@ -8,3 +8,5 @@ export const BOOK_UPDATE_API = API_LOCAL + '/book/update';
 export const BOOK_DELETE_API = API_LOCAL + '/book/delete';
 export const AUTHOR_COMBO_OPTION_API = API_LOCAL + '/author/get-combo-option';
 export const BOOK_TYPE_COMBO_OPTION_CODE_API = API_LOCAL + '/catalo/get-combo-option-code/BOOK_TYPE';
+export const BOOK_COMBO_OPTION_CAN_BORROW_API = API_LOCAL + '/book-copy/get-combo-option-book-can-borrow';
+
