@@ -163,8 +163,8 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
         var bookCopyQb = _entityRepository.GetQueryable();
         bookCopyQb = bookCopyQb.Where(x => x.Active)
             .Include(x => x.Book).Include(x => x.Publisher);
-            
-            
+
+
         var bookAvailability = await bookCopyQb
             .GroupBy(x => new { x.BookId, x.PublisherId })
             .Select(g => new
@@ -173,7 +173,8 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
                 g.Key.PublisherId,
                 TotalCopies = g.Count(),
                 BookCopies = g.ToList(),
-                BorrowedCopyIds = _checkOutRepository.GetQueryable().Include(co => co.BookCopy).Select(x => x.Id).ToList(),
+                BorrowedCopyIds = _checkOutRepository.GetQueryable().Where(co => !co.IsReturned)
+                    .Include(co => co.BookCopy).Select(co => co.BookCopyId).ToList(),
                 BorrowedCopiesCount = _checkOutRepository.GetQueryable().Include(co => co.BookCopy)
                     .Count(co => co.BookCopy.BookId == g.Key.BookId &&
                                  co.BookCopy.PublisherId == g.Key.PublisherId &&
@@ -245,8 +246,8 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
             var spec = new Specification<Book>(x => x.Id == bookId);
             spec.AddInclude("BookAuthorMappings.Author");
             spec.AddInclude("BookCopies");
-            
-            var book = await _bookRepository.FirstOrDefaultAsync(spec ,
+
+            var book = await _bookRepository.FirstOrDefaultAsync(spec,
                 cancellationToken);
             var authors = book.BookAuthorMappings.Select(p => p.Author.Name);
             var typeSplit = book.Type.Split(",");
@@ -264,10 +265,11 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
                         }).ToList())
                         : "",
                     Amount = 0,
-                    PublisherName = "" 
+                    PublisherName = ""
                 }
             };
         }
+
         return result;
     }
 }

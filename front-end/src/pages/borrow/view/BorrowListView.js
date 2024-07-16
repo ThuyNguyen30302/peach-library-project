@@ -74,6 +74,7 @@ const BorrowListView = () => {
   };
 
   const reloadData = async () => {
+    loadCombo();
     try {
       const response = await get(CHECK_OUT_INDEX_API);
       if (response?.success) {

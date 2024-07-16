@@ -37,7 +37,8 @@ const CheckOutCreateForm = (props) => {
         }]}
         className={'col-span-1'}
       >
-        <Select options={props.comboOptionMember}/>
+        <Select filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                showSearch options={props.comboOptionMember}/>
       </Form.Item>
       <Form.Item
         name="bookCopyId"
@@ -47,7 +48,8 @@ const CheckOutCreateForm = (props) => {
         }]}
         className={'col-span-1'}
       >
-        <Select options={props.comboOptionBook}/>
+        <Select filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
+                showSearch options={props.comboOptionBook}/>
       </Form.Item>
       <Form.Item
         name="startTime"
