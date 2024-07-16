@@ -37,6 +37,7 @@ const CommonGrid = forwardRef((props, ref) => {
       gridRef.current.api.setRowData(data);
     },
     getGridRef: () => gridRef?.current,
+    modalRef: modalRef.current
   }));
 
   const checkPermission = (requiredPermissions) => {
@@ -146,13 +147,21 @@ const CommonGrid = forwardRef((props, ref) => {
     maxWidth: 150,
     minWidth: 150,
     pinned: 'right',
-    cellRenderer: (params) => (
-      <div className={"flex justify-center items-center gap-2 h-full"}>
-        {props.buttonCRUD?.hasDetail && <Tooltip title="Chi tiết"><Button onClick={() => handleDetail(params.data)} icon={<InfoCircleOutlined />} className={'btn-detail'} /></Tooltip>}
-        {props.buttonCRUD?.hasUpdate && checkPermission(props.rightConfig?.updateRight) && <Tooltip title="Chỉnh sửa"><Button onClick={() => handleEdit(params.data)} icon={<EditOutlined />} className={'btn-update'} /></Tooltip>}
-        {props.buttonCRUD?.hasDelete && checkPermission(props.rightConfig?.deleteRight) && <Tooltip title="Xoá"><Button onClick={() => handleDelete(params.data)} icon={<DeleteOutlined />} className={'btn-delete'} /></Tooltip>}
-      </div>
-    ),
+    cellRenderer: (params) => props?.renderAction?props.renderAction(params):renderAction(params),
+  };
+
+  const renderAction = (params) => {
+    return <div className={"flex justify-center items-center gap-2 h-full"}>
+      {props.buttonCRUD?.hasDetail &&
+        <Tooltip title="Chi tiết"><Button onClick={() => handleDetail(params.data)} icon={<InfoCircleOutlined/>}
+                                          className={'btn-detail'}/></Tooltip>}
+      {props.buttonCRUD?.hasUpdate && checkPermission(props.rightConfig?.updateRight) &&
+        <Tooltip title="Chỉnh sửa"><Button onClick={() => handleEdit(params.data)} icon={<EditOutlined/>}
+                                           className={'btn-update'}/></Tooltip>}
+      {props.buttonCRUD?.hasDelete && checkPermission(props.rightConfig?.deleteRight) &&
+        <Tooltip title="Xoá"><Button onClick={() => handleDelete(params.data)} icon={<DeleteOutlined/>}
+                                     className={'btn-delete'}/></Tooltip>}
+    </div>
   };
 
   const renderTitleForm = (text) => {
@@ -165,7 +174,7 @@ const CommonGrid = forwardRef((props, ref) => {
           marginBottom: 20,
           marginRight: 7,
         }}>
-                <FormOutlined />
+                <FormOutlined/>
                 <span
                   style={{
                     fontSize: 15,
@@ -180,7 +189,9 @@ const CommonGrid = forwardRef((props, ref) => {
 
   const renderRightActionToolBar = () => {
     return <div>
-      {props.buttonCRUD?.hasCreate && <Tooltip title="Tạo mới"><Button onClick={() => {handleCreate()}} icon={<PlusOutlined />} className={'btn-create'} /></Tooltip>}
+      {props.buttonCRUD?.hasCreate && <Tooltip title="Tạo mới"><Button onClick={() => {
+        handleCreate()
+      }} icon={<PlusOutlined />} className={'btn-create'} /></Tooltip>}
     </div>;
   }
 

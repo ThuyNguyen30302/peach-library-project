@@ -14,6 +14,7 @@ import CommonGrid from "../../../common/core/grid/CommonGrid";
 import BookUpdateForm from "../form/BookUpdateForm";
 import {bookColDel} from "../config/bookColDel";
 import useMergeState from "../../../custom-hook/useMergeState";
+import BookDetailForm from "../form/BookDetailForm";
 
 const BookListView = () => {
   const [state, setState] = useMergeState({
@@ -110,14 +111,16 @@ const BookListView = () => {
             comboOptionBookType: state.comboOptionBookType,
             comboOptionAuthor: state.comboOptionAuthor
           },
+          popUpWidth: 1100,
           createForm: BookCreateForm,
           updateForm: BookUpdateForm,
+          detailForm: BookDetailForm,
         }}
         buttonCRUD={{
           hasCreate: true,
           hasDelete: true,
           hasUpdate: true,
-          // hasDetail: true,
+          hasDetail: true,
           // onCreate: onCreate,
           // onDetailRow: onDetailRow,
           // onEditRow: onEditRow,

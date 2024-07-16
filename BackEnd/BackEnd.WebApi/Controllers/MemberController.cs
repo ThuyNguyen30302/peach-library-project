@@ -1,5 +1,6 @@
 using System.Net;
 using BackEnd.Application.Dtos;
+using BackEnd.Application.Model;
 using BackEnd.Application.Services;
 using BackEnd.Domain.Base.Uow;
 using BackEnd.Domain.Entity.Entities;
@@ -19,45 +20,48 @@ public class MemberController : BaseController<Member, Guid, MemberDetailDto,
     MemberCreateDto,
     MemberUpdateDto>
 {
+    private readonly IMemberService _memberService;
 
-    public MemberController(IMemberService entityService) : base(entityService)
+    public MemberController(IMemberService entityService, IMemberService memberService) : base(entityService)
     {
+        _memberService = memberService;
+    }
+    
+    [HttpGet("get-combo-option-member")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public virtual async Task<ApiResponse<List<ComboOption<Guid, string>>>> HandleGetComboOptionMemberAction(
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _memberService.GetComboOptionMember(cancellationToken);
+
+            return ApiResponse<List<ComboOption<Guid, string>>>.Ok(result);
+        }
+        catch (Exception e)
+        {
+            return ApiResponse<List<ComboOption<Guid, string>>>.Error(e.Message);
+        }
     }
 
-    // [HttpPost("create")]
-    // [ProducesResponseType((int)HttpStatusCode.OK)]
-    // [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    // [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-    // public override async Task<ApiResponse<MemberDetailDto>> HandleCreateAction([FromBody] MemberCreateDto request,
-    //     CancellationToken cancellationToken)
-    // {
-    //     using (var transaction = await _unitOfWork.BeginTransactionAsync())
-    //     {
-    //         try
-    //         {
-    //             var user = new User() { UserName = request.UserName, Email = request.Email };
-    //             var userCreateResult = await _userManager.CreateAsync(user, request.Password);
-    //
-    //             if (!userCreateResult.Succeeded)
-    //             {
-    //                 return ApiResponse<MemberDetailDto>.Error(string.Join("; ", userCreateResult.Errors.Select(e => e.Description)));
-    //             }
-    //
-    //             request.UserId = user.Id;
-    //             request.Password = user.PasswordHash;
-    //
-    //             var result = await _memberService.CreateAsync(request, cancellationToken);
-    //
-    //             await _unitOfWork.CommitAsync();
-    //
-    //             return ApiResponse<MemberDetailDto>.Ok(result);
-    //         }
-    //         catch (Exception e)
-    //         {
-    //             await _unitOfWork.RollbackAsync();
-    //
-    //             return ApiResponse<MemberDetailDto>.Error(e.Message);
-    //         }
-    //     }
-    // }
+    [HttpGet("get-combo-option-member-can-borrow")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public virtual async Task<ApiResponse<List<ComboOption<Guid, string>>>> HandleGetComboOptionMemberCanBorrowAction(
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _memberService.GetComboOptionMemberCanBorrow(cancellationToken);
+
+            return ApiResponse<List<ComboOption<Guid, string>>>.Ok(result);
+        }
+        catch (Exception e)
+        {
+            return ApiResponse<List<ComboOption<Guid, string>>>.Error(e.Message);
+        }
+    }
 }

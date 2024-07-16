@@ -15,10 +15,8 @@ const CustomDatePicker = forwardRef((props, ref) => {
         disabled = false,
         disabledDate,
         disabledTime,
-        format = 'DD/MM/YYYY',
-        showTime = {
-            format: 'HH:mm',
-        },
+        format = 'DD/MM/YYYY HH:mm',
+        showTime = false,
         maxTagCount = 'responsive',
         order,
         inputReadOnly,
@@ -109,9 +107,9 @@ const CustomDatePicker = forwardRef((props, ref) => {
     };
 
     return (
-        <div>
+        <>
             {renderComponent()}
-        </div>
+        </>
     );
 });
 
