@@ -36,4 +36,15 @@ export const checkOutColDef = [
     maxWidth: 100,
     cellStyle: {display: 'flex', justifyContent: 'center'},
   },
+  {
+    headerName: 'Ngày tạo',
+    field: 'creationTime',
+    sortable: true,
+    filter: true,
+    maxWidth: 120,
+    cellStyle: {textAlign: 'center'},
+    valueFormatter: (params) => {
+      return _.isEmpty(params.value) ? "" : moment(params.value).format('DD-MM-YYYY');
+    }
+  },
 ];

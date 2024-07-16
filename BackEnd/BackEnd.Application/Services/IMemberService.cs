@@ -10,5 +10,6 @@ public interface IMemberService: IBaseService<Member, Guid, MemberDetailDto,
     MemberCreateDto,
     MemberUpdateDto>
 {
+    Task<List<ComboOption<Guid, string>>> GetComboOptionMember(CancellationToken cancellationToken);
     Task<List<ComboOption<Guid, string>>> GetComboOptionMemberCanBorrow(CancellationToken cancellationToken);
 }

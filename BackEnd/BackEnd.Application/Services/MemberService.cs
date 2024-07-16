@@ -81,6 +81,20 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
         }
     }
 
+    public async Task<List<ComboOption<Guid, string>>> GetComboOptionMember(CancellationToken cancellationToken)
+    {
+        var members =
+            await _entityRepository.GetListAsync(
+                new Specification<Member>(x => x.Status == "ACTIVE"),
+                cancellationToken);
+
+        return members.Select(x => new ComboOption<Guid, string>()
+        {
+            Value = x.Id,
+            Label = x.Name + "-" + x.PhoneNumber
+        }).ToList();
+    }
+
     public async Task<List<ComboOption<Guid, string>>> GetComboOptionMemberCanBorrow(
         CancellationToken cancellationToken)
     {

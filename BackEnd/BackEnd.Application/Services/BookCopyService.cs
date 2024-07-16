@@ -199,18 +199,51 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
                 };
             })
             .ToList();
-        // var availableBooks = await _entityRepository.GetQueryable()
-        //     .Where(book => availableBookIds.Contains(book.Id))
-        //     .GroupBy(book => book.Id)
-        //     .Select(g => g.First())
-        //     .Select(x => new ComboOption<Guid, string>
-        //     {
-        //         Value = x.Id,
-        //         Label = x.Title
-        //     })
-        //     .ToListAsync(cancellationToken);
-        //
-        // return availableBooks;
+    }
+
+    public async Task<List<ComboOption<Guid, string>>> GetComboOptionBookCanBorrowForUpdate(Guid checkOutId,
+        CancellationToken cancellationToken)
+    {
+        var bookCopyQb = _entityRepository.GetQueryable();
+        bookCopyQb = bookCopyQb.Where(x => x.Active)
+            .Include(x => x.Book).Include(x => x.Publisher);
+
+
+        var bookAvailability = await bookCopyQb
+            .GroupBy(x => new { x.BookId, x.PublisherId })
+            .Select(g => new
+            {
+                g.Key.BookId,
+                g.Key.PublisherId,
+                TotalCopies = g.Count(),
+                BookCopies = g.ToList(),
+                BorrowedCopyIds = _checkOutRepository.GetQueryable().Where(co => co.Id != checkOutId && !co.IsReturned)
+                    .Include(co => co.BookCopy).Select(co => co.BookCopyId).ToList(),
+                BorrowedCopiesCount = _checkOutRepository.GetQueryable().Include(co => co.BookCopy)
+                    .Count(co => co.BookCopy.BookId == g.Key.BookId &&
+                                 co.BookCopy.PublisherId == g.Key.PublisherId &&
+                                 co.Id != checkOutId &&
+                                 !co.IsReturned &&
+                                 co.BookCopy.Active)
+            })
+            .ToListAsync(cancellationToken);
+
+        var availableBooks = bookAvailability
+            .Where(b => b.TotalCopies - b.BorrowedCopiesCount > 0)
+            .Distinct()
+            .ToList();
+
+        return availableBooks.Select(x =>
+            {
+                var bookCopy = x.BookCopies
+                    .FirstOrDefault(p => !x.BorrowedCopyIds.Contains(p.Id));
+                return new ComboOption<Guid, string>
+                {
+                    Value = bookCopy.Id,
+                    Label = bookCopy.Book.Title + "-" + bookCopy.Publisher.Name
+                };
+            })
+            .ToList();
     }
 
     public async Task<List<BookListDetailDto>> GetListBookDetail(Guid bookId, CancellationToken cancellationToken)

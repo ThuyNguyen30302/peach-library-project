@@ -41,7 +41,7 @@ public class BookCopyController : BaseController<BookCopy, Guid, BookCopyDetailD
             return ApiResponse<List<BookCopyDetailTreeDto>>.Error(e.Message);
         }
     }
-    
+
     [HttpGet("get-book-list-detail/{bookId}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -104,8 +104,7 @@ public class BookCopyController : BaseController<BookCopy, Guid, BookCopyDetailD
             return ApiResponse<List<BookCopyDetailDto>>.Error(e.Message);
         }
     }
-    
-    
+
     [HttpGet("get-combo-option-book-can-borrow")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -116,6 +115,25 @@ public class BookCopyController : BaseController<BookCopy, Guid, BookCopyDetailD
         try
         {
             var result = await _bookCopyService.GetComboOptionBookCanBorrow(cancellationToken);
+
+            return ApiResponse<List<ComboOption<Guid, string>>>.Ok(result);
+        }
+        catch (Exception e)
+        {
+            return ApiResponse<List<ComboOption<Guid, string>>>.Error(e.Message);
+        }
+    }
+
+    [HttpGet("get-combo-option-book-can-borrow-for-update/{id}")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public virtual async Task<ApiResponse<List<ComboOption<Guid, string>>>>
+        HandleGetComboOptionBookCanBorrowForUpdateAction(Guid id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _bookCopyService.GetComboOptionBookCanBorrowForUpdate(id, cancellationToken);
 
             return ApiResponse<List<ComboOption<Guid, string>>>.Ok(result);
         }

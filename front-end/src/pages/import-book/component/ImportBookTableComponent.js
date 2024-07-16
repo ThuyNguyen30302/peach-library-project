@@ -69,7 +69,7 @@ const ImportBookTableComponent = ({name: prefix, form, combo, operatable = false
           },
           {
             key: "publisherId",
-            title: "Nhà sản xuất",
+            title: "Nhà xuất bản",
             width: "25%",
             render: (_, field) => {
               const propName = "publisherId";
@@ -80,7 +80,7 @@ const ImportBookTableComponent = ({name: prefix, form, combo, operatable = false
 
               return <Form.Item
                 {...field}
-                label={'Nhà sản xuất'}
+                label={'Nhà xuất bản'}
                 className="in-cell-field"
                 name={[field.name, propName]}
                 rules={[

@@ -21,7 +21,7 @@ export const bookDetailColDel = [
     }
   },
   {
-    headerName: 'Nhà sản xuất',
+    headerName: 'Nhà xuất bản',
     field: 'publisherName',
     sortable: true,
     filter: true,
