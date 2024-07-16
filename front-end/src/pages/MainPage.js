@@ -180,10 +180,7 @@ const MainPage = () => {
           }}
                   className={'box-shadow-main-page'}
           >
-            {/*<Button*/}
-            {/*  icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}*/}
-            {/*  onClick={() => setCollapsed(!collapsed)}*/}
-            {/*/>*/}
+            <div></div>
             <UserProfile/>
           </Header>
           <Breadcrumb style={{margin: '16px'}}>

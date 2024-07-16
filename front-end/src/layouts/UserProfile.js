@@ -1,5 +1,5 @@
 import React from 'react';
-import {Avatar, List, Popover} from "antd";
+import {Avatar, Button, List, Popover} from "antd";
 import {Link} from "react-router-dom";
 import {useRequest} from "../custom-hook/useRequest";
 import {UserOutlined} from "@ant-design/icons";
@@ -13,7 +13,7 @@ const UserProfile = () => {
   const content = () => {
     return <List>
       <List.Item>
-        <div onClick={() => {logout()}}>Đăng xuất</div>
+        <Button type={'primary'} danger onClick={() => {logout()}}>Đăng xuất</Button>
       </List.Item>
     </List>
   }

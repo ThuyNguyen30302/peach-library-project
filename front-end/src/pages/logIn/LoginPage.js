@@ -60,7 +60,7 @@ const LoginPage = (props) => {
             </div>
             <h1 className={"title text-3xl xl:text-5xl"}>Đăng nhập</h1>
             <Form.Item
-                name="account"
+                name="username"
                 // label="Tên tài khoản"
                 rules={[{
                     required: true,
