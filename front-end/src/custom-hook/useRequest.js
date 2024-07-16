@@ -74,10 +74,11 @@ export const useRequest = () => {
     }
 
     const checkLogin = async () => {
-        return await get(CHECK_LOGIN, requestConfig?.current).then(response => {
+        const authData = await sessionStorage.getItem("authData");
+        console.log(authData)
+        return await get(CHECK_LOGIN + '/' + _.get(JSON.parse(authData), 'id'), requestConfig?.current).then(response => {
             if (response?.success) {
-                AppStore.dispatch(setRights(response?.result?.rights || []))
-                AppStore.dispatch(loginSuccessFull(response?.result?.user))
+                sessionStorage.setItem('authData', JSON.stringify(response?.data));
             }
             return response?.result
         })
