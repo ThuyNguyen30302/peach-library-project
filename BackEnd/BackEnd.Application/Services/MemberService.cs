@@ -48,7 +48,14 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
                     throw new Exception("Số điện thoại đã được đăng ký.");
                 }
 
-                var user = new User() { Id = Guid.NewGuid(), UserName = createInput.PhoneNumber, EmailAddress = createInput.Email, FullName = createInput.Name };
+                var user = new User()
+                {
+                    Id = Guid.NewGuid(), 
+                    UserName = createInput.PhoneNumber,
+                    EmailAddress = createInput.Email,
+                    FullName = createInput.Name,
+                    Active = true
+                };
                 var userCreateResult = await _userManager.CreateAsync(user, "Peach@" + createInput.PhoneNumber);
 
                 if (!userCreateResult.Succeeded)
