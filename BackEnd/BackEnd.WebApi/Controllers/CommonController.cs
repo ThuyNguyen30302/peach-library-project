@@ -1,9 +1,15 @@
-﻿using BackEnd.Application.Dtos;
+﻿using System.Net;
+using System.Security.Claims;
+using BackEnd.Application.Dtos;
 using BackEnd.Domain.Ums.Entities;
 using BackEnd.Infrastructure.Base.ApiResponse;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace BackEnd.WebApi.Controllers;
 
@@ -11,43 +17,64 @@ namespace BackEnd.WebApi.Controllers;
 [Route("/api")]
 public class CommonController : ControllerBase
 {
-     private readonly SignInManager<User> _signInManager;
-     private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<User> _userManager;
 
-     public CommonController(SignInManager<User> signInManager, UserManager<User> userManager)
-     {
-          _signInManager = signInManager;
-          _userManager = userManager;
-     }
+    public CommonController(SignInManager<User> signInManager, UserManager<User> userManager)
+    {
+        _signInManager = signInManager;
+        _userManager = userManager;
+    }
 
-     [HttpGet]
-     [Route("identity/logout")]
-     public async Task<IActionResult> Logout()
-     {
-          await _signInManager.SignOutAsync();
+    [HttpGet]
+    [Route("identity/logout")]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
 
-          return Ok(new { success = true });
-     }
-     
-     [HttpPost("identity/login")]
-     public async Task<ApiResponse<User>> HandleIndexAction([FromBody] LoginRequestDto request)
-     {
-          // var user = await _userManager.FindByNameAsync(request.Account);
-          // if (user != null)
-          // {
-          //      await _signInManager.SignInAsync(user, true);
-          //      //var userProfile = await GetUserProfile(user);
-          //      return ApiResponse<User>.Ok(user);
-          // }
-          var result = await _signInManager.PasswordSignInAsync(request.Account, request.Password, false, false);
-          if (result.Succeeded)
-          {
-               var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == request.Account);
-               return ApiResponse<User>.Ok(user);
-          }
-          else
-          {
-               throw new Exception("Login fail");
-          }
-     }
+        return Ok(new { success = true });
+    }
+
+    [HttpPost("identity/login")]
+    public async Task<ApiResponse<User>> HandleIndexAction([FromBody] LoginRequestDto request)
+    {
+        // var user = await _userManager.FindByNameAsync(request.Account);
+        // if (user != null)
+        // {
+        //      await _signInManager.SignInAsync(user, true);
+        //      //var userProfile = await GetUserProfile(user);
+        //      return ApiResponse<User>.Ok(user);
+        // }
+        var result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, false);
+        if (result.Succeeded)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == request.UserName);
+            return ApiResponse<User>.Ok(user);
+        }
+        else
+        {
+            throw new Exception("Login fail");
+        }
+    }
+
+    [HttpGet("identity/check-login/{id}")]
+    [AllowAnonymous]
+    public async Task<ApiResponse<JObject>> CheckLoginAction(Guid id)
+    {
+        var user = await _userManager.FindByIdAsync(id.ToString());
+        if (user != null)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var serializer = new JsonSerializer
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            var authData = JObject.FromObject(user, serializer);
+            authData.Add("roles", JToken.FromObject(roles));
+            return ApiResponse<JObject>.Ok(authData);
+        }
+
+        return ApiResponse<JObject>.Error("User is not sign in");
+    }
 }
