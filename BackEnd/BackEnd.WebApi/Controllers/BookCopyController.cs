@@ -41,6 +41,25 @@ public class BookCopyController : BaseController<BookCopy, Guid, BookCopyDetailD
             return ApiResponse<List<BookCopyDetailTreeDto>>.Error(e.Message);
         }
     }
+    
+    [HttpGet("get-borrowed-book-copies")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    public virtual async Task<ApiResponse<int>> HandleAmountBorrowedBookCopiesAction(
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _bookCopyService.GetBorrowedBookCopiesAsync(cancellationToken);
+
+            return ApiResponse<int>.Ok(result);
+        }
+        catch (Exception e)
+        {
+            return ApiResponse<int>.Error(e.Message);
+        }
+    }
 
     [HttpGet("get-book-list-detail/{bookId}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
