@@ -13,7 +13,7 @@ public interface IBookCopyService : IBaseService<BookCopy, Guid, BookCopyDetailD
     Task<List<BookCopyDetailDto>> CreateBookCopyByAmountAsync(
         List<BookCopyCreateByAmountDto> bookCopyCreateByAmountDtos,
         CancellationToken cancellationToken);
-
+    Task<int> GetBorrowedBookCopiesAsync(CancellationToken cancellationToken);
     Task<List<BookCopyDetailTreeDto>> GetBookCopyTreeAsync(CancellationToken cancellationToken);
     Task<List<BorrowedBookDetailDto>> GetListBorrowedBookAsync(CancellationToken cancellationToken);
 

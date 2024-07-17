@@ -55,6 +55,14 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
         return result;
     }
 
+    public async Task<int> GetBorrowedBookCopiesAsync(CancellationToken cancellationToken)
+    {
+        var checkOutQb = _checkOutRepository.GetQueryable().Where(x => !x.IsReturned);
+        var checkOuts = await checkOutQb.ToListAsync(cancellationToken);
+        var borrowedBookCopyIds = checkOuts.Select(x => x.BookCopyId);
+        return borrowedBookCopyIds.Count();
+    }
+
     public async Task<List<BookCopyDetailTreeDto>> GetBookCopyTreeAsync(CancellationToken cancellationToken)
     {
         var bookCopyQb = _entityRepository.GetQueryable();
@@ -125,17 +133,17 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
         spec.AddInclude("Book");
         spec.AddInclude("Publisher");
         var bookCopies = await _entityRepository.GetListAsync(spec, cancellationToken);
-        var groupByBookIdAndPublisherId = bookCopies.GroupBy(x => (x.BookId, x.PublisherId)).ToList(); 
-        
-        var borrowedBookDetails = groupByBookIdAndPublisherId.Select(group => 
+        var groupByBookIdAndPublisherId = bookCopies.GroupBy(x => (x.BookId, x.PublisherId)).ToList();
+
+        var borrowedBookDetails = groupByBookIdAndPublisherId.Select(group =>
         {
             var bookCopy = group.FirstOrDefault();
             var borrowedAmount = borrowedBookCopyIds.Count(id => group.Any(bc => bc.Id == id));
-    
+
             return new BorrowedBookDetailDto
             {
                 Title = bookCopy.Book.Title,
-                PublisherName = bookCopy.Publisher.Name, 
+                PublisherName = bookCopy.Publisher.Name,
                 BorrowedBookAmount = borrowedAmount,
                 AvailableBookAmount = group.Count() - borrowedAmount
             };
