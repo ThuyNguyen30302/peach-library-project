@@ -1,6 +1,8 @@
 import {API_LOCAL} from "../../../constant/ApiConstant";
 
 export const IMPORT_BOOK_INDEX_API = API_LOCAL + '/book-copy/get-book-copies';
+export const BOOK_COPY_INDEX_API = API_LOCAL + '/book-copy/index';
+export const BORROWED_BOOK_COPIES_API = API_LOCAL + '/book-copy/get-borrowed-book-copies';
 export const IMPORT_BOOK_CREATE_API = API_LOCAL + '/book-copy/create-book-copies';
 export const IMPORT_BOOK_SHOW_API = API_LOCAL + '/book/show';
 export const IMPORT_BOOK_UPDATE_API = API_LOCAL + '/book/update';

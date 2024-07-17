@@ -4,7 +4,7 @@ import {Tooltip} from "antd";
 import LabelTooltipForMenuItem from "./layouts/LabelTooltipForMenuItem";
 
 // Lazy imports
-const Home = lazy(() => import('./Home'));
+const Home = lazy(() => import('./pages/home/Home'));
 const AuthorListView = lazy(() => import('./pages/author/view/AuthorListView'));
 const PublisherListView = lazy(() => import('./pages/publisher/view/PublisherListView'));
 const MemberListView = lazy(() => import('./pages/member/view/MemberListView'));
@@ -17,14 +17,14 @@ const ImportBookListView = lazy(() => import('./pages/import-book/view/ImportBoo
 
 // Exporting components and lazy imports
 export const routeComponents = [
-  // {
-  //   component: Home,
-  //   key: '/',
-  //   name: 'home',
-  //   label: <LabelTooltipForMenuItem label={'Home'} />,
-  //   icon: <HomeOutlined/>,
-  //   displayIndex: '0'
-  // },
+  {
+    component: Home,
+    key: '/',
+    name: 'home',
+    label: <LabelTooltipForMenuItem label={'Trang chủ'} />,
+    icon: <HomeOutlined/>,
+    displayIndex: '0'
+  },
   {
     component: AuthorListView,
     key: '/author',

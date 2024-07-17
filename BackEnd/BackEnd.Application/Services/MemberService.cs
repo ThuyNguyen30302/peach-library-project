@@ -48,8 +48,15 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
                     throw new Exception("Số điện thoại đã được đăng ký.");
                 }
 
-                var user = new User() { Id = Guid.NewGuid(), UserName = createInput.UserName, EmailAddress = createInput.Email, FullName = createInput.Name };
-                var userCreateResult = await _userManager.CreateAsync(user, "Peach@" + createInput.UserName);
+                var user = new User()
+                {
+                    Id = Guid.NewGuid(), 
+                    UserName = createInput.PhoneNumber,
+                    EmailAddress = createInput.Email,
+                    FullName = createInput.Name,
+                    Active = true
+                };
+                var userCreateResult = await _userManager.CreateAsync(user, "Peach@" + createInput.PhoneNumber);
 
                 if (!userCreateResult.Succeeded)
                 {
@@ -59,6 +66,7 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
                 createInput.UserId = user.Id;
 
                 var newEntity = createInput.GetEntity();
+                newEntity.UserName = createInput.PhoneNumber;
 
                 await _entityRepository.AddAsync(newEntity, cancellationToken);
 
@@ -79,45 +87,47 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
         }
     }
 
-    public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+    public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var entity = await _entityRepository.FirstOrDefaultAsync(id, cancellationToken);
         var user = await _userManager.FindByIdAsync(entity.UserId.ToString());
 
         await _entityRepository.DeleteAsync(entity, cancellationToken);
         await _userManager.DeleteAsync(user);
+    }
 
-        public async Task<List<ComboOption<Guid, string>>> GetComboOptionMember(CancellationToken cancellationToken)
-        {
-            var members =
-                await _entityRepository.GetListAsync(
-                    new Specification<Member>(x => x.Status == "ACTIVE"),
-                    cancellationToken);
 
-            return members.Select(x => new ComboOption<Guid, string>()
-            {
-                Value = x.Id,
-                Label = x.Name + "-" + x.PhoneNumber
-            }).ToList();
-        }
-
-        public async Task<List<ComboOption<Guid, string>>> GetComboOptionMemberCanBorrow(
-            CancellationToken cancellationToken)
-        {
-            var checkOuts = await _checkOutRepository.GetListAsync(new Specification<CheckOut>(x => x.IsReturned == false),
+    public async Task<List<ComboOption<Guid, string>>> GetComboOptionMember(CancellationToken cancellationToken)
+    {
+        var members =
+            await _entityRepository.GetListAsync(
+                new Specification<Member>(x => x.Status == "ACTIVE"),
                 cancellationToken);
 
-            var borrowedMemberIds = checkOuts.Select(x => x.MemberId).ToList();
-
-            var members =
-                await _entityRepository.GetListAsync(
-                    new Specification<Member>(x => x.Status == "ACTIVE" && !borrowedMemberIds.Contains(x.Id)),
-                    cancellationToken);
-
-            return members.Select(x => new ComboOption<Guid, string>()
-            {
-                Value = x.Id,
-                Label = x.Name + "-" + x.PhoneNumber
-            }).ToList();
-        }
+        return members.Select(x => new ComboOption<Guid, string>()
+        {
+            Value = x.Id,
+            Label = x.Name + "-" + x.PhoneNumber
+        }).ToList();
     }
+
+    public async Task<List<ComboOption<Guid, string>>> GetComboOptionMemberCanBorrow(
+        CancellationToken cancellationToken)
+    {
+        var checkOuts = await _checkOutRepository.GetListAsync(new Specification<CheckOut>(x => x.IsReturned == false),
+            cancellationToken);
+
+        var borrowedMemberIds = checkOuts.Select(x => x.MemberId).ToList();
+
+        var members =
+            await _entityRepository.GetListAsync(
+                new Specification<Member>(x => x.Status == "ACTIVE" && !borrowedMemberIds.Contains(x.Id)),
+                cancellationToken);
+
+        return members.Select(x => new ComboOption<Guid, string>()
+        {
+            Value = x.Id,
+            Label = x.Name + "-" + x.PhoneNumber
+        }).ToList();
+    }
+}
