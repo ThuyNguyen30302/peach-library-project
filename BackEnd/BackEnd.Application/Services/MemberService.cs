@@ -1,4 +1,5 @@
 using BackEnd.Application.Dtos;
+using BackEnd.Application.Model;
 using BackEnd.Domain.Base.Specification;
 using BackEnd.Domain.Base.Uow;
 using BackEnd.Domain.Entity.Entities;
@@ -15,16 +16,19 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
     MemberUpdateDto>, IMemberService
 {
     private readonly IMemberRepository _memberRepository;
+    private readonly ICheckOutRepository _checkOutRepository;
     private readonly UserManager<User> _userManager;
     private readonly IUnitOfWork _unitOfWork;
 
     public MemberService(IMemberRepository entityRepository,
-        UserManager<User> userManager, IUnitOfWork unitOfWork, IMemberRepository memberRepository) : base(
+        UserManager<User> userManager, IUnitOfWork unitOfWork, IMemberRepository memberRepository,
+        ICheckOutRepository checkOutRepository) : base(
         entityRepository)
     {
         _userManager = userManager;
         _unitOfWork = unitOfWork;
         _memberRepository = memberRepository;
+        _checkOutRepository = checkOutRepository;
     }
 
     public override async Task<MemberDetailDto> CreateAsync(MemberCreateDto createInput,
@@ -44,7 +48,7 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
                     throw new Exception("Số điện thoại đã được đăng ký.");
                 }
 
-                var user = new User() { Id = Guid.NewGuid(), UserName = createInput.UserName, EmailAddress = createInput.Email, FullName = createInput.Name};
+                var user = new User() { Id = Guid.NewGuid(), UserName = createInput.UserName, EmailAddress = createInput.Email, FullName = createInput.Name };
                 var userCreateResult = await _userManager.CreateAsync(user, "Peach@" + createInput.UserName);
 
                 if (!userCreateResult.Succeeded)
@@ -74,13 +78,46 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
             }
         }
     }
-    
+
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var entity = await _entityRepository.FirstOrDefaultAsync(id, cancellationToken);
         var user = await _userManager.FindByIdAsync(entity.UserId.ToString());
-        
+
         await _entityRepository.DeleteAsync(entity, cancellationToken);
         await _userManager.DeleteAsync(user);
+
+        public async Task<List<ComboOption<Guid, string>>> GetComboOptionMember(CancellationToken cancellationToken)
+        {
+            var members =
+                await _entityRepository.GetListAsync(
+                    new Specification<Member>(x => x.Status == "ACTIVE"),
+                    cancellationToken);
+
+            return members.Select(x => new ComboOption<Guid, string>()
+            {
+                Value = x.Id,
+                Label = x.Name + "-" + x.PhoneNumber
+            }).ToList();
+        }
+
+        public async Task<List<ComboOption<Guid, string>>> GetComboOptionMemberCanBorrow(
+            CancellationToken cancellationToken)
+        {
+            var checkOuts = await _checkOutRepository.GetListAsync(new Specification<CheckOut>(x => x.IsReturned == false),
+                cancellationToken);
+
+            var borrowedMemberIds = checkOuts.Select(x => x.MemberId).ToList();
+
+            var members =
+                await _entityRepository.GetListAsync(
+                    new Specification<Member>(x => x.Status == "ACTIVE" && !borrowedMemberIds.Contains(x.Id)),
+                    cancellationToken);
+
+            return members.Select(x => new ComboOption<Guid, string>()
+            {
+                Value = x.Id,
+                Label = x.Name + "-" + x.PhoneNumber
+            }).ToList();
+        }
     }
-}

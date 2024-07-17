@@ -13,6 +13,8 @@ public static class ServiceCollections
         services.AddScoped<IMemberService, MemberService>();
         services.AddScoped<IMetaCataloService, MetaCataloService>();
         services.AddScoped<ICataloService, CataloService>();
+        services.AddScoped<ICheckOutService, CheckOutService>();
+        services.AddScoped<IHoldService, HoldService>();
       
         return services;
     }

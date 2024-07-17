@@ -45,3 +45,7 @@
     width : 0;
     margin: 0 !important;
 }
+
+.ant-menu-item, .ant-menu-submenu-title {
+    display: flex !important;
+}

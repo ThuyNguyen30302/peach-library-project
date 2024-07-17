@@ -63,7 +63,7 @@ public class BookService : BaseService<Book, Guid, BookDetailDto,
             return res;
         }).ToList();
     }
-    
+
     public override async Task<BookDetailDto> GetAsync(Guid id, CancellationToken cancellationToken)
     {
         var spec = new Specification<Book>(x => x.Id == id);
@@ -76,28 +76,28 @@ public class BookService : BaseService<Book, Guid, BookDetailDto,
 
         return res;
     }
-    
+
     public override async Task<BookDetailDto> CreateAsync(BookCreateDto createInput,
         CancellationToken cancellationToken)
     {
         var newEntity = createInput.GetEntity();
         await _entityRepository.AddAsync(newEntity, cancellationToken);
-    
+
         var res = new BookDetailDto();
-    
+
         res.FromEntity(newEntity);
-    
+
         return res;
     }
-    
+
     public override async Task<BookDetailDto> UpdateAsync(Guid id, BookUpdateDto updateInput,
         CancellationToken cancellationToken)
     {
         updateInput.Id = id;
-        
+
         var spec = new Specification<Book>(x => x.Id == id);
         spec.AddInclude("BookAuthorMappings");
-        
+
         var entity = await _entityRepository.FirstOrDefaultAsync(spec, cancellationToken);
 
         entity = updateInput.GetEntity(entity);
@@ -113,9 +113,9 @@ public class BookService : BaseService<Book, Guid, BookDetailDto,
 
     public async Task<List<ComboOption<Guid, string>>> GetComboOptionBook(CancellationToken cancellationToken)
     {
-        var publishers = await _entityRepository.GetListAsync(cancellationToken);
+        var books = await _entityRepository.GetListAsync(cancellationToken);
 
-        var comboOption = publishers.Select(x => new ComboOption<Guid, string>()
+        var comboOption = books.Select(x => new ComboOption<Guid, string>()
         {
             Value = x.Id,
             Label = x.Title

@@ -65,8 +65,6 @@ const BaseForm = forwardRef((props, ref) => {
           if (res?.success) {
               const value = props?.beforeSetValue ? props.beforeSetValue(res?.data) : beforeSetValue(res?.data);
               form.setFieldsValue(value);
-            // props.reloadData && props.reloadData();
-            // props.onClose && props.onClose();
           } else if (res.success) {
           } else {
           }

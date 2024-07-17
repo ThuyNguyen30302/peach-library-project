@@ -9,7 +9,7 @@ const AuthorUpdateForm = (props) => {
     return <>
       <Form.Item
         name="name"
-        label="Tên thật tác giả"
+        label="Tên tác giả"
         rules={[{
           required: true,
         }]}

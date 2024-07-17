@@ -34,7 +34,7 @@ const BookCreateForm = (props) => {
         rules={[{
           required: true,
         }]}
-        className={'col-span-2'}
+        className={'col-span-1'}
       >
         <Select
           mode="multiple"
@@ -47,7 +47,7 @@ const BookCreateForm = (props) => {
         rules={[{
           required: true,
         }]}
-        className={'col-span-2'}
+        className={'col-span-1'}
       >
         <Select
           mode="multiple"

@@ -15,7 +15,12 @@ public interface IBookCopyService : IBaseService<BookCopy, Guid, BookCopyDetailD
         CancellationToken cancellationToken);
 
     Task<List<BookCopyDetailTreeDto>> GetBookCopyTreeAsync(CancellationToken cancellationToken);
+    Task<List<BorrowedBookDetailDto>> GetListBorrowedBookAsync(CancellationToken cancellationToken);
 
     Task<List<BookCopyDetailByAmountDto>> GetBookCopyGridAsync(FilterDateRange filter,
         CancellationToken cancellationToken);
+    
+    Task<List<ComboOption<Guid, string>>> GetComboOptionBookCanBorrow(CancellationToken cancellationToken);
+    Task<List<ComboOption<Guid, string>>> GetComboOptionBookCanBorrowForUpdate(Guid checkOutId, CancellationToken cancellationToken);
+    Task<List<BookListDetailDto>> GetListBookDetail(Guid bookId, CancellationToken cancellationToken);
 }
