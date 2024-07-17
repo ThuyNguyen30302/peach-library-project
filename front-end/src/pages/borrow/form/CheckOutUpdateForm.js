@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {DatePicker, Form, Select, Spin} from "antd";
+import {Checkbox, DatePicker, Form, Select, Spin} from "antd";
 import BaseForm from "../../../common/core/Form/BaseForm";
 import {useRequest} from "../../../custom-hook/useRequest";
 import useMergeState from "../../../custom-hook/useMergeState";
@@ -54,6 +54,7 @@ const CheckOutUpdateForm = (props) => {
     return data;
   };
   const beforeSave = (data) => {
+    console.log(data)
     const startTime = _.get(data, 'startTime');
     const endTime = _.get(data, 'endTime');
     _.set(data, 'startTime', startTime.format('YYYY-MM-DD'));
@@ -116,6 +117,14 @@ const CheckOutUpdateForm = (props) => {
                     format={'DD-MM-YYYY'}
                     style={{width: '100%'}}
         />
+      </Form.Item>
+      <Form.Item
+        name="isReturned"
+        label="Đã trả"
+        valuePropName="checked"
+        className={'col-span-1'}
+      >
+        <Checkbox name="isReturned"></Checkbox>
       </Form.Item>
     </div>
   };

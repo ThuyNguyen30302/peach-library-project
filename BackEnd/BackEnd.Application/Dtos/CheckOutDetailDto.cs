@@ -15,7 +15,7 @@ public class CheckOutDetailDto: IDetailDto<CheckOut, Guid>, IFullAudited
 
     public BookCopy BookCopy { get; set; }
     public Member Member { get; set; }
-    public string MemberFullName { get; set; }
+    public string MemberName { get; set; }
     public string TitleBook { get; set; }
     public void FromEntity(CheckOut entity)
     {
@@ -29,7 +29,7 @@ public class CheckOutDetailDto: IDetailDto<CheckOut, Guid>, IFullAudited
         Member = entity.Member;
         if (entity.Member != null)
         {
-            MemberFullName = entity.Member.Name;
+            MemberName = entity.Member.Name + "-" + entity.Member.PhoneNumber;
         }
         if (entity.BookCopy is { Book: not null })
         {

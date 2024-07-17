@@ -1,5 +1,5 @@
 import React, {Suspense, useEffect, useRef} from 'react';
-import {Button, message, Spin, Tooltip} from 'antd';
+import {Button, Form, message, Radio, Spin, Tooltip} from 'antd';
 import {useRequest} from "../../../custom-hook/useRequest";
 import CheckOutCreateForm from "../form/CheckOutCreateForm";
 import CommonGrid from "../../../common/core/grid/CommonGrid";
@@ -12,10 +12,8 @@ import {
   CHECK_OUT_UPDATE_API
 } from "../api/BorrowApi";
 import {checkOutColDef} from "../config/checkOutColDef";
-import {BOOK_COMBO_OPTION_CAN_BORROW_API} from "../../book/api/BookApi";
-import {MEMBER_COMBO_OPTION_CAN_BORROW_API} from "../../member/api/MemberApi";
 import useMergeState from "../../../custom-hook/useMergeState";
-import {DeleteOutlined, EditOutlined, FormOutlined, InfoCircleOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined, FormOutlined} from "@ant-design/icons";
 import Loading from "../../../component/Loading";
 import _ from "lodash";
 import Alert from "../../../common/Alert/Alert";
@@ -23,13 +21,15 @@ import Alert from "../../../common/Alert/Alert";
 const BorrowListView = () => {
   const {get, deleteApi} = useRequest();
   const refGrid = useRef(null);
-
+  const [form] = Form.useForm();
   const [state, setState] = useMergeState({
     rowData: [],
     loading: true,
+    filter: {
+      type: 'all'
+    }
   });
 
-  const apiCreate = CHECK_OUT_CREATE_API;
   const apiDetail = CHECK_OUT_SHOW_API;
   const apiUpdate = CHECK_OUT_UPDATE_API;
   const apiDelete = CHECK_OUT_DELETE_API;
@@ -39,11 +39,12 @@ const BorrowListView = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [state.filter]);
 
   const fetchData = async () => {
     try {
-      const response = await get(CHECK_OUT_INDEX_API);
+      const filter = state.filter;
+      const response = await get(CHECK_OUT_INDEX_API + "/" + filter?.type);
       if (response?.success) {
         const value = response?.data;
         setState({
@@ -64,7 +65,8 @@ const BorrowListView = () => {
 
   const reloadData = async () => {
     try {
-      const response = await get(CHECK_OUT_INDEX_API);
+      const filter = state.filter;
+      const response = await get(CHECK_OUT_INDEX_API + "/" + filter?.type);
       if (response?.success) {
         refGrid.current.setRowData(response.data);
       } else {
@@ -79,6 +81,15 @@ const BorrowListView = () => {
       });
     }
   }
+
+  const onChangeType = (e) => {
+    setState({
+      filter: {
+        type: e.target.value
+      },
+      loading: true
+    })
+  };
 
   const handleEdit = (data) => {
     const FormUpdate = CheckOutUpdateForm;
@@ -118,24 +129,6 @@ const BorrowListView = () => {
     }
   };
 
-  // const handleDetail = (data) => {
-  //   const FormDetail = props.formCRUD?.detailForm;
-  //   refGrid.current?.modalRef.onOpen(
-  //     <Suspense fallback={<Loading style={{height: 300}} open={true}/>}>
-  //       <FormDetail
-  //         apiDetail={apiDetail}
-  //         id={data?.id}
-  //         onClose={() => {
-  //           refGrid.current?.modalRef.onClose();
-  //         }}
-  //         {...props.formCRUD?.propsForm}
-  //       />
-  //     </Suspense>,
-  //     renderTitleForm('Chi tiết'),
-  //     '850px'
-  //   );
-  // };
-
   const renderTitleForm = (text) => {
     return (
       <span
@@ -174,6 +167,27 @@ const BorrowListView = () => {
     </div>
   }
 
+  const renderLeftActionToolBar = () => {
+    return <Form form={form}
+                 labelAlign="left"
+                 layout={'horizontal'}
+                 colon={false}
+                 initialValues={{
+                   type: state.filter.type
+                 }}
+                 validateTrigger={'onBlur'}>
+      <Form.Item name={'type'}
+        // label={'Loại'}
+                 style={{marginBottom: 0}}
+      >
+        <Radio.Group onChange={onChangeType}>
+          <Radio value={'all'}>Tất cả</Radio>
+          <Radio value={'overdue'}>Quá hạn</Radio>
+        </Radio.Group>
+      </Form.Item>
+    </Form>
+  }
+
   if (state.loading) {
     return (
       <div className="ag-theme-alpine"
@@ -197,6 +211,7 @@ const BorrowListView = () => {
           createForm: CheckOutCreateForm,
           updateForm: CheckOutUpdateForm,
         }}
+        renderLeftActionToolBar={renderLeftActionToolBar}
         buttonCRUD={{
           hasCreate: true,
           hasDelete: true,

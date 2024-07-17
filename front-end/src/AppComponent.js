@@ -12,18 +12,19 @@ const MetaCataloListView = lazy(() => import('./pages/metacatalo/veiw/MetaCatalo
 const CataloListView = lazy(() => import('./pages/metacatalo/veiw/CataloListView'));
 const BookListView = lazy(() => import('./pages/book/view/BookListView'));
 const BorrowListView = lazy(() => import('./pages/borrow/view/BorrowListView'));
+const BorrowBookListView = lazy(() => import('./pages/borrow/view/BorrowBookListView'));
 const ImportBookListView = lazy(() => import('./pages/import-book/view/ImportBookListView'));
 
 // Exporting components and lazy imports
 export const routeComponents = [
-  {
-    component: Home,
-    key: '/',
-    name: 'home',
-    label: <LabelTooltipForMenuItem label={'Home'} />,
-    icon: <HomeOutlined/>,
-    displayIndex: '0'
-  },
+  // {
+  //   component: Home,
+  //   key: '/',
+  //   name: 'home',
+  //   label: <LabelTooltipForMenuItem label={'Home'} />,
+  //   icon: <HomeOutlined/>,
+  //   displayIndex: '0'
+  // },
   {
     component: AuthorListView,
     key: '/author',
@@ -99,19 +100,21 @@ export const routeComponents = [
         displayIndex: '0',
       },
       {
-        component: ImportBookListView,
-        key: '/manage-borrow/import-borrow',
-        name: 'import-borrow',
-        label: 'Nhập sách',
-        icon: <span><i className="fa-solid fa-book-open"></i></span>,
+        component: BorrowBookListView,
+        title: 'Danh sách sách mượn',
+        key: '/manage-borrow/borrow-book',
+        name: 'borrow-book',
+        label: <LabelTooltipForMenuItem label={'Danh sách sách mượn'} />,
+        icon: <span><i className="fa-solid fa-book"></i></span>,
         displayIndex: '1',
       },
       // {
-      //   component: BookListView,
-      //   key: '/manage-book/warehouse-book',
-      //   name: 'warehouse-book',
-      //   label: 'Kho sách',
-      //   icon: <span><i className="fa-solid fa-book-bookmark"></i></span>,
+      //   component: BorrowBookListView,
+      //   title: 'Danh sách quá hạn',
+      //   key: '/manage-borrow/overdue',
+      //   name: 'overdue',
+      //   label: <LabelTooltipForMenuItem label={'Danh sách quá hạn'} />,
+      //   icon: <span><i className="fa-solid fa-book"></i></span>,
       //   displayIndex: '2',
       // },
     ]

@@ -1,25 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Spin } from 'antd';
 import { useRequest } from "../../../custom-hook/useRequest";
-import BookCreateForm from "../form/BookCreateForm";
-import {
-  BOOK_CREATE_API,
-  BOOK_DELETE_API,
-  BOOK_INDEX_API,
-  BOOK_SHOW_API, BOOK_TYPE_COMBO_OPTION_CODE_API,
-  BOOK_UPDATE_API
-} from "../api/BookApi";
 import CommonGrid from "../../../common/core/grid/CommonGrid";
-import BookUpdateForm from "../form/BookUpdateForm";
-import {bookColDel} from "../config/bookColDel";
 import useMergeState from "../../../custom-hook/useMergeState";
-import BookDetailForm from "../form/BookDetailForm";
-import {AUTHOR_COMBO_OPTION_API} from "../../author/api/AuthorApi";
+import {BOOK_INDEX_API} from "../../book/api/BookApi";
+import {BORROWED_BOOK_INDEX_API} from "../api/BorrowApi";
+import {borrowedBookColDel} from "../config/borrowedBookColDel";
 
-const BookListView = () => {
+const BorrowBookListView = () => {
   const [state, setState] = useMergeState({
-    comboOptionAuthor : [],
-    comboOptionBookType : [],
     rowData: [],
     loading: true,
   });
@@ -29,31 +18,12 @@ const BookListView = () => {
   const defaultColDef = {};
 
   useEffect(() => {
-    loadCombo();
     fetchData();
   }, []);
 
-  const loadCombo = async () => {
-    Promise.all([
-      get(AUTHOR_COMBO_OPTION_API),
-      get(BOOK_TYPE_COMBO_OPTION_CODE_API),
-    ]).then(([resComboAuthor, resComboBookType]) => {
-      if (resComboAuthor?.success && resComboBookType?.success) {
-        const responseComboAuthor = resComboAuthor?.data;
-        const responseComboBookType = resComboBookType?.data;
-        if (responseComboAuthor && responseComboBookType) {
-          setState({
-            comboOptionAuthor: responseComboAuthor,
-            comboOptionBookType: responseComboBookType
-          });
-        }
-      }
-    });
-  };
-
   const fetchData = async () => {
     try {
-      const response = await get(BOOK_INDEX_API);
+      const response = await get(BORROWED_BOOK_INDEX_API);
       if (response?.success) {
         setState({
           rowData: response?.data
@@ -101,37 +71,35 @@ const BookListView = () => {
     <div className="ag-theme-alpine">
       <CommonGrid
         ref={refGrid}
-        columnDefs={bookColDel}
+        columnDefs={borrowedBookColDel}
         defaultColDef={defaultColDef}
         rowData={state.rowData}
+        actionRow={false}
         isGridDefault={true}
         reloadData={() => reloadData()}
         formCRUD={{
-          propsForm: {
-            comboOptionBookType: state.comboOptionBookType,
-            comboOptionAuthor: state.comboOptionAuthor
-          },
-          popUpWidth: 1100,
-          createForm: BookCreateForm,
-          updateForm: BookUpdateForm,
-          detailForm: BookDetailForm,
+          propsForm: {},
+          // popUpWidth: 1100,
+          // createForm: BookCreateForm,
+          // updateForm: BookUpdateForm,
+          // detailForm: BookDetailForm,
         }}
         buttonCRUD={{
-          hasCreate: true,
-          hasDelete: true,
-          hasUpdate: true,
-          hasDetail: true,
+          // hasCreate: true,
+          // hasDelete: true,
+          // hasUpdate: true,
+          // hasDetail: true,
           // onCreate: onCreate,
           // onDetailRow: onDetailRow,
           // onEditRow: onEditRow,
-          apiCreate: BOOK_CREATE_API,
-          apiDetail: BOOK_SHOW_API,
-          apiUpdate: BOOK_UPDATE_API,
-          apiDelete: BOOK_DELETE_API
+          // apiCreate: BOOK_CREATE_API,
+          // apiDetail: BOOK_SHOW_API,
+          // apiUpdate: BOOK_UPDATE_API,
+          // apiDelete: BOOK_DELETE_API
         }}
       />
     </div>
   );
 };
 
-export default BookListView;
+export default BorrowBookListView;
