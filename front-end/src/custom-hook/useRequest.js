@@ -3,7 +3,7 @@ import _ from "lodash";
 import {useRef} from "react";
 import {UAParser} from "ua-parser-js";
 import {loginSuccessFull, setMenus, setRights, setRoutes} from "../action/action";
-import {API_LOCAL, CHECK_LOGIN, LAYOUT, LOGIN, LOGOUT} from "../constant/ApiConstant";
+import {API_LOCAL, CHANGE_PASSWORD, CHECK_LOGIN, LAYOUT, LOGIN, LOGOUT} from "../constant/ApiConstant";
 import {LOG_OUT_SUCCESSFUL} from "../constant/constant";
 import {AppStore} from "../store";
 import Alert from "../common/Alert/Alert";
@@ -75,10 +75,10 @@ export const useRequest = () => {
 
     const checkLogin = async () => {
         const authData = await sessionStorage.getItem("authData");
-        console.log(authData)
         return await get(CHECK_LOGIN + '/' + _.get(JSON.parse(authData), 'id'), requestConfig?.current).then(response => {
             if (response?.success) {
                 sessionStorage.setItem('authData', JSON.stringify(response?.data));
+                AppStore.dispatch(loginSuccessFull(response?.data))
             }
             return response?.result
         })
@@ -143,6 +143,39 @@ export const useRequest = () => {
         }
     }
 
+    const changePassword = async (id, currentPassword, newPassword) => {
+        try {
+            const response = await post(CHANGE_PASSWORD + "/" + id, {
+                currentPassword: currentPassword,
+                newPassword: newPassword
+            });
+
+            if (response.success) {
+                Alert.Toast_info(
+                  "Thông báo",
+                  "Đổi mật khẩu thành công!",
+                  Alert.TYPE_SUCCESS,
+                  {
+                      position: "center"
+                  }
+                );
+                return true;
+            } else {
+                throw new Error('Đổi mật khẩu thất bại');
+            }
+        } catch (error) {
+            Alert.Toast_info(
+              "Thông báo",
+              `${error.message || 'Có lỗi xảy ra'}`,
+              Alert.TYPE_ERROR,
+              {
+                  position: "center"
+              }
+            );
+            return false;
+        }
+    };
+
     return {
         get,
         post,
@@ -150,6 +183,7 @@ export const useRequest = () => {
         checkLogin,
         login,
         logout,
-        fetchLayout
+        fetchLayout,
+        changePassword
     }
 }

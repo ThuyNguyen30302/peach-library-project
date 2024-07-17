@@ -12,7 +12,6 @@ public class MemberUpdateDto: IUpdateDto<Member, Guid>, IModificationAudited
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
     public string UserName { get; set; }
-    public string Password { get; set; }
     public string Status { get; set; }
     public DateTime DoB { get; set; }
     public string Address { get; set; }
@@ -29,7 +28,7 @@ public class MemberUpdateDto: IUpdateDto<Member, Guid>, IModificationAudited
         entity.Status = !string.IsNullOrEmpty(Status) ? Status : entity.Status;
         entity.LastModificationTime = DateTime.Now;
         entity.LastModifierUserId = LastModifierUserId;
-        entity.UserId = UserId;
+        entity.UserId = entity.UserId;
         return entity;
     }
 

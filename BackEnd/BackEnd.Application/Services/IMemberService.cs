@@ -12,4 +12,5 @@ public interface IMemberService: IBaseService<Member, Guid, MemberDetailDto,
 {
     Task<List<ComboOption<Guid, string>>> GetComboOptionMember(CancellationToken cancellationToken);
     Task<List<ComboOption<Guid, string>>> GetComboOptionMemberCanBorrow(CancellationToken cancellationToken);
+    Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword);
 }

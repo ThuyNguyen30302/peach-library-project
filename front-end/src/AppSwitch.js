@@ -6,6 +6,8 @@ import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/logIn/LoginPage";
 import Loading from "./component/Loading";
 import _ from "lodash";
+import ChangePasswordView from "./pages/change-password/ChangePasswordView";
+import MemberMainPage from "./pages/MemberMainPage";
 
 const AppSwitch = () => {
   const navigate = useNavigate();
@@ -30,10 +32,16 @@ const AppSwitch = () => {
     </>;
   }
 
+  const renderAuthenticatedRoutes = () => {
+    return <>
+      {authData.roles && authData.roles.includes('admin') ? <Route path="/*" element={<MainPage/>}/> : <Route path="/*" element={<MemberMainPage/>}/>}
+      <Route path="/change-password" element={<ChangePasswordView/>}/> {/* Thêm route cho trang đổi mật khẩu */}
+    </>;
+  }
+
   return (
     <Routes>
-      {_.isEmpty(authData) && renderLoginPage()}
-      <Route path="/*" element={<MainPage/>}/>
+      {_.isEmpty(authData) ? renderLoginPage() : renderAuthenticatedRoutes()}
     </Routes>
   );
 };

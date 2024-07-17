@@ -138,7 +138,7 @@ const MemberCreateForm = (props) => {
               required: true,
             },
           ]}
-          className={"col-span-2"}
+          className={"col-span-1"}
         >
           <Input />
         </Form.Item>

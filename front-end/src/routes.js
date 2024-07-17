@@ -1,9 +1,11 @@
+import {lazy} from 'react';
+import {HomeOutlined, SettingOutlined} from "@ant-design/icons"
+import {Tooltip} from "antd";
 import LabelTooltipForMenuItem from "./layouts/LabelTooltipForMenuItem";
-import {HomeOutlined} from "@ant-design/icons";
-import {lazy} from "react";
 
 // Lazy imports
 const Home = lazy(() => import('./pages/home/Home'));
+const MemberHome = lazy(() => import('./pages/home/MemberHome'));
 const AuthorListView = lazy(() => import('./pages/author/view/AuthorListView'));
 const PublisherListView = lazy(() => import('./pages/publisher/view/PublisherListView'));
 const MemberListView = lazy(() => import('./pages/member/view/MemberListView'));
@@ -11,25 +13,44 @@ const MetaCataloListView = lazy(() => import('./pages/metacatalo/veiw/MetaCatalo
 const CataloListView = lazy(() => import('./pages/metacatalo/veiw/CataloListView'));
 const BookListView = lazy(() => import('./pages/book/view/BookListView'));
 const BorrowListView = lazy(() => import('./pages/borrow/view/BorrowListView'));
+const BorrowBookListView = lazy(() => import('./pages/borrow/view/BorrowBookListView'));
 const ImportBookListView = lazy(() => import('./pages/import-book/view/ImportBookListView'));
 
 export const routeMemberComponents = [
   {
-    component: Home,
+    component: MemberHome,
     key: '/',
     name: 'home',
-    label: <LabelTooltipForMenuItem label={'Home'}/>,
+    label: <LabelTooltipForMenuItem label={'Trang chủ'}/>,
     icon: <HomeOutlined/>,
     displayIndex: '0'
   },
+  {
+    component: BookListView,
+    key: '/book',
+    name: 'book',
+    label: <LabelTooltipForMenuItem label={'Kho sách'}/>,
+    icon: <span><i className="fa-solid fa-book"></i></span>,
+    displayIndex: '0',
+  },
+  {
+    component: BorrowListView,
+    title: 'Mượn sách',
+    key: '/manage-borrow/borrow',
+    name: 'borrow',
+    label: <LabelTooltipForMenuItem label={'Danh sách người mượn'}/>,
+    icon: <span><i className="fa-solid fa-book"></i></span>,
+    displayIndex: '0',
+  },
 ];
 
+// Exporting components and lazy imports
 export const routeAdminComponents = [
   {
     component: Home,
     key: '/',
     name: 'home',
-    label: <LabelTooltipForMenuItem label={'Home'}/>,
+    label: <LabelTooltipForMenuItem label={'Trang chủ'}/>,
     icon: <HomeOutlined/>,
     displayIndex: '0'
   },
@@ -108,19 +129,21 @@ export const routeAdminComponents = [
         displayIndex: '0',
       },
       {
-        component: ImportBookListView,
-        key: '/manage-borrow/import-borrow',
-        name: 'import-borrow',
-        label: 'Nhập sách',
-        icon: <span><i className="fa-solid fa-book-open"></i></span>,
+        component: BorrowBookListView,
+        title: 'Danh sách sách mượn',
+        key: '/manage-borrow/borrow-book',
+        name: 'borrow-book',
+        label: <LabelTooltipForMenuItem label={'Danh sách sách mượn'}/>,
+        icon: <span><i className="fa-solid fa-book"></i></span>,
         displayIndex: '1',
       },
       // {
-      //   component: BookListView,
-      //   key: '/manage-book/warehouse-book',
-      //   name: 'warehouse-book',
-      //   label: 'Kho sách',
-      //   icon: <span><i className="fa-solid fa-book-bookmark"></i></span>,
+      //   component: BorrowBookListView,
+      //   title: 'Danh sách quá hạn',
+      //   key: '/manage-borrow/overdue',
+      //   name: 'overdue',
+      //   label: <LabelTooltipForMenuItem label={'Danh sách quá hạn'} />,
+      //   icon: <span><i className="fa-solid fa-book"></i></span>,
       //   displayIndex: '2',
       // },
     ]
@@ -152,7 +175,7 @@ export const routeAdminComponents = [
   }
 ];
 
-export const noRouteAdminComponents = [
+export const noRouteComponents = [
   {
     component: CataloListView,
     key: '/config/metacatalo/catalo/:id',

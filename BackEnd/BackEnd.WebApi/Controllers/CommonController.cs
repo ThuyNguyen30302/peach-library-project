@@ -77,4 +77,37 @@ public class CommonController : ControllerBase
 
         return ApiResponse<JObject>.Error("User is not sign in");
     }
+    
+    [HttpPost("identity/change-password/{id}")]
+    public async Task<ApiResponse<string>> ChangePassword(Guid id, [FromBody] ChangePasswordDto model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return ApiResponse<string>.Error("Lỗi xác thực.");
+        }
+
+        try
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return ApiResponse<string>.Error("Không thể xác định người dùng hiện tại.");
+            }
+
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (changePasswordResult.Succeeded)
+            {
+                return ApiResponse<string>.Ok("Đổi mật khẩu thành công.");
+            }
+            else
+            {
+                var errors = changePasswordResult.Errors.Select(e => e.Description);
+                return ApiResponse<string>.Error("Đổi mật khẩu thất bại.");
+            }
+        }
+        catch (Exception e)
+        {
+            return ApiResponse<string>.Error("Đã xảy ra lỗi khi đổi mật khẩu.");
+        }
+    }
 }

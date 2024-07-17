@@ -15,6 +15,23 @@ export const memberColDef = [
       return _.isEmpty(params.value) ? "" : params.value;
     }
   },
+  {headerName: 'CCCD', field: 'cardNumber', sortable: true, filter: true, minWidth: 140},
+  {
+    headerName: 'Ngày sinh',
+    field: 'doB',
+    sortable: true,
+    filter: true,
+    minWidth: 120,
+    valueFormatter: (params) => {
+      return _.isEmpty(params.value) ? "" : moment(params.value).format('DD-MM-YYYY');
+    }
+  },
+  {
+    headerName: 'Trạng thái', field: 'status', sortable: true, filter: true, minWidth: 150, pinned: 'right',
+    valueFormatter: (params) => {
+      return params.value === "ACTIVE" ? "Hoạt động" : "Không hoạt động";
+    }
+  },
   {
     headerName: 'Địa chỉ',
     field: 'address',
@@ -26,8 +43,6 @@ export const memberColDef = [
       return _.isEmpty(params.value) ? "" : params.value;
     }
   },
-  {headerName: 'CCCD', field: 'cardNumber', sortable: true, filter: true, minWidth: 120},
-  {headerName: 'Trạng thái', field: 'status', sortable: true, filter: true, minWidth: 120, pinned: 'right'},
   {
     headerName: 'Ngày tạo',
     field: 'creationTime',

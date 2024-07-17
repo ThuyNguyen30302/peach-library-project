@@ -2,24 +2,25 @@ import _ from 'lodash';
 import React, {Suspense, useEffect, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigate, useLocation, Link} from 'react-router-dom';
-import {Layout, Menu, Breadcrumb, Button, theme} from 'antd';
+import {Layout, Menu, Breadcrumb, theme} from 'antd';
 import Loading from '../component/Loading';
 import {LOADING_TITLE} from '../constant/constant';
 import {useRequest} from '../custom-hook/useRequest';
 import useMergeState from '../custom-hook/useMergeState';
-import {noRouteComponents, routeComponents} from '../AppComponent';
 import Logo from "../layouts/Logo";
-import {HomeOutlined, MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
+import {HomeOutlined} from "@ant-design/icons";
 import UserProfile from "../layouts/UserProfile";
 import {AppStore} from "../store";
 import {loginSuccessFull} from "../action/action";
+import {RouteComponents} from "../AppComponent";
+import {noRouteComponents} from "../routes";
 
 const {Header, Content, Sider} = Layout;
 
 const MainPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const routeComponents = RouteComponents();
   const [state, setState] = useMergeState({
     loading: true,
     isAuthenticated: null,
@@ -74,7 +75,6 @@ const MainPage = () => {
   };
 
   const initRoute = findRouteByKey(location.pathname, routeComponents);
-
   const [route, setRoute] = useState(initRoute ?? routeComponents[0]);
 
   const {checkLogin} = useRequest();
@@ -84,7 +84,7 @@ const MainPage = () => {
       await Promise.all([
         checkLogin(),
       ]).then(([resCheckLogin]) => {
-        AppStore.dispatch(loginSuccessFull(authData));
+        // AppStore.dispatch(loginSuccessFull(authData));
         setState({
           loading: false,
           // envSetting: _.get(resCheckLogin, 'envSetting')

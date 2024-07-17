@@ -53,4 +53,16 @@ public class CheckOutService : BaseService<CheckOut, Guid, CheckOutDetailDto,
 
         return new List<CheckOutDetailDto>();
     }
+
+    public async Task<List<CheckOutDetailDto>> GetCheckOutByMemberAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var checkOutQb = _entityRepository.GetQueryable();
+        checkOutQb = checkOutQb.Where(x => x.MemberId == id);
+        throw new NotImplementedException();
+    }
+
+    public async Task<List<CheckOutDetailDto>> GetCheckOutByMemberOverdueAsync(Guid id, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }
