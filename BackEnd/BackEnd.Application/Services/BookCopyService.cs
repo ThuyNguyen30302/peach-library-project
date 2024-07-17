@@ -116,6 +116,34 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
         return result;
     }
 
+    public async Task<List<BorrowedBookDetailDto>> GetListBorrowedBookAsync(CancellationToken cancellationToken)
+    {
+        var checkOutQb = _checkOutRepository.GetQueryable().Where(x => !x.IsReturned);
+        var checkOuts = await checkOutQb.ToListAsync(cancellationToken);
+        var borrowedBookCopyIds = checkOuts.Select(x => x.BookCopyId);
+        var spec = new Specification<BookCopy>();
+        spec.AddInclude("Book");
+        spec.AddInclude("Publisher");
+        var bookCopies = await _entityRepository.GetListAsync(spec, cancellationToken);
+        var groupByBookIdAndPublisherId = bookCopies.GroupBy(x => (x.BookId, x.PublisherId)).ToList(); 
+        
+        var borrowedBookDetails = groupByBookIdAndPublisherId.Select(group => 
+        {
+            var bookCopy = group.FirstOrDefault();
+            var borrowedAmount = borrowedBookCopyIds.Count(id => group.Any(bc => bc.Id == id));
+    
+            return new BorrowedBookDetailDto
+            {
+                Title = bookCopy.Book.Title,
+                PublisherName = bookCopy.Publisher.Name, 
+                BorrowedBookAmount = borrowedAmount,
+                AvailableBookAmount = group.Count() - borrowedAmount
+            };
+        }).ToList();
+
+        return borrowedBookDetails;
+    }
+
     public async Task<List<BookCopyDetailByAmountDto>> GetBookCopyGridAsync(FilterDateRange filter,
         CancellationToken cancellationToken)
     {

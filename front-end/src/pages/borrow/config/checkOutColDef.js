@@ -3,7 +3,12 @@ import moment from "moment/moment";
 import {Checkbox} from "antd";
 
 export const checkOutColDef = [
-  {headerName: 'Thành viên', field: 'memberFullName', sortable: true, filter: true},
+  {
+    headerName: 'Thành viên', field: 'memberName', sortable: true, filter: true,
+    tooltipValueGetter: (params) => {
+      return _.isEmpty(params.value) ? "" : params.value;
+    }
+  },
   {
     headerName: 'Sách', field: 'titleBook', sortable: true, filter: true, tooltipValueGetter: (params) => {
       return _.isEmpty(params.value) ? "" : params.value;

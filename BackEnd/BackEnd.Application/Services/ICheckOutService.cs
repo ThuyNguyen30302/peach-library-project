@@ -8,5 +8,6 @@ public interface ICheckOutService: IBaseService<CheckOut, Guid, CheckOutDetailDt
     CheckOutDetailDto,
     CheckOutCreateDto,
     CheckOutUpdateDto>
-{ 
+{
+    public Task<List<CheckOutDetailDto>> GetListCheckOutAsync(string type, CancellationToken cancellationToken);
 }
