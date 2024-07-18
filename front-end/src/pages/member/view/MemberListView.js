@@ -14,6 +14,7 @@ import {
 } from "../api/MemberApi";
 import {memberColDef} from "../config/memberColDef";
 import useMergeState from "../../../custom-hook/useMergeState";
+import MemberDetailForm from "../form/MemberDetailForm";
 
 const MemberListView = () => {
   const { get } = useRequest();
@@ -106,6 +107,7 @@ const MemberListView = () => {
           },
           createForm: MemberCreateForm,
           updateForm: MemberUpdateForm,
+          detailForm: MemberDetailForm,
         }}
         buttonCRUD={{
           hasCreate: true,

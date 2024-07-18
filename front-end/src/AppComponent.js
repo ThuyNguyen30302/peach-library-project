@@ -37,7 +37,7 @@ export const routeComponents = [
     component: PublisherListView,
     key: '/publisher',
     name: 'publisher',
-    label: <LabelTooltipForMenuItem label={'Nhà phát hành'} />,
+    label: <LabelTooltipForMenuItem label={'Nhà xuất bản'} />,
     icon: <span><i className="fa-solid fa-swatchbook"></i></span>,
     displayIndex: '2'
   },

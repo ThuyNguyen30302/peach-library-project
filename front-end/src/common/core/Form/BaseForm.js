@@ -20,15 +20,23 @@ const BaseForm = forwardRef((props, ref) => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
-  const buttons = [{
-    title: "Đóng", tooltip: "Đóng", onClick: async () => {
-      props.onClose() ?? onClose();
-    }, className: "btn-close",
-  }, {
-    title: "Lưu", tooltip: "Lưu", onClick: async () => {
-      props.onSave ? props.onSave() : onSave();
-    }, className: "btn-save",
-  }];
+  const buttons = props?.buttons ?? [
+    {
+      title: "Đóng",
+      tooltip: "Đóng",
+      onClick: async () => {
+        props.onClose() ?? onClose();
+      },
+      className: "btn-close",
+    }, {
+      title: "Lưu",
+      tooltip: "Lưu",
+      onClick: async () => {
+        props.onSave ? props.onSave() : onSave();
+      },
+      className: "btn-save",
+    }
+  ];
 
   useImperativeHandle(ref, () => ({
     onMask: () => onMask(),
@@ -63,8 +71,8 @@ const BaseForm = forwardRef((props, ref) => {
       get(props?.apiDetail + '/' + props?.id)
         .then((res) => {
           if (res?.success) {
-              const value = props?.beforeSetValue ? props.beforeSetValue(res?.data) : beforeSetValue(res?.data);
-              form.setFieldsValue(value);
+            const value = props?.beforeSetValue ? props.beforeSetValue(res?.data) : beforeSetValue(res?.data);
+            form.setFieldsValue(value);
           } else if (res.success) {
           } else {
           }
@@ -87,7 +95,7 @@ const BaseForm = forwardRef((props, ref) => {
     try {
       let values = await form.validateFields();
       values = props.beforeSave ? props.beforeSave(values) : beforeSave(values);
-      const apiSave = !props.id?props.apiSave:props.apiSave + '/' + props.id;
+      const apiSave = !props.id ? props.apiSave : props.apiSave + '/' + props.id;
       post(apiSave, values)
         .then((res) => {
           if (res?.success) {
@@ -129,12 +137,12 @@ const BaseForm = forwardRef((props, ref) => {
       >
         {props.children ?? renderBody()}
       </Form>
-      {props?.buttons ?? <div className={'my-btn-form flex justify-center gap-3'}>
-        {buttons.map((button, index) => <Button key={index}
-                                                tooltip={button.tooltip}
-                                                className={button.className}
-                                                onClick={() => button.onClick()}>{button.title}</Button>)}
-      </div>}
+      <div className={'my-btn-form flex justify-center gap-3'}>
+        {_.map(buttons, (button, index) => <Button key={index}
+                                                   tooltip={button?.tooltip}
+                                                   className={button?.className}
+                                                   onClick={() => button.onClick()}>{button?.title}</Button>)}
+      </div>
     </div>
   </Spin>);
 });

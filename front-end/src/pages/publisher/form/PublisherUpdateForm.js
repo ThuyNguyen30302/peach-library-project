@@ -17,7 +17,7 @@ const PublisherUpdateForm = (props) => {
     return <>
       <Form.Item
         name="name"
-        label="Tên nhà phát hành"
+        label="Tên nhà xuất bản"
         rules={[{
           required: true,
         }]}

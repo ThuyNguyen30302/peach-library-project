@@ -86,6 +86,55 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
             }
         }
     }
+    
+    
+    public override async Task<MemberDetailDto> UpdateAsync(Guid id, MemberUpdateDto updateInput, 
+        CancellationToken cancellationToken)
+    {
+        updateInput.Id = id;
+        await using var transaction = await _unitOfWork.BeginTransactionAsync();
+        try
+        {
+            var existingMember = await _memberRepository.FirstOrDefaultAsync(id, cancellationToken);
+            if (existingMember == null)
+            {
+                throw new Exception("Không tìm thấy thành viên.");
+            }
+
+            // Cập nhật thông tin Member
+            existingMember = updateInput.GetEntity(existingMember);
+            // Cập nhật các trường khác của Member nếu cần
+
+            await _memberRepository.UpdateAsync(existingMember, cancellationToken);
+
+            // Cập nhật thông tin User tương ứng
+            var user = await _userManager.FindByIdAsync(existingMember.UserId.ToString());
+            if (user != null)
+            {
+                user.EmailAddress = updateInput.Email;
+                user.FullName = updateInput.Name;
+                user.Active = updateInput.Status == "ACTIVE";
+                // Cập nhật các trường khác của User nếu cần
+
+                var userUpdateResult = await _userManager.UpdateAsync(user);
+                if (!userUpdateResult.Succeeded)
+                {
+                    throw new Exception(string.Join("; ", userUpdateResult.Errors.Select(e => e.Description)));
+                }
+            }
+
+            var result = new MemberDetailDto();
+            result.FromEntity(existingMember);
+
+            await _unitOfWork.CommitAsync();
+            return result;
+        }
+        catch (Exception e)
+        {
+            await _unitOfWork.RollbackAsync();
+            throw new Exception(e.Message);
+        }
+    }
 
     public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {

@@ -111,7 +111,7 @@ const LoginPage = (props) => {
                             ref={formRef}
                             validateMessages={validateMessages}
                             name="control-hooks"
-                            buttons={<></>}
+                            buttons={[]}
                         >
                             {renderBody()}
                         </BaseForm>
