@@ -50,14 +50,14 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
 
                 var user = new User()
                 {
-                    Id = Guid.NewGuid(), 
+                    Id = Guid.NewGuid(),
                     UserName = createInput.PhoneNumber,
                     EmailAddress = createInput.Email,
                     FullName = createInput.Name,
                     Active = true
                 };
                 var userCreateResult = await _userManager.CreateAsync(user, "Peach@" + createInput.PhoneNumber);
-                
+
                 if (!userCreateResult.Succeeded)
                 {
                     throw new Exception(string.Join("; ", userCreateResult.Errors.Select(e => e.Description)));
@@ -86,8 +86,8 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
             }
         }
     }
-    
-    public override async Task<MemberDetailDto> UpdateAsync(Guid id, MemberUpdateDto updateInput, 
+
+    public override async Task<MemberDetailDto> UpdateAsync(Guid id, MemberUpdateDto updateInput,
         CancellationToken cancellationToken)
     {
         updateInput.Id = id;
@@ -179,7 +179,7 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
             Label = x.Name + "-" + x.PhoneNumber
         }).ToList();
     }
-    
+
     public async Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword)
     {
         try

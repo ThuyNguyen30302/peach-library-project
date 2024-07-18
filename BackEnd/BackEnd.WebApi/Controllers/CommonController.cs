@@ -73,7 +73,7 @@ public class CommonController : ControllerBase
         if (user != null)
         {
             var roles = await _userManager.GetRolesAsync(user);
-            
+
             var serializer = new JsonSerializer
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()

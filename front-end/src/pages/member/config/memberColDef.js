@@ -3,7 +3,7 @@ import moment from "moment";
 
 export const memberColDef = [
   {headerName: 'Tên', field: 'name', sortable: true, filter: true, minWidth: 200},
-  {headerName: 'Tài khoản', field: 'userName', sortable: true, filter: true, minWidth: 120},
+  // {headerName: 'Tài khoản', field: 'userName', sortable: true, filter: true, minWidth: 120},
   {headerName: 'SĐT', field: 'phoneNumber', sortable: true, filter: true, minWidth: 120},
   {
     headerName: 'Email',

@@ -4,7 +4,7 @@ using BackEnd.Domain.Entity.Entities;
 
 namespace BackEnd.Application.Dtos;
 
-public class MemberCreateDto: ICreateDto<Member, Guid>, ICreationAudited
+public class MemberCreateDto : ICreateDto<Member, Guid>, ICreationAudited
 {
     public Member GetEntity()
     {
@@ -14,9 +14,8 @@ public class MemberCreateDto: ICreateDto<Member, Guid>, ICreationAudited
             CardNumber = CardNumber,
             Email = Email,
             Address = Address,
-            DoB = DoB,
+            DoB = DoB.Date,
             PhoneNumber = PhoneNumber,
-            UserName = UserName,
             Status = Status,
             CreationTime = DateTime.Now,
             CreatorUserId = CreatorUserId,

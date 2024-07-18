@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Form, Input, Select } from "antd";
+import { DatePicker, Form, Input, Select } from "antd";
 import BaseForm from "../../../common/core/Form/BaseForm";
 import _ from "lodash";
 import CustomDatePicker from "../../../common/DatePicker/CustomDatePicker";
@@ -153,10 +153,10 @@ const MemberCreateForm = (props) => {
         initialValues={{
           status: "ACTIVE",
         }}
+        beforeSave={beforeSave}
         apiSave={props?.apiSave}
         reloadData={props.reloadData}
         onClose={() => props.onClose()}
-        beforeSave={beforeSave}
         {...itemsLayout}
       >
         {renderBody()}

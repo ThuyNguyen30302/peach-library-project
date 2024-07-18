@@ -9,7 +9,6 @@ export const importBookTableColDel = (comboOptionBook, comboOptionPublisher) => 
       sortable: false,
       filter: false,
       render: (_, record, i) => {
-        console.log(_, record, i);
         return <Form.Item {...record} name={[record.namme, 'book']}>
           <Select name={[record.name, 'book']} options={comboOptionBook}></Select>
         </Form.Item>

@@ -1,22 +1,25 @@
-import React, {useState, forwardRef, useImperativeHandle, useEffect} from 'react';
-import {Button, Form, message, Spin} from "antd";
-import {AUTHOR_CREATE_API} from "../../../pages/author/api/AuthorApi";
-import {useRequest} from "../../../custom-hook/useRequest";
+import React, {
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+} from "react";
+import { Button, Form, message, Spin } from "antd";
+import { AUTHOR_CREATE_API } from "../../../pages/author/api/AuthorApi";
+import { useRequest } from "../../../custom-hook/useRequest";
 import _ from "lodash";
-import '../../../style/button-style.scss';
-
+import "../../../style/button-style.scss";
 
 const validateMessages = {
-  required: '${label} là bắt buộc!',
-}
-
-const itemsLayout = {
-  labelCol: {flex: '120px'},
+  required: "${label} là bắt buộc!",
 };
 
+const itemsLayout = {
+  labelCol: { flex: "120px" },
+};
 
 const BaseForm = forwardRef((props, ref) => {
-  const {get, post} = useRequest()
+  const { get, post } = useRequest();
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
@@ -28,14 +31,15 @@ const BaseForm = forwardRef((props, ref) => {
         props.onClose() ?? onClose();
       },
       className: "btn-close",
-    }, {
+    },
+    {
       title: "Lưu",
       tooltip: "Lưu",
       onClick: async () => {
         props.onSave ? props.onSave() : onSave();
       },
       className: "btn-save",
-    }
+    },
   ];
 
   useImperativeHandle(ref, () => ({
@@ -50,11 +54,11 @@ const BaseForm = forwardRef((props, ref) => {
   }));
 
   const onMask = () => {
-    setLoading(true)
+    setLoading(true);
   };
 
   const unMask = () => {
-    setLoading(false)
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -68,10 +72,12 @@ const BaseForm = forwardRef((props, ref) => {
   const fetchData = async () => {
     onMask();
     try {
-      get(props?.apiDetail + '/' + props?.id)
+      get(props?.apiDetail + "/" + props?.id)
         .then((res) => {
           if (res?.success) {
-            const value = props?.beforeSetValue ? props.beforeSetValue(res?.data) : beforeSetValue(res?.data);
+            const value = props?.beforeSetValue
+              ? props.beforeSetValue(res?.data)
+              : beforeSetValue(res?.data);
             form.setFieldsValue(value);
           } else if (res.success) {
           } else {
@@ -84,7 +90,7 @@ const BaseForm = forwardRef((props, ref) => {
       console.log(error);
     }
     unMask();
-  }
+  };
 
   const beforeSave = (data) => {
     return data;
@@ -95,23 +101,25 @@ const BaseForm = forwardRef((props, ref) => {
     try {
       let values = await form.validateFields();
       values = props.beforeSave ? props.beforeSave(values) : beforeSave(values);
-      const apiSave = !props.id ? props.apiSave : props.apiSave + '/' + props.id;
+      const apiSave = !props.id
+        ? props.apiSave
+        : props.apiSave + "/" + props.id;
       post(apiSave, values)
         .then((res) => {
           if (res?.success) {
             props.reloadData && props.reloadData();
             props.onClose && props.onClose();
-            message.success('Thành công');
+            message.success("Thành công");
           } else {
-            message.error('Thất bại! ' + res?.message);
+            message.error("Thất bại! " + res?.message);
           }
         })
         .catch((error) => {
-          message.error('Thất bại');
+          message.error("Thất bại");
           console.log(error);
         });
     } catch (error) {
-      message.error('Thất bại');
+      message.error("Thất bại");
     }
     unMask();
   };
@@ -120,31 +128,38 @@ const BaseForm = forwardRef((props, ref) => {
     props.onClose && props.onClose();
   };
 
-  const renderBody = (value) => {
+  const renderBody = (value) => {};
 
-  }
-
-  return (<Spin spinning={loading} tip="Đang tải dữ liệu...">
-    <div className="base-form">
-      <Form form={form}
-            labelAlign="left"
-            layout={'horizontal'}
-            colon={false}
-            validateMessages={validateMessages}
-            {...itemsLayout}
-            {...props}
-            validateTrigger={'onBlur'}
-      >
-        {props.children ?? renderBody()}
-      </Form>
-      <div className={'my-btn-form flex justify-center gap-3'}>
-        {_.map(buttons, (button, index) => <Button key={index}
-                                                tooltip={button?.tooltip}
-                                                className={button?.className}
-                                                onClick={() => button.onClick()}>{button?.title}</Button>)}
+  return (
+    <Spin spinning={loading} tip="Đang tải dữ liệu...">
+      <div className="base-form">
+        <Form
+          form={form}
+          labelAlign="left"
+          layout={"horizontal"}
+          colon={false}
+          validateMessages={validateMessages}
+          {...itemsLayout}
+          {...props}
+          validateTrigger={"onBlur"}
+        >
+          {props.children ?? renderBody()}
+        </Form>
+        <div className={"my-btn-form flex justify-center gap-3"}>
+          {_.map(buttons, (button, index) => (
+            <Button
+              key={index}
+              tooltip={button?.tooltip}
+              className={button?.className}
+              onClick={() => button.onClick()}
+            >
+              {button?.title}
+            </Button>
+          ))}
+        </div>
       </div>
-    </div>
-  </Spin>);
+    </Spin>
+  );
 });
 
 export default BaseForm;

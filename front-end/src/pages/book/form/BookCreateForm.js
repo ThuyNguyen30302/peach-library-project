@@ -37,6 +37,7 @@ const BookCreateForm = (props) => {
         className={'col-span-1'}
       >
         <Select
+          filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
           mode="multiple"
           maxTagCount={5}
           options={props.comboOptionBookType} />
@@ -50,6 +51,7 @@ const BookCreateForm = (props) => {
         className={'col-span-1'}
       >
         <Select
+          filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
           mode="multiple"
           maxTagCount={5}
           options={props.comboOptionAuthor} />
