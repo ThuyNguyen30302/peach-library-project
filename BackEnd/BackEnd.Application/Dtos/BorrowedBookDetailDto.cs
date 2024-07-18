@@ -4,6 +4,7 @@ public class BorrowedBookDetailDto
 {
     public string Title { get; set; }
     public string PublisherName { get; set; }
-    public int BorrowedBookAmount { get; set; }
-    public int AvailableBookAmount { get; set; }
+    public int? BorrowedBookAmount { get; set; }
+    public int? AvailableBookAmount { get; set; }
+    public bool Available { get; set; }
 }

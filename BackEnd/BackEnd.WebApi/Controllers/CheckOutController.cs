@@ -41,36 +41,17 @@ public class CheckOutController : BaseController<CheckOut, Guid, CheckOutDetailD
             return ApiResponse<List<CheckOutDetailDto>>.Error(e.Message);
         }
     }
-    
-    [HttpGet("get-check-out-by-member/{id}")]
+     
+    [HttpGet("get-list-check-out-by-member/{id}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-    public virtual async Task<ApiResponse<List<CheckOutDetailDto>>> HandleGetCheckOutByMemberAction(Guid id,
+    public virtual async Task<ApiResponse<List<CheckOutDetailDto>>> HandleGetListCheckOutByMemberIndexAction(Guid id,
         CancellationToken cancellationToken)
     {
         try
         {
-            var result = await _checkOutService.GetCheckOutByMemberAsync(id, cancellationToken);
-
-            return ApiResponse<List<CheckOutDetailDto>>.Ok(result);
-        }
-        catch (Exception e)
-        {
-            return ApiResponse<List<CheckOutDetailDto>>.Error(e.Message);
-        }
-    }
-    
-    [HttpGet("get-check-out-by-member-overdue/{id}")]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-    public virtual async Task<ApiResponse<List<CheckOutDetailDto>>> HandleGetCheckOutByMemberOverdueAction(Guid id,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            var result = await _checkOutService.GetCheckOutByMemberOverdueAsync(id, cancellationToken);
+            var result = await _checkOutService.GetListCheckOutByMemberAsync(id, cancellationToken);
 
             return ApiResponse<List<CheckOutDetailDto>>.Ok(result);
         }

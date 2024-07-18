@@ -54,15 +54,21 @@ public class CheckOutService : BaseService<CheckOut, Guid, CheckOutDetailDto,
         return new List<CheckOutDetailDto>();
     }
 
-    public async Task<List<CheckOutDetailDto>> GetCheckOutByMemberAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<List<CheckOutDetailDto>> GetListCheckOutByMemberAsync(Guid id,
+        CancellationToken cancellationToken)
     {
-        var checkOutQb = _entityRepository.GetQueryable();
-        checkOutQb = checkOutQb.Where(x => x.MemberId == id);
-        throw new NotImplementedException();
-    }
+        var checkOutQb = _entityRepository.GetQueryable().Where(x => x.MemberId == id).Include(x => x.Member)
+            .Include(x => x.BookCopy).ThenInclude(x => x.Publisher).Include(x => x.BookCopy).ThenInclude(p => p.Book)
+            .OrderBy(x => x.IsReturned).ThenByDescending(x => x.CreationTime);
+        var entities = await checkOutQb.ToListAsync(cancellationToken);
 
-    public async Task<List<CheckOutDetailDto>> GetCheckOutByMemberOverdueAsync(Guid id, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
+        return entities.Select(x =>
+        {
+            var res = new CheckOutDetailDto();
+
+            res.FromEntity(x);
+
+            return res;
+        }).ToList();
     }
 }

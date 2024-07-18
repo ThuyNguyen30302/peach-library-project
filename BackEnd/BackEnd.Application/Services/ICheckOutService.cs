@@ -10,6 +10,5 @@ public interface ICheckOutService: IBaseService<CheckOut, Guid, CheckOutDetailDt
     CheckOutUpdateDto>
 {
     public Task<List<CheckOutDetailDto>> GetListCheckOutAsync(string type, CancellationToken cancellationToken);
-    public Task<List<CheckOutDetailDto>> GetCheckOutByMemberAsync(Guid id, CancellationToken cancellationToken);
-    public Task<List<CheckOutDetailDto>> GetCheckOutByMemberOverdueAsync(Guid id, CancellationToken cancellationToken);
+    public Task<List<CheckOutDetailDto>> GetListCheckOutByMemberAsync(Guid id, CancellationToken cancellationToken);
 }

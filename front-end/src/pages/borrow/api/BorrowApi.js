@@ -11,4 +11,6 @@ export const HOLD_SHOW_API = API_LOCAL + '/hold/show';
 export const HOLD_UPDATE_API = API_LOCAL + '/hold/update';
 export const HOLD_DELETE_API = API_LOCAL + '/hold/delete';
 export const BORROWED_BOOK_INDEX_API = API_LOCAL + '/book-copy/get-borrowed-book';
+export const BORROWED_BOOK_FOR_MEMBER_INDEX_API = API_LOCAL + '/book-copy/get-borrowed-book-for-member';
+export const CHECK_OUT_BY_MEMBER_INDEX_API = API_LOCAL + '/check-out/get-list-check-out-by-member';
 

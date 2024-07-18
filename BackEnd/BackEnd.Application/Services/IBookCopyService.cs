@@ -23,4 +23,5 @@ public interface IBookCopyService : IBaseService<BookCopy, Guid, BookCopyDetailD
     Task<List<ComboOption<Guid, string>>> GetComboOptionBookCanBorrow(CancellationToken cancellationToken);
     Task<List<ComboOption<Guid, string>>> GetComboOptionBookCanBorrowForUpdate(Guid checkOutId, CancellationToken cancellationToken);
     Task<List<BookListDetailDto>> GetListBookDetail(Guid bookId, CancellationToken cancellationToken);
+    Task<List<BorrowedBookDetailDto>> GetListBorrowedBookForMemberAsync(string key, CancellationToken cancellationToken);
 }

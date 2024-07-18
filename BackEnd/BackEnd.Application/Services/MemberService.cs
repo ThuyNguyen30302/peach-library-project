@@ -57,14 +57,14 @@ public class MemberService : BaseService<Member, Guid, MemberDetailDto,
                     Active = true
                 };
                 var userCreateResult = await _userManager.CreateAsync(user, "Peach@" + createInput.PhoneNumber);
-
+                
                 if (!userCreateResult.Succeeded)
                 {
                     throw new Exception(string.Join("; ", userCreateResult.Errors.Select(e => e.Description)));
                 }
 
                 createInput.UserId = user.Id;
-
+                await _userManager.AddToRoleAsync(user, "member");
                 var newEntity = createInput.GetEntity();
                 newEntity.UserName = createInput.PhoneNumber;
 

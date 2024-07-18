@@ -341,4 +341,40 @@ public class BookCopyService : BaseService<BookCopy, Guid, BookCopyDetailDto,
 
         return result;
     }
+
+    public async Task<List<BorrowedBookDetailDto>> GetListBorrowedBookForMemberAsync(string? key,
+        CancellationToken cancellationToken)
+    {
+        var checkOutQb = _checkOutRepository.GetQueryable().Include(x => x.BookCopy)
+            .ThenInclude(p => p.Book)
+            .Where(x => !x.IsReturned);
+        var checkOuts = await checkOutQb.ToListAsync(cancellationToken);
+        var borrowedBookCopyIds = checkOuts.Select(x => x.BookCopyId);
+        var spec = new Specification<BookCopy>();
+        spec.AddInclude("Book");
+        spec.AddInclude("Publisher");
+        var bookCopies = await _entityRepository.GetListAsync(spec, cancellationToken);
+        if (!string.IsNullOrEmpty(key))
+        {
+            bookCopies = bookCopies.Where(x => x.Book.Title.ToLower().Contains(key.ToLower()));
+        }
+        var groupByBookIdAndPublisherId = bookCopies.GroupBy(x => (x.BookId, x.PublisherId)).ToList();
+
+        var borrowedBookDetails = groupByBookIdAndPublisherId.Select(group =>
+        {
+            var bookCopy = group.FirstOrDefault();
+            var borrowedAmount = borrowedBookCopyIds.Count(id => group.Any(bc => bc.Id == id));
+
+            return new BorrowedBookDetailDto
+            {
+                Title = bookCopy.Book.Title,
+                PublisherName = bookCopy.Publisher.Name,
+                BorrowedBookAmount = borrowedAmount,
+                AvailableBookAmount = group.Count() - borrowedAmount,
+                Available = group.Count() - borrowedAmount > 0
+            };
+        }).ToList();
+
+        return borrowedBookDetails;
+    }
 }

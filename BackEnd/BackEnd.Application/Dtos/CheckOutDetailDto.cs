@@ -17,6 +17,7 @@ public class CheckOutDetailDto: IDetailDto<CheckOut, Guid>, IFullAudited
     public Member Member { get; set; }
     public string MemberName { get; set; }
     public string TitleBook { get; set; }
+    public string PublisherName { get; set; }
     public void FromEntity(CheckOut entity)
     {
         Id = entity.Id;
@@ -34,6 +35,10 @@ public class CheckOutDetailDto: IDetailDto<CheckOut, Guid>, IFullAudited
         if (entity.BookCopy is { Book: not null })
         {
             TitleBook = entity.BookCopy.Book.Title;
+        }
+        if (entity.BookCopy is { Publisher: not null })
+        {
+            PublisherName = entity.BookCopy.Publisher.Name;
         }
         CreationTime = entity.CreationTime;
         CreatorUserId = entity.CreatorUserId;

@@ -188,6 +188,7 @@ const CommonGrid = forwardRef((props, ref) => {
   };
 
   const renderRightActionToolBar = () => {
+    if (props.renderRightActionToolBar) return props.renderRightActionToolBar();
     return <div>
       {props.buttonCRUD?.hasCreate && <Tooltip title="Tạo mới"><Button onClick={() => {
         handleCreate()

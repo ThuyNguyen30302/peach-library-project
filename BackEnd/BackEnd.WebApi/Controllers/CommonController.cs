@@ -1,6 +1,9 @@
 ﻿using System.Net;
 using System.Security.Claims;
 using BackEnd.Application.Dtos;
+using BackEnd.Domain.Base.Specification;
+using BackEnd.Domain.Entity.Entities;
+using BackEnd.Domain.Entity.Repositories;
 using BackEnd.Domain.Ums.Entities;
 using BackEnd.Infrastructure.Base.ApiResponse;
 using Microsoft.AspNetCore.Authorization;
@@ -19,11 +22,16 @@ public class CommonController : ControllerBase
 {
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
+    private readonly IMemberRepository _memberRepository;
+    private readonly ICheckOutRepository _checkOutRepository;
 
-    public CommonController(SignInManager<User> signInManager, UserManager<User> userManager)
+    public CommonController(SignInManager<User> signInManager, UserManager<User> userManager,
+        IMemberRepository memberRepository, ICheckOutRepository checkOutRepository)
     {
         _signInManager = signInManager;
         _userManager = userManager;
+        _memberRepository = memberRepository;
+        _checkOutRepository = checkOutRepository;
     }
 
     [HttpGet]
@@ -59,25 +67,35 @@ public class CommonController : ControllerBase
 
     [HttpGet("identity/check-login/{id}")]
     [AllowAnonymous]
-    public async Task<ApiResponse<JObject>> CheckLoginAction(Guid id)
+    public async Task<ApiResponse<JObject>> CheckLoginAction(Guid id, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByIdAsync(id.ToString());
         if (user != null)
         {
             var roles = await _userManager.GetRolesAsync(user);
-
+            
             var serializer = new JsonSerializer
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
             var authData = JObject.FromObject(user, serializer);
             authData.Add("roles", JToken.FromObject(roles));
+            if (!roles.Contains("admin"))
+            {
+                var member = await _memberRepository.FirstOrDefaultAsync(new Specification<Member>(x => x.UserId == id),
+                    cancellationToken);
+                var checkOut = await _checkOutRepository.FirstOrDefaultAsync(
+                    new Specification<CheckOut>(x => x.MemberId == member.Id && !x.IsReturned),
+                    cancellationToken);
+                authData.Add("memberId", JToken.FromObject(member.Id));
+                authData.Add("canBorrow", JToken.FromObject(checkOut == null));
+            }
             return ApiResponse<JObject>.Ok(authData);
         }
 
         return ApiResponse<JObject>.Error("User is not sign in");
     }
-    
+
     [HttpPost("identity/change-password/{id}")]
     public async Task<ApiResponse<string>> ChangePassword(Guid id, [FromBody] ChangePasswordDto model)
     {
@@ -94,7 +112,8 @@ public class CommonController : ControllerBase
                 return ApiResponse<string>.Error("Không thể xác định người dùng hiện tại.");
             }
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            var changePasswordResult =
+                await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             if (changePasswordResult.Succeeded)
             {
                 return ApiResponse<string>.Ok("Đổi mật khẩu thành công.");
